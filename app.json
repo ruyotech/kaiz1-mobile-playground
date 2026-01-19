@@ -37,6 +37,18 @@
     "experiments": {
       "typedRoutes": true
     },
-    "scheme": "kaiz1"
+    "scheme": "kaiz1",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8151a7db-91cc-4549-9af6-2b4a1a93eeaa"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8151a7db-91cc-4549-9af6-2b4a1a93eeaa"
+    }
   }
 }
