@@ -3,9 +3,10 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { addDays, subDays, format } from 'date-fns';
-import { getSprintName, getWeekNumber } from '../../../utils/dateHelpers';
+import { getSprintName, getWeekNumber, getWeekStartDate } from '../../../utils/dateHelpers';
 import { WeekHeader } from '../../../components/calendar/WeekHeader';
 import { TaskViewSwitcher } from '../../../components/calendar/TaskViewSwitcher';
+import { MonthSelector } from '../../../components/calendar/MonthSelector';
 import { mockApi } from '../../../services/mockApi';
 import { Task } from '../../../types/models';
 
@@ -19,6 +20,8 @@ export default function SprintCalendar() {
     const [loading, setLoading] = useState(true);
     const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['eq-2', 'todo']));
     const [viewType, setViewType] = useState<'day' | 'week'>('week'); // NEW: day vs week view
+    const [isMonthExpanded, setIsMonthExpanded] = useState(false); // NEW: month view expansion
+    const [currentSprint, setCurrentSprint] = useState<any>(null); // Store current sprint data
 
     // Touch tracking for horizontal swipe
     const touchStart = useRef({ x: 0, y: 0, time: 0 });
@@ -27,9 +30,25 @@ export default function SprintCalendar() {
     const currentWeek = getWeekNumber(currentDate);
     const currentYear = currentDate.getFullYear();
 
-    // Format: S04-Jan-2026
-    const monthName = format(currentDate, 'MMM');
-    const sprintName = `S${currentWeek.toString().padStart(2, '0')}-${monthName}-${currentYear}`;
+    // Determine which month has more days in this week
+    const weekStart = getWeekStartDate(currentDate);
+    const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+
+    // Count days per month
+    const monthCounts = weekDays.reduce((acc, day) => {
+        const monthKey = format(day, 'MMM-yyyy');
+        acc[monthKey] = (acc[monthKey] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+
+    // Find month with most days
+    const dominantMonth = Object.entries(monthCounts).reduce((max, [month, count]) =>
+        count > max.count ? { month, count } : max,
+        { month: format(weekStart, 'MMM-yyyy'), count: 0 }
+    );
+
+    const [monthName, yearFromMonth] = dominantMonth.month.split('-');
+    const sprintName = `S${currentWeek.toString().padStart(2, '0')}-${monthName}-${yearFromMonth}`;
 
     // Load tasks for current week
     useEffect(() => {
@@ -37,13 +56,15 @@ export default function SprintCalendar() {
             setLoading(true);
             try {
                 const sprints = await mockApi.getSprints(currentYear);
-                const currentSprint = sprints.find((s: any) => s.weekNumber === currentWeek);
+                const sprint = sprints.find((s: any) => s.weekNumber === currentWeek);
 
-                if (currentSprint) {
+                if (sprint) {
+                    setCurrentSprint(sprint); // Store sprint data for color coding
                     const allTasksUnfiltered = await mockApi.getTasks();
-                    const filtered = allTasksUnfiltered.filter((t: any) => t.sprintId === currentSprint.id);
+                    const filtered = allTasksUnfiltered.filter((t: any) => t.sprintId === sprint.id);
                     setWeekTasks(filtered);
                 } else {
+                    setCurrentSprint(null);
                     setWeekTasks([]);
                 }
             } catch (error) {
@@ -67,6 +88,16 @@ export default function SprintCalendar() {
     const handleDatePress = (date: Date) => {
         setCurrentDate(date);
         setViewType('day'); // Switch to day view when clicking a date
+        setIsMonthExpanded(false); // Collapse month view when selecting a date
+    };
+
+    const handleMonthSelect = (date: Date) => {
+        setCurrentDate(date);
+        setIsMonthExpanded(false); // Collapse after selecting month
+    };
+
+    const toggleMonthExpansion = () => {
+        setIsMonthExpanded(!isMonthExpanded);
     };
 
     const handlePrevWeek = () => {
@@ -301,6 +332,12 @@ export default function SprintCalendar() {
                 currentDate={currentDate}
                 sprintName={sprintName}
                 onDatePress={handleDatePress}
+                isExpanded={isMonthExpanded}
+                onSprintNamePress={toggleMonthExpansion}
+                onMonthSelect={handleMonthSelect}
+                viewType={viewType}
+                sprintStartDate={currentSprint?.startDate}
+                sprintEndDate={currentSprint?.endDate}
                 toggleElement={
                     <TouchableOpacity
                         onPress={() => setViewType(viewType === 'week' ? 'day' : 'week')}

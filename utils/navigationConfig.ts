@@ -14,33 +14,23 @@ export interface MoreMenuItem {
 
 export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
     sdlc: [
-        { name: 'Backlog', icon: 'format-list-checks', route: '/(tabs)/sdlc' },
         { name: 'Sprint', icon: 'clock-fast', route: '/(tabs)/sdlc/calendar' },
-        { name: 'Dashboard', icon: 'view-dashboard', route: '/(tabs)' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     motivation: [
         { name: 'Daily', icon: 'lightbulb-on', route: '/(tabs)/motivation' },
-        { name: 'Share', icon: 'share-variant', route: 'share' },
-        { name: 'Settings', icon: 'cog', route: 'settings' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     books: [
         { name: 'Library', icon: 'book-open-variant', route: '/(tabs)/books' },
-        { name: 'Favorites', icon: 'heart', route: 'favorites' },
-        { name: 'Search', icon: 'magnify', route: 'search' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     bills: [
-        { name: 'All', icon: 'cash-multiple', route: '/(tabs)/bills' },
-        { name: 'Paid', icon: 'check-circle', route: 'paid' },
-        { name: 'Unpaid', icon: 'alert-circle', route: 'unpaid' },
+        { name: 'All Bills', icon: 'cash-multiple', route: '/(tabs)/bills' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     challenges: [
         { name: 'Active', icon: 'trophy', route: '/(tabs)/challenges' },
-        { name: 'Board', icon: 'podium', route: 'leaderboard' },
-        { name: 'History', icon: 'history', route: 'history' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
 };
