@@ -122,6 +122,11 @@ export default function SprintCalendar() {
     };
 
     const handleTouchEnd = () => {
+        // Disable swipe navigation when in weekly view
+        if (viewType === 'week') {
+            return;
+        }
+
         const deltaX = touchMove.current.x - touchStart.current.x;
         const deltaY = touchMove.current.y - touchStart.current.y;
         const deltaTime = Date.now() - touchStart.current.time;
@@ -192,7 +197,7 @@ export default function SprintCalendar() {
                                         <TouchableOpacity
                                             key={task.id}
                                             className="bg-white rounded-lg p-3 mb-2 border border-gray-200"
-                                            onPress={() => router.push(`/ (tabs) / sdlc / task / ${task.id} `)}
+                                            onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
                                         >
                                             <Text className="font-medium" numberOfLines={1}>{task.title}</Text>
                                             <Text className="text-xs text-gray-600 mt-1">{task.storyPoints || 0} pts • {task.status}</Text>
@@ -246,7 +251,7 @@ export default function SprintCalendar() {
                                         <TouchableOpacity
                                             key={task.id}
                                             className="bg-white rounded-lg p-3 mb-2 border border-gray-200"
-                                            onPress={() => router.push(`/ (tabs) / sdlc / task / ${task.id} `)}
+                                            onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
                                         >
                                             <Text className="font-medium" numberOfLines={1}>{task.title}</Text>
                                             <Text className="text-xs text-gray-600 mt-1">{task.storyPoints || 0} pts</Text>
@@ -302,7 +307,7 @@ export default function SprintCalendar() {
                                         <TouchableOpacity
                                             key={task.id}
                                             className="bg-white rounded-lg p-3 mb-2 border border-gray-200"
-                                            onPress={() => router.push(`/ (tabs) / sdlc / task / ${task.id} `)}
+                                            onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
                                         >
                                             <Text className="font-medium" numberOfLines={1}>{task.title}</Text>
                                             <View className="flex-row items-center mt-1">
