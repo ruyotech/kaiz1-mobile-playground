@@ -15,7 +15,7 @@ export default function TasksScreen() {
     const { tasks, loading, fetchTasks } = useTaskStore();
 
     useEffect(() => {
-        fetchTasks({ isDraft: false });
+        fetchTasks({ status: 'draft' }); // Only fetch tasks with status 'draft' for backlog
     }, []);
 
     const renderTask = ({ item }: { item: Task }) => {
@@ -57,8 +57,8 @@ export default function TasksScreen() {
     return (
         <Container>
             <ScreenHeader
-                title="Tasks"
-                subtitle="Manage your work"
+                title="Backlog"
+                subtitle="Raw tasks to be planned"
                 rightAction={
                     <Button
                         onPress={() => router.push('/sdlc/create-task')}
@@ -76,8 +76,8 @@ export default function TasksScreen() {
             ) : tasks.length === 0 ? (
                 <EmptyState
                     icon="📝"
-                    title="No tasks yet"
-                    message="Create your first task to get started with your personal SDLC"
+                    title="No raw tasks"
+                    message="Create your first task. Raw tasks can be moved to sprints later."
                     action={
                         <Button onPress={() => router.push('/sdlc/create-task')}>
                             Create Task

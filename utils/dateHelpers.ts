@@ -51,3 +51,43 @@ export function isOverdue(dueDate: string): boolean {
 export function daysUntilDue(dueDate: string): number {
     return differenceInDays(parseISO(dueDate), new Date());
 }
+
+export const isDueSoon = (dueDate: string): boolean => {
+    const due = new Date(dueDate);
+    const today = new Date();
+    const diffInDays = Math.ceil((due.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    return diffInDays > 0 && diffInDays < 7;
+};
+
+// Sprint helpers
+export const getSprintName = (date: Date): string => {
+    const year = date.getFullYear();
+    const weekNum = getWeekNumber(date);
+    return `S${weekNum}-${year}`;
+};
+
+export const getWeekStartDate = (date: Date): Date => {
+    const day = date.getDay();
+    const diff = date.getDate() - day; // Sunday is 0
+    const startDate = new Date(date);
+    startDate.setDate(diff);
+    return startDate;
+};
+
+export const getWeekEndDate = (date: Date): Date => {
+    const startDate = getWeekStartDate(new Date(date));
+    return addDays(startDate, 6); // Saturday
+};
+
+export const isSameWeek = (date1: Date, date2: Date): boolean => {
+    const week1Start = getWeekStartDate(new Date(date1));
+    const week2Start = getWeekStartDate(new Date(date2));
+    return week1Start.getTime() === week2Start.getTime();
+};
+
+export const getSprintColor = (date: Date): 'red' | 'yellow' | 'green' => {
+    const today = new Date();
+    if (isSameWeek(date, today)) return 'yellow';
+    if (date < today) return 'red';
+    return 'green';
+};
