@@ -34,82 +34,97 @@ export function CustomTabBar() {
     const moreIcon = icons[icons.length - 1]; // Last icon is always More
 
     return (
-        <>
-            <BlurView
-                intensity={80}
-                tint="light"
-                className="border-t border-gray-200/50"
-                style={{ paddingBottom: insets.bottom }}
+        <View>
+            <View
+                className="bg-white border-t border-gray-100"
+                style={{
+                    paddingBottom: insets.bottom,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: -4 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 12,
+                    elevation: 20,
+                }}
             >
-                <View className="flex-row items-center justify-around px-4" style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-                    {/* 1. Apps Icon (Far Left) */}
+                <View className="flex-row items-end justify-around px-3 pb-1" style={{ paddingTop: 8 }}>
+                    {/* 1. Apps Icon */}
                     <TouchableOpacity
-                        className="items-center py-2 px-3 flex-1"
+                        className="items-center flex-1"
                         onPress={toggleAppSwitcher}
                     >
                         <MaterialCommunityIcons
                             name="apps"
-                            size={24}
-                            color="#9CA3AF"
+                            size={36}
+                            color="#6B7280"
+                            style={{ marginBottom: 2 }}
                         />
-                        <Text className="text-xs mt-1 text-gray-600">Apps</Text>
+                        <Text className="text-[8px] text-gray-600 font-semibold" style={{ marginTop: -2 }}>Apps</Text>
                     </TouchableOpacity>
 
-                    {/* 2. Main App Icon (2nd from left) */}
+                    {/* 2. Main App Icon */}
                     <TouchableOpacity
-                        className="items-center py-2 px-3 flex-1"
+                        className="items-center flex-1"
                         onPress={() => handleIconPress(mainIcon.route)}
                     >
                         <MaterialCommunityIcons
                             name={mainIcon.icon as any}
-                            size={24}
-                            color={isActive(mainIcon.route) ? '#3B82F6' : '#9CA3AF'}
+                            size={36}
+                            color={isActive(mainIcon.route) ? '#3B82F6' : '#6B7280'}
+                            style={{ marginBottom: 2 }}
                         />
                         <Text
-                            className="text-xs mt-1"
-                            style={{ color: isActive(mainIcon.route) ? '#3B82F6' : '#9CA3AF' }}
+                            className="text-[8px] font-semibold"
+                            style={{
+                                color: isActive(mainIcon.route) ? '#3B82F6' : '#6B7280',
+                                marginTop: -2
+                            }}
                         >
                             {mainIcon.name}
                         </Text>
                     </TouchableOpacity>
 
-                    {/* 3. More Icon (3rd from left) */}
+                    {/* 3. More Icon */}
                     <TouchableOpacity
-                        className="items-center py-2 px-3 flex-1"
+                        className="items-center flex-1"
                         onPress={() => handleIconPress(moreIcon.route)}
                     >
                         <MaterialCommunityIcons
                             name={moreIcon.icon as any}
-                            size={24}
-                            color="#9CA3AF"
+                            size={36}
+                            color="#6B7280"
+                            style={{ marginBottom: 2 }}
                         />
-                        <Text className="text-xs mt-1 text-gray-600">
+                        <Text className="text-[8px] text-gray-600 font-semibold" style={{ marginTop: -2 }}>
                             {moreIcon.name}
                         </Text>
                     </TouchableOpacity>
 
-                    {/* 4. Command Center Icon (Far Right) */}
+                    {/* 4. Command Center Icon */}
                     <TouchableOpacity
-                        className="items-center py-2 px-3 flex-1"
+                        className="items-center flex-1"
                         onPress={() => router.push('/(tabs)/command-center')}
                     >
                         <MaterialCommunityIcons
                             name="plus-circle"
-                            size={24}
-                            color={pathname.startsWith('/(tabs)/command-center') ? '#3B82F6' : '#9CA3AF'}
+                            size={36}
+                            color={pathname.startsWith('/(tabs)/command-center') ? '#3B82F6' : '#6B7280'}
+                            style={{ marginBottom: 2 }}
                         />
                         <Text
-                            className="text-xs mt-1"
-                            style={{ color: pathname.startsWith('/(tabs)/command-center') ? '#3B82F6' : '#9CA3AF' }}
+                            className="text-[8px] font-semibold"
+                            style={{
+                                color: pathname.startsWith('/(tabs)/command-center') ? '#3B82F6' : '#6B7280',
+                                marginTop: -2
+                            }}
                         >
-                            Command
+                            Create
                         </Text>
                     </TouchableOpacity>
                 </View>
-            </BlurView>
+            </View>
 
             <AppSwitcher />
             <MoreMenu />
-        </>
+        </View>
     );
 }

@@ -37,6 +37,7 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
 
 export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
     sdlc: [
+        { name: 'Backlog', icon: 'inbox', route: '/(tabs)/sdlc/backlog' },
         { name: 'Reports', icon: 'chart-line', route: '/(tabs)/sdlc/reports' },
         { name: 'Velocity', icon: 'speedometer', route: 'velocity' },
         { name: 'Retrospective', icon: 'comment-multiple', route: 'retro' },
