@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Modal, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Modal, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigationStore } from '../../store/navigationStore';
 import { NAV_CONFIGS } from '../../utils/navigationConfig';
@@ -66,44 +66,37 @@ export function CustomTabBar() {
     console.log('Current pathname:', pathname, 'isOnCommandCenter:', isOnCommandCenter);
 
     return (
-        <View>
-            <View
-                className="bg-white border-t border-gray-100"
-                style={{
-                    paddingBottom: insets.bottom,
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: -4 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 12,
-                    elevation: 20,
-                }}
-            >
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={0}
+        >
+            <View style={{ paddingBottom: insets.bottom }}>
                 {isOnCommandCenter ? (
                     // Command Center Input Interface
-                    <View className="flex-row items-center px-3 py-2 gap-2">
-                        {/* Apps Icon */}
+                    <View className="flex-row items-center px-2 py-2 gap-1.5">
+                        {/* Apps Icon - Compact */}
                         <TouchableOpacity
                             onPress={toggleAppSwitcher}
-                            className="w-11 h-11 items-center justify-center"
+                            className="w-10 h-10 items-center justify-center rounded-xl bg-gray-50"
                         >
                             <MaterialCommunityIcons
                                 name="view-grid"
-                                size={26}
+                                size={22}
                                 color="#6B7280"
                             />
                         </TouchableOpacity>
 
-                        {/* Input Interface Container */}
+                        {/* Input Interface Container - Maximized Space */}
                         <View className="flex-1 bg-gray-50 rounded-3xl border border-gray-200 flex-row items-center px-2 py-1.5">
-                            {/* Plus Icon - Opens Menu with All Options */}
+                            {/* Plus Icon */}
                             <TouchableOpacity
                                 onPress={() => setShowCreateMenu(true)}
-                                className="w-9 h-9 items-center justify-center"
+                                className="w-8 h-8 items-center justify-center"
                             >
-                                <MaterialCommunityIcons name="plus-circle" size={24} color="#6B7280" />
+                                <MaterialCommunityIcons name="plus-circle" size={22} color="#6B7280" />
                             </TouchableOpacity>
 
-                            {/* Text Input - Now Wider */}
+                            {/* Text Input */}
                             <TextInput
                                 value={input}
                                 onChangeText={setInput}
@@ -117,8 +110,7 @@ export function CustomTabBar() {
                             <TouchableOpacity
                                 onPress={handleQuickCreate}
                                 disabled={!input.trim()}
-                                className={`w-8 h-8 rounded-full items-center justify-center ${input.trim() ? 'bg-blue-600' : 'bg-gray-300'
-                                    }`}
+                                className={`w-8 h-8 rounded-full items-center justify-center ${input.trim() ? 'bg-blue-600' : 'bg-gray-300'}`}
                             >
                                 <MaterialCommunityIcons
                                     name="send"
@@ -129,69 +121,77 @@ export function CustomTabBar() {
                         </View>
                     </View>
                 ) : (
-                    // Normal Tab Bar with 4 Icons
-                    <View className="flex-row items-end justify-around px-3 pb-1" style={{ paddingTop: 6 }}>
-                        {/* 1. Apps Icon */}
+                    // Clean Tab Bar - Only Middle Icons Have Background
+                    <View className="flex-row items-center justify-evenly px-1 pb-1" style={{ paddingTop: 6 }}>
+                        {/* 1. Apps Icon - NO BACKGROUND */}
                         <TouchableOpacity
-                            className="items-center flex-1"
+                            className="items-center"
                             onPress={toggleAppSwitcher}
                         >
                             <MaterialCommunityIcons
                                 name="view-grid"
-                                size={30}
+                                size={28}
                                 color="#6B7280"
-                                style={{ marginBottom: -3 }}
+                                style={{ marginBottom: -2 }}
                             />
                             <Text className="text-[10px] text-gray-600 font-medium">Apps</Text>
                         </TouchableOpacity>
 
-                        {/* 2. Main App Icon */}
-                        <TouchableOpacity
-                            className="items-center flex-1"
-                            onPress={() => handleIconPress(mainIcon.route)}
+                        {/* 2 & 3. ONLY THESE 2 HAVE GROUPED BACKGROUND */}
+                        <View
+                            className="flex-row items-center gap-10 px-4 py-2 rounded-2xl"
+                            style={{
+                                backgroundColor: 'rgba(243, 244, 246, 0.5)',
+                            }}
                         >
-                            <MaterialCommunityIcons
-                                name={mainIcon.icon as any}
-                                size={30}
-                                color={isActive(mainIcon.route) ? '#3B82F6' : '#6B7280'}
-                                style={{ marginBottom: -3 }}
-                            />
-                            <Text
-                                className="text-[10px] font-medium"
-                                style={{
-                                    color: isActive(mainIcon.route) ? '#3B82F6' : '#6B7280'
-                                }}
+                            {/* Main App Icon */}
+                            <TouchableOpacity
+                                className="items-center"
+                                onPress={() => handleIconPress(mainIcon.route)}
                             >
-                                {mainIcon.name}
-                            </Text>
-                        </TouchableOpacity>
+                                <MaterialCommunityIcons
+                                    name={mainIcon.icon as any}
+                                    size={28}
+                                    color={isActive(mainIcon.route) ? '#3B82F6' : '#6B7280'}
+                                    style={{ marginBottom: -2 }}
+                                />
+                                <Text
+                                    className="text-[10px] font-medium"
+                                    style={{
+                                        color: isActive(mainIcon.route) ? '#3B82F6' : '#6B7280'
+                                    }}
+                                >
+                                    {mainIcon.name}
+                                </Text>
+                            </TouchableOpacity>
 
-                        {/* 3. More Icon */}
-                        <TouchableOpacity
-                            className="items-center flex-1"
-                            onPress={() => handleIconPress(moreIcon.route)}
-                        >
-                            <MaterialCommunityIcons
-                                name={moreIcon.icon as any}
-                                size={30}
-                                color="#6B7280"
-                                style={{ marginBottom: -3 }}
-                            />
-                            <Text className="text-[10px] text-gray-600 font-medium">
-                                {moreIcon.name}
-                            </Text>
-                        </TouchableOpacity>
+                            {/* More Icon */}
+                            <TouchableOpacity
+                                className="items-center"
+                                onPress={() => handleIconPress(moreIcon.route)}
+                            >
+                                <MaterialCommunityIcons
+                                    name={moreIcon.icon as any}
+                                    size={28}
+                                    color="#6B7280"
+                                    style={{ marginBottom: -2 }}
+                                />
+                                <Text className="text-[10px] text-gray-600 font-medium">
+                                    {moreIcon.name}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
-                        {/* 4. Command Center Icon */}
+                        {/* 4. Command Center Icon - NO BACKGROUND */}
                         <TouchableOpacity
-                            className="items-center flex-1"
+                            className="items-center"
                             onPress={() => router.push('/(tabs)/command-center')}
                         >
                             <MaterialCommunityIcons
-                                name="plus"
-                                size={32}
+                                name="plus-circle"
+                                size={30}
                                 color={isOnCommandCenter ? '#3B82F6' : '#6B7280'}
-                                style={{ marginBottom: -3 }}
+                                style={{ marginBottom: -2 }}
                             />
                             <Text
                                 className="text-[10px] font-medium"
@@ -287,6 +287,6 @@ export function CustomTabBar() {
                     </Pressable>
                 </Pressable>
             </Modal>
-        </View>
+        </KeyboardAvoidingView >
     );
 }
