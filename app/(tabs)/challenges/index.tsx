@@ -36,6 +36,11 @@ export default function ChallengesScreen() {
     const [activeExpanded, setActiveExpanded] = useState(true);
     const [completedExpanded, setCompletedExpanded] = useState(false);
     
+    // Helper function to get mapped Life Wheel ID
+    const getMappedLifeWheelId = (challengeLifeWheelId: string): string => {
+        return LIFE_WHEEL_ID_MAP[challengeLifeWheelId] || challengeLifeWheelId;
+    };
+    
     // Filter challenges
     const filteredChallenges = useMemo(() => {
         let filtered = challenges;
@@ -55,11 +60,6 @@ export default function ChallengesScreen() {
         
         return filtered;
     }, [challenges, searchQuery, selectedLifeWheel]);
-    
-    // Helper function to get mapped Life Wheel ID
-    const getMappedLifeWheelId = (challengeLifeWheelId: string): string => {
-        return LIFE_WHEEL_ID_MAP[challengeLifeWheelId] || challengeLifeWheelId;
-    };
     
     const activeChallenges = filteredChallenges.filter(c => c.status === 'active');
     const completedChallenges = filteredChallenges.filter(c => c.status === 'completed');
@@ -120,7 +120,7 @@ export default function ChallengesScreen() {
     };
     
     return (
-        <Container>
+        <Container safeArea={false}>
             <ScreenHeader
                 title="Challenges"
                 subtitle="Build habits that compound"

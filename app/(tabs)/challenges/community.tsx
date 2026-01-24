@@ -84,11 +84,12 @@ export default function CommunityChallengesScreen() {
     };
     
     return (
-        <Container>
+        <Container safeArea={false}>
             <ScreenHeader
                 title="Community"
                 subtitle="Challenge together"
                 showBack
+                useSafeArea={false}
             />
             
             <ScrollView className="flex-1">

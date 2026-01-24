@@ -41,7 +41,7 @@ export function ScreenHeader({ title, subtitle, showBack = false, rightAction, u
         </>
     );
 
-    if (!useSafeArea) {
+    if (useSafeArea) {
         return (
             <SafeAreaView edges={['top']} className="bg-white border-b border-gray-200">
                 <View className={`px-4 ${children ? 'pb-0' : 'pb-3'}`}>

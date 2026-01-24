@@ -63,11 +63,12 @@ export default function TemplatesScreen() {
     };
     
     return (
-        <Container>
+        <Container safeArea={false}>
             <ScreenHeader
                 title="Challenge Templates"
                 subtitle="Start with proven challenges"
                 showBack
+                useSafeArea={false}
             />
             
             {/* Life Wheel Filters */}

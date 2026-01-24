@@ -31,11 +31,12 @@ export default function CompletedChallengesScreen() {
     }, []);
     
     return (
-        <Container>
+        <Container safeArea={false}>
             <ScreenHeader
                 title="Completed Challenges"
                 subtitle="Your success story"
                 showBack
+                useSafeArea={false}
             />
             
             <ScrollView className="flex-1 p-4">

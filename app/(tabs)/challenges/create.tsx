@@ -156,7 +156,7 @@ export default function CreateChallengeScreen() {
     };
     
     return (
-        <Container>
+        <Container safeArea={false}>
             <ScreenHeader
                 title={`Create Challenge (${step}/4)`}
                 subtitle={
@@ -165,6 +165,7 @@ export default function CreateChallengeScreen() {
                     step === 3 ? 'Motivation' : 'Review'
                 }
                 showBack
+                useSafeArea={false}
             />
             
             <ScrollView className="flex-1 p-4">

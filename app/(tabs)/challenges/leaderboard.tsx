@@ -80,11 +80,12 @@ export default function LeaderboardScreen() {
     };
     
     return (
-        <Container>
+        <Container safeArea={false}>
             <ScreenHeader
                 title="Leaderboard"
                 subtitle="Compete and win"
                 showBack
+                useSafeArea={false}
             />
             
             <ScrollView className="flex-1">
