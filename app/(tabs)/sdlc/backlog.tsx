@@ -217,7 +217,7 @@ export default function BacklogScreen() {
     if (loading) {
         return (
             <Container safeArea={false}>
-                <View className="bg-white border-b border-gray-200 px-4 py-2">
+                <View className="bg-white border-b border-gray-200 px-4 pt-12 pb-3">
                     <View className="flex-row items-center justify-between">
                         <View>
                             <Text className="text-lg font-bold text-gray-900">Backlog</Text>
@@ -232,7 +232,7 @@ export default function BacklogScreen() {
 
     return (
         <Container safeArea={false}>
-            <View className="bg-white border-b border-gray-200 px-4 py-2">
+            <View className="bg-white border-b border-gray-200 px-4 pt-12 pb-3">
                 <View className="flex-row items-center justify-between">
                     <View>
                         <Text className="text-lg font-bold text-gray-900">Backlog</Text>

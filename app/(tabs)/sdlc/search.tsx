@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, Pressable, ScrollView } from 'react-native';
+import { View, Text, TextInput, FlatList, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import { Container } from '../../../components/layout/Container';
-import { ScreenHeader } from '../../../components/layout/ScreenHeader';
 import { Card } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -105,8 +104,21 @@ export default function SearchTasksScreen() {
     };
 
     return (
-        <Container>
-            <ScreenHeader title="Search Tasks" subtitle="Find any task quickly" showBack />
+        <Container safeArea={false}>
+            {/* Header */}
+            <View className="bg-white border-b border-gray-200 px-4 pt-12 pb-3">
+                <View className="flex-row items-center justify-between">
+                    <View className="flex-row items-center flex-1">
+                        <Pressable onPress={() => router.back()} className="mr-3">
+                            <MaterialCommunityIcons name="arrow-left" size={24} color="#2563EB" />
+                        </Pressable>
+                        <View className="flex-1">
+                            <Text className="text-xl font-bold text-gray-900">Search Tasks</Text>
+                            <Text className="text-sm text-gray-600 mt-0.5">Find any task quickly</Text>
+                        </View>
+                    </View>
+                </View>
+            </View>
 
             <View className="p-4">
                 {/* Search Input */}
