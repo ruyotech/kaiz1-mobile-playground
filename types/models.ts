@@ -56,6 +56,11 @@ export interface Epic {
     status: 'planning' | 'active' | 'completed' | 'cancelled';
     totalPoints: number;
     completedPoints: number;
+    color: string;
+    icon: string;
+    startDate: string;
+    endDate: string;
+    taskIds: string[];
     createdAt: string;
 }
 

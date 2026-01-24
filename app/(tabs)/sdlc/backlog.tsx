@@ -18,6 +18,7 @@ export default function BacklogScreen() {
     const [lifeWheelAreas, setLifeWheelAreas] = useState<LifeWheelArea[]>([]);
     const [eisenhowerQuadrants, setEisenhowerQuadrants] = useState<EisenhowerQuadrant[]>([]);
     const [sprints, setSprints] = useState<Sprint[]>([]);
+    const [epics, setEpics] = useState<any[]>([]);
     const [selectedLifeWheel, setSelectedLifeWheel] = useState<string | null>(null);
     const [selectedQuadrant, setSelectedQuadrant] = useState<string | null>(null);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -30,14 +31,16 @@ export default function BacklogScreen() {
 
     const loadData = async () => {
         await fetchTasks({ backlog: true });
-        const [areas, quadrants, sprintsList] = await Promise.all([
+        const [areas, quadrants, sprintsList, epicsData] = await Promise.all([
             mockApi.getLifeWheelAreas(),
             mockApi.getEisenhowerQuadrants(),
-            mockApi.getSprints()
+            mockApi.getSprints(),
+            mockApi.getEpics()
         ]);
         setLifeWheelAreas(areas);
         setEisenhowerQuadrants(quadrants);
         setSprints(sprintsList.filter(s => s.status !== 'completed'));
+        setEpics(epicsData);
     };
 
     const filteredTasks = useMemo(() => {
@@ -102,6 +105,7 @@ export default function BacklogScreen() {
         const lifeWheel = getLifeWheelInfo(item.lifeWheelAreaId);
         const quadrant = getQuadrantInfo(item.eisenhowerQuadrantId);
         const style = getQuadrantStyle(item.eisenhowerQuadrantId);
+        const taskEpic = epics.find(e => e.id === item.epicId);
 
         return (
             <View className="mb-4">
@@ -130,7 +134,7 @@ export default function BacklogScreen() {
                         )}
                         
                         <View className="flex-row items-center justify-between ml-13">
-                            <View className="flex-row gap-2 flex-wrap">
+                            <View className="flex-row gap-2 flex-wrap flex-1">
                                 <View className="px-2.5 py-1 rounded-full bg-white border border-gray-300">
                                     <Text className="text-xs font-medium text-gray-700">
                                         {lifeWheel?.name}
@@ -141,6 +145,24 @@ export default function BacklogScreen() {
                                         {quadrant?.label}
                                     </Text>
                                 </View>
+                                {taskEpic && (
+                                    <View 
+                                        className="px-2.5 py-1 rounded-full flex-row items-center"
+                                        style={{ backgroundColor: taskEpic.color + '20', borderColor: taskEpic.color, borderWidth: 1 }}
+                                    >
+                                        <MaterialCommunityIcons 
+                                            name={taskEpic.icon as any} 
+                                            size={10} 
+                                            color={taskEpic.color} 
+                                        />
+                                        <Text 
+                                            className="text-xs font-bold ml-1" 
+                                            style={{ color: taskEpic.color }}
+                                        >
+                                            {taskEpic.title}
+                                        </Text>
+                                    </View>
+                                )}
                             </View>
                         </View>
                     </Pressable>

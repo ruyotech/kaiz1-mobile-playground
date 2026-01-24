@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { mockApi } from '../../../../services/mockApi';
 import { Task } from '../../../../types/models';
 import lifeWheelAreasData from '../../../../data/mock/lifeWheelAreas.json';
+import { useEpicStore } from '../../../../store/epicStore';
 
 type TabType = 'overview' | 'pomodoro' | 'comments' | 'checklist' | 'history';
 
@@ -40,6 +41,7 @@ type HistoryItem = {
 export default function TaskWorkView() {
     const router = useRouter();
     const { id } = useLocalSearchParams();
+    const { epics, fetchEpics } = useEpicStore();
     const [loading, setLoading] = useState(true);
     const [task, setTask] = useState<Task | null>(null);
     const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -100,6 +102,7 @@ export default function TaskWorkView() {
 
     useEffect(() => {
         loadTask();
+        fetchEpics();
     }, [id]);
 
     const loadTask = async () => {
@@ -115,6 +118,11 @@ export default function TaskWorkView() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const getTaskEpic = () => {
+        if (!task || !task.epicId) return null;
+        return epics.find(e => e.id === task.epicId);
     };
 
     const getLifeWheelName = () => {
@@ -323,13 +331,30 @@ export default function TaskWorkView() {
                             {/* Sprint & Epic Tags */}
                             <View className="flex-row gap-2 flex-wrap">
                                 {task.sprintId && (
-                                    <View className="bg-purple-100 px-3 py-1.5 rounded-lg">
+                                    <View className="bg-purple-100 px-3 py-1.5 rounded-lg border border-purple-200">
                                         <Text className="text-purple-700 font-medium text-xs">📅 Sprint {task.sprintId}</Text>
                                     </View>
                                 )}
-                                {task.epicId && (
-                                    <View className="bg-green-100 px-3 py-1.5 rounded-lg">
-                                        <Text className="text-green-700 font-medium text-xs">📚 Epic: {task.epicId}</Text>
+                                {task.epicId && getTaskEpic() && (
+                                    <View 
+                                        className="px-3 py-1.5 rounded-lg flex-row items-center"
+                                        style={{ 
+                                            backgroundColor: getTaskEpic()!.color + '20',
+                                            borderColor: getTaskEpic()!.color,
+                                            borderWidth: 1
+                                        }}
+                                    >
+                                        <MaterialCommunityIcons 
+                                            name={getTaskEpic()!.icon as any} 
+                                            size={14} 
+                                            color={getTaskEpic()!.color} 
+                                        />
+                                        <Text 
+                                            className="font-bold text-xs ml-1.5"
+                                            style={{ color: getTaskEpic()!.color }}
+                                        >
+                                            {getTaskEpic()!.title}
+                                        </Text>
                                     </View>
                                 )}
                             </View>

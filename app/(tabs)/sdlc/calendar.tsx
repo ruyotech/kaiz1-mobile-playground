@@ -23,6 +23,7 @@ export default function SprintCalendar() {
     const [isMonthExpanded, setIsMonthExpanded] = useState(false); // NEW: month view expansion
     const [currentSprint, setCurrentSprint] = useState<any>(null); // Store current sprint data
     const [viewMenuVisible, setViewMenuVisible] = useState(false); // View options menu
+    const [epics, setEpics] = useState<any[]>([]); // Store epics for epic info display
 
     // Touch tracking for horizontal swipe
     const touchStart = useRef({ x: 0, y: 0, time: 0 });
@@ -58,6 +59,8 @@ export default function SprintCalendar() {
             try {
                 const sprints = await mockApi.getSprints(currentYear);
                 const sprint = sprints.find((s: any) => s.weekNumber === currentWeek);
+                const epicsData = await mockApi.getEpics();
+                setEpics(epicsData);
 
                 if (sprint) {
                     setCurrentSprint(sprint); // Store sprint data for color coding
@@ -193,16 +196,61 @@ export default function SprintCalendar() {
 
                             {isExpanded && quadrantTasks.length > 0 && (
                                 <View className="mt-2 ml-2">
-                                    {quadrantTasks.map((task) => (
-                                        <TouchableOpacity
-                                            key={task.id}
-                                            className="bg-white rounded-lg p-3 mb-2 border border-gray-200"
-                                            onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
-                                        >
-                                            <Text className="font-medium" numberOfLines={1}>{task.title}</Text>
-                                            <Text className="text-xs text-gray-600 mt-1">{task.storyPoints || 0} pts • {task.status}</Text>
-                                        </TouchableOpacity>
-                                    ))}
+                                    {quadrantTasks.map((task) => {
+                                        const taskEpic = epics.find(e => e.id === task.epicId);
+                                        return (
+                                            <TouchableOpacity
+                                                key={task.id}
+                                                className="bg-white rounded-xl p-4 mb-2 border border-gray-200"
+                                                onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
+                                            >
+                                                <Text className="font-semibold text-gray-900 mb-2" numberOfLines={1}>
+                                                    {task.title}
+                                                </Text>
+                                                <View className="flex-row items-center justify-between">
+                                                    <View className="flex-row items-center gap-2">
+                                                        <View className="bg-gray-100 px-2 py-1 rounded">
+                                                            <Text className="text-xs font-bold text-gray-700">
+                                                                {task.storyPoints || 0} pts
+                                                            </Text>
+                                                        </View>
+                                                        <View className={`px-2 py-1 rounded ${
+                                                            task.status === 'done' ? 'bg-green-100' :
+                                                            task.status === 'in_progress' ? 'bg-blue-100' :
+                                                            'bg-gray-100'
+                                                        }`}>
+                                                            <Text className={`text-xs font-semibold capitalize ${
+                                                                task.status === 'done' ? 'text-green-700' :
+                                                                task.status === 'in_progress' ? 'text-blue-700' :
+                                                                'text-gray-600'
+                                                            }`}>
+                                                                {task.status.replace('_', ' ')}
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                    {taskEpic && (
+                                                        <View 
+                                                            className="px-3 py-1 rounded-full flex-row items-center"
+                                                            style={{ backgroundColor: taskEpic.color + '20' }}
+                                                        >
+                                                            <MaterialCommunityIcons 
+                                                                name={taskEpic.icon as any} 
+                                                                size={12} 
+                                                                color={taskEpic.color} 
+                                                            />
+                                                            <Text 
+                                                                className="text-xs font-bold ml-1" 
+                                                                style={{ color: taskEpic.color }}
+                                                                numberOfLines={1}
+                                                            >
+                                                                {taskEpic.title}
+                                                            </Text>
+                                                        </View>
+                                                    )}
+                                                </View>
+                                            </TouchableOpacity>
+                                        );
+                                    })}
                                 </View>
                             )}
                         </View>
@@ -247,16 +295,46 @@ export default function SprintCalendar() {
 
                             {isExpanded && statusTasks.length > 0 && (
                                 <View className="mt-2 ml-2">
-                                    {statusTasks.map((task) => (
-                                        <TouchableOpacity
-                                            key={task.id}
-                                            className="bg-white rounded-lg p-3 mb-2 border border-gray-200"
-                                            onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
-                                        >
-                                            <Text className="font-medium" numberOfLines={1}>{task.title}</Text>
-                                            <Text className="text-xs text-gray-600 mt-1">{task.storyPoints || 0} pts</Text>
-                                        </TouchableOpacity>
-                                    ))}
+                                    {statusTasks.map((task) => {
+                                        const taskEpic = epics.find(e => e.id === task.epicId);
+                                        return (
+                                            <TouchableOpacity
+                                                key={task.id}
+                                                className="bg-white rounded-xl p-4 mb-2 border border-gray-200"
+                                                onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
+                                            >
+                                                <Text className="font-semibold text-gray-900 mb-2" numberOfLines={1}>
+                                                    {task.title}
+                                                </Text>
+                                                <View className="flex-row items-center justify-between">
+                                                    <View className="bg-gray-100 px-2 py-1 rounded">
+                                                        <Text className="text-xs font-bold text-gray-700">
+                                                            {task.storyPoints || 0} pts
+                                                        </Text>
+                                                    </View>
+                                                    {taskEpic && (
+                                                        <View 
+                                                            className="px-3 py-1 rounded-full flex-row items-center"
+                                                            style={{ backgroundColor: taskEpic.color + '20' }}
+                                                        >
+                                                            <MaterialCommunityIcons 
+                                                                name={taskEpic.icon as any} 
+                                                                size={12} 
+                                                                color={taskEpic.color} 
+                                                            />
+                                                            <Text 
+                                                                className="text-xs font-bold ml-1" 
+                                                                style={{ color: taskEpic.color }}
+                                                                numberOfLines={1}
+                                                            >
+                                                                {taskEpic.title}
+                                                            </Text>
+                                                        </View>
+                                                    )}
+                                                </View>
+                                            </TouchableOpacity>
+                                        );
+                                    })}
                                 </View>
                             )}
                         </View>
@@ -303,21 +381,61 @@ export default function SprintCalendar() {
 
                             {isExpanded && sizeTasks.length > 0 && (
                                 <View className="mt-2 ml-2">
-                                    {sizeTasks.map((task) => (
-                                        <TouchableOpacity
-                                            key={task.id}
-                                            className="bg-white rounded-lg p-3 mb-2 border border-gray-200"
-                                            onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
-                                        >
-                                            <Text className="font-medium" numberOfLines={1}>{task.title}</Text>
-                                            <View className="flex-row items-center mt-1">
-                                                <View className="bg-gray-100 px-2 py-0.5 rounded mr-2">
-                                                    <Text className="text-xs font-semibold">{task.storyPoints || 0} pts</Text>
+                                    {sizeTasks.map((task) => {
+                                        const taskEpic = epics.find(e => e.id === task.epicId);
+                                        return (
+                                            <TouchableOpacity
+                                                key={task.id}
+                                                className="bg-white rounded-xl p-4 mb-2 border border-gray-200"
+                                                onPress={() => router.push(`/(tabs)/sdlc/task/${task.id}`)}
+                                            >
+                                                <Text className="font-semibold text-gray-900 mb-2" numberOfLines={1}>
+                                                    {task.title}
+                                                </Text>
+                                                <View className="flex-row items-center justify-between">
+                                                    <View className="flex-row items-center gap-2">
+                                                        <View className="bg-gray-100 px-2 py-1 rounded">
+                                                            <Text className="text-xs font-bold text-gray-700">
+                                                                {task.storyPoints || 0} pts
+                                                            </Text>
+                                                        </View>
+                                                        <View className={`px-2 py-1 rounded ${
+                                                            task.status === 'done' ? 'bg-green-100' :
+                                                            task.status === 'in_progress' ? 'bg-blue-100' :
+                                                            'bg-gray-100'
+                                                        }`}>
+                                                            <Text className={`text-xs font-semibold capitalize ${
+                                                                task.status === 'done' ? 'text-green-700' :
+                                                                task.status === 'in_progress' ? 'text-blue-700' :
+                                                                'text-gray-600'
+                                                            }`}>
+                                                                {task.status.replace('_', ' ')}
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                    {taskEpic && (
+                                                        <View 
+                                                            className="px-3 py-1 rounded-full flex-row items-center"
+                                                            style={{ backgroundColor: taskEpic.color + '20' }}
+                                                        >
+                                                            <MaterialCommunityIcons 
+                                                                name={taskEpic.icon as any} 
+                                                                size={12} 
+                                                                color={taskEpic.color} 
+                                                            />
+                                                            <Text 
+                                                                className="text-xs font-bold ml-1" 
+                                                                style={{ color: taskEpic.color }}
+                                                                numberOfLines={1}
+                                                            >
+                                                                {taskEpic.title}
+                                                            </Text>
+                                                        </View>
+                                                    )}
                                                 </View>
-                                                <Text className="text-xs text-gray-600 capitalize">{task.status}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    ))}
+                                            </TouchableOpacity>
+                                        );
+                                    })}
                                 </View>
                             )}
                         </View>

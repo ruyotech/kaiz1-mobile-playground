@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Switch } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Switch, Modal, Pressable } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { mockApi } from '../../../../services/mockApi';
 import { Task } from '../../../../types/models';
+import { useTaskStore } from '../../../../store/taskStore';
+import { useEpicStore } from '../../../../store/epicStore';
 
 export default function TaskEditScreen() {
     const router = useRouter();
     const { id } = useLocalSearchParams();
+    const taskId = Array.isArray(id) ? id[0] : id;
+    
+    const { updateTask } = useTaskStore();
+    const { epics, fetchEpics, addTaskToEpic, removeTaskFromEpic } = useEpicStore();
+    
     const [loading, setLoading] = useState(true);
     const [task, setTask] = useState<Task | null>(null);
 
@@ -20,16 +27,19 @@ export default function TaskEditScreen() {
     const [lifeWheelAreaId, setLifeWheelAreaId] = useState('lw-1');
     const [sprintId, setSprintId] = useState<string | null>(null);
     const [epicId, setEpicId] = useState<string | null>(null);
+    const [originalEpicId, setOriginalEpicId] = useState<string | null>(null);
+    const [showEpicPicker, setShowEpicPicker] = useState(false);
 
     useEffect(() => {
         loadTask();
-    }, [id]);
+        fetchEpics();
+    }, [taskId]);
 
     const loadTask = async () => {
         try {
             setLoading(true);
             const tasks = await mockApi.getTasks();
-            const foundTask = tasks.find((t: Task) => t.id === id);
+            const foundTask = tasks.find((t: Task) => t.id === taskId);
 
             if (foundTask) {
                 setTask(foundTask);
@@ -41,6 +51,7 @@ export default function TaskEditScreen() {
                 setLifeWheelAreaId(foundTask.lifeWheelAreaId);
                 setSprintId(foundTask.sprintId);
                 setEpicId(foundTask.epicId);
+                setOriginalEpicId(foundTask.epicId);
             }
         } catch (error) {
             console.error('Error loading task:', error);
@@ -50,8 +61,32 @@ export default function TaskEditScreen() {
     };
 
     const handleSave = async () => {
-        // TODO: Implement save logic
-        console.log('Saving task:', { title, description, status, storyPoints });
+        if (!taskId) return;
+
+        // Update task in store
+        updateTask(taskId, {
+            title,
+            description,
+            status,
+            storyPoints,
+            eisenhowerQuadrantId,
+            lifeWheelAreaId,
+            sprintId,
+            epicId,
+        });
+
+        // Handle epic changes
+        if (originalEpicId !== epicId) {
+            // Remove from old epic
+            if (originalEpicId) {
+                removeTaskFromEpic(originalEpicId, taskId);
+            }
+            // Add to new epic
+            if (epicId) {
+                addTaskToEpic(epicId, taskId);
+            }
+        }
+
         router.back();
     };
 
@@ -69,6 +104,14 @@ export default function TaskEditScreen() {
         { id: 'eq-3', label: 'Urgent & Not Important', color: 'bg-yellow-100' },
         { id: 'eq-4', label: 'Not Urgent & Not Important', color: 'bg-gray-100' },
     ];
+
+    const selectedEpic = epics.find(e => e.id === epicId);
+    const epicChanged = originalEpicId !== epicId;
+
+    const handleEpicSelect = (selectedEpicId: string | null) => {
+        setEpicId(selectedEpicId);
+        setShowEpicPicker(false);
+    };
 
     if (loading) {
         return (
@@ -170,6 +213,42 @@ export default function TaskEditScreen() {
                     ))}
                 </View>
 
+                {/* Epic Assignment - Simplified */}
+                <View className="mt-4 mb-4">
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">Epic</Text>
+                    <TouchableOpacity
+                        onPress={() => setShowEpicPicker(true)}
+                        className="border border-gray-300 rounded-lg px-4 py-3 flex-row justify-between items-center bg-white"
+                    >
+                        {selectedEpic ? (
+                            <View className="flex-row items-center flex-1">
+                                <View 
+                                    className="w-8 h-8 rounded-lg items-center justify-center mr-3"
+                                    style={{ backgroundColor: selectedEpic.color + '20' }}
+                                >
+                                    <MaterialCommunityIcons 
+                                        name={selectedEpic.icon as any} 
+                                        size={18} 
+                                        color={selectedEpic.color} 
+                                    />
+                                </View>
+                                <View className="flex-1">
+                                    <Text className="font-semibold text-gray-900">{selectedEpic.title}</Text>
+                                    {epicChanged && (
+                                        <Text className="text-xs text-blue-600 mt-0.5">● Changed</Text>
+                                    )}
+                                </View>
+                            </View>
+                        ) : (
+                            <View className="flex-row items-center flex-1">
+                                <MaterialCommunityIcons name="inbox-outline" size={20} color="#9CA3AF" />
+                                <Text className="ml-3 text-gray-600">No epic assigned</Text>
+                            </View>
+                        )}
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+                </View>
+
                 {/* Sprint Assignment */}
                 <View className="mt-4 mb-8">
                     <Text className="text-sm font-semibold text-gray-700 mb-2">Assign to Sprint</Text>
@@ -184,6 +263,101 @@ export default function TaskEditScreen() {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
+
+            {/* Epic Picker Modal */}
+            <Modal
+                visible={showEpicPicker}
+                transparent
+                animationType="slide"
+                onRequestClose={() => setShowEpicPicker(false)}
+            >
+                <Pressable
+                    className="flex-1 bg-black/50 justify-end"
+                    onPress={() => setShowEpicPicker(false)}
+                >
+                    <Pressable>
+                        <View className="bg-white rounded-t-3xl pt-4 pb-8 px-4 max-h-[70%]">
+                            <View className="flex-row justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                                <Text className="text-lg font-bold">Select Epic</Text>
+                                <TouchableOpacity onPress={() => setShowEpicPicker(false)}>
+                                    <MaterialCommunityIcons name="close" size={24} color="#000" />
+                                </TouchableOpacity>
+                            </View>
+
+                            <ScrollView showsVerticalScrollIndicator={false}>
+                                {/* No Epic Option */}
+                                <TouchableOpacity
+                                    onPress={() => handleEpicSelect(null)}
+                                    className={`flex-row items-center p-4 rounded-xl mb-2 ${
+                                        !epicId ? 'bg-gray-100 border-2 border-gray-900' : 'bg-gray-50'
+                                    }`}
+                                >
+                                    <View className="w-10 h-10 bg-gray-200 rounded-lg items-center justify-center mr-3">
+                                        <MaterialCommunityIcons name="inbox-outline" size={24} color="#6B7280" />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className={`font-semibold ${!epicId ? 'text-gray-900' : 'text-gray-600'}`}>
+                                            No Epic
+                                        </Text>
+                                        <Text className="text-xs text-gray-500 mt-0.5">Standalone task</Text>
+                                    </View>
+                                    {!epicId && (
+                                        <MaterialCommunityIcons name="check-circle" size={24} color="#1F2937" />
+                                    )}
+                                </TouchableOpacity>
+
+                                {/* Epic Options */}
+                                {epics.length > 0 ? (
+                                    epics.map((epic) => (
+                                        <TouchableOpacity
+                                            key={epic.id}
+                                            onPress={() => handleEpicSelect(epic.id)}
+                                            className={`flex-row items-center p-4 rounded-xl mb-2 border-2 ${
+                                                epicId === epic.id 
+                                                    ? 'border-gray-900' 
+                                                    : 'bg-white border-gray-200'
+                                            }`}
+                                            style={epicId === epic.id ? { backgroundColor: epic.color + '10' } : {}}
+                                        >
+                                            <View 
+                                                className="w-10 h-10 rounded-lg items-center justify-center mr-3"
+                                                style={{ backgroundColor: epic.color + '30' }}
+                                            >
+                                                <MaterialCommunityIcons 
+                                                    name={epic.icon as any} 
+                                                    size={24} 
+                                                    color={epic.color} 
+                                                />
+                                            </View>
+                                            <View className="flex-1">
+                                                <Text className="font-bold text-gray-900">{epic.title}</Text>
+                                                <Text className="text-xs text-gray-500 mt-0.5" numberOfLines={1}>
+                                                    {epic.description}
+                                                </Text>
+                                            </View>
+                                            {epicId === epic.id && (
+                                                <MaterialCommunityIcons 
+                                                    name="check-circle" 
+                                                    size={24} 
+                                                    color={epic.color} 
+                                                />
+                                            )}
+                                        </TouchableOpacity>
+                                    ))
+                                ) : (
+                                    <View className="py-8 items-center">
+                                        <MaterialCommunityIcons name="rocket-launch-outline" size={48} color="#D1D5DB" />
+                                        <Text className="text-gray-500 mt-3 text-center">No epics available</Text>
+                                        <Text className="text-gray-400 text-sm mt-1 text-center">
+                                            Create an epic to group tasks
+                                        </Text>
+                                    </View>
+                                )}
+                            </ScrollView>
+                        </View>
+                    </Pressable>
+                </Pressable>
+            </Modal>
         </View>
     );
 }

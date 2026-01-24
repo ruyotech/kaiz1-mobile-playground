@@ -20,6 +20,7 @@ export default function SearchTasksScreen() {
     const [recentSearches, setRecentSearches] = useState<string[]>([]);
     const [lifeWheelAreas, setLifeWheelAreas] = useState<LifeWheelArea[]>([]);
     const [eisenhowerQuadrants, setEisenhowerQuadrants] = useState<EisenhowerQuadrant[]>([]);
+    const [epics, setEpics] = useState<any[]>([]);
 
     useEffect(() => {
         loadData();
@@ -27,12 +28,14 @@ export default function SearchTasksScreen() {
 
     const loadData = async () => {
         await fetchTasks({});
-        const [areas, quadrants] = await Promise.all([
+        const [areas, quadrants, epicsData] = await Promise.all([
             mockApi.getLifeWheelAreas(),
-            mockApi.getEisenhowerQuadrants()
+            mockApi.getEisenhowerQuadrants(),
+            mockApi.getEpics()
         ]);
         setLifeWheelAreas(areas);
         setEisenhowerQuadrants(quadrants);
+        setEpics(epicsData);
     };
 
     useEffect(() => {
@@ -112,24 +115,44 @@ export default function SearchTasksScreen() {
             return labels[status] || status;
         };
 
+        const taskEpic = epics.find(e => e.id === item.epicId);
+
         return (
             <Pressable onPress={() => router.push(`/(tabs)/sdlc/task/${item.id}` as any)}>
                 <Card className="mb-3">
                     <View className="flex-row items-start justify-between mb-2">
                         <Text className="text-base font-semibold flex-1 mr-2">{item.title}</Text>
                         <Badge className={getStatusColor(item.status)} size="sm">
-                            {item.storyPoints}
+                            {item.storyPoints} pts
                         </Badge>
                     </View>
                     {item.description && (
-                        <Text className="text-sm text-gray-600 mb-2" numberOfLines={2}>
+                        <Text className="text-sm text-gray-600 mb-3" numberOfLines={2}>
                             {item.description}
                         </Text>
                     )}
-                    <View className="flex-row gap-2">
+                    <View className="flex-row gap-2 flex-wrap">
                         <Badge className={getStatusColor(item.status)} size="sm">
                             {getStatusLabel(item.status)}
                         </Badge>
+                        {taskEpic && (
+                            <View 
+                                className="px-2.5 py-1 rounded-full flex-row items-center"
+                                style={{ backgroundColor: taskEpic.color + '20', borderColor: taskEpic.color, borderWidth: 1 }}
+                            >
+                                <MaterialCommunityIcons 
+                                    name={taskEpic.icon as any} 
+                                    size={12} 
+                                    color={taskEpic.color} 
+                                />
+                                <Text 
+                                    className="text-xs font-bold ml-1" 
+                                    style={{ color: taskEpic.color }}
+                                >
+                                    {taskEpic.title}
+                                </Text>
+                            </View>
+                        )}
                     </View>
                 </Card>
             </Pressable>

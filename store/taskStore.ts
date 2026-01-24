@@ -9,9 +9,11 @@ interface TaskState {
 
     fetchTasks: (filters?: any) => Promise<void>;
     getTaskById: (id: string) => Task | undefined;
+    getTasksByEpicId: (epicId: string) => Task[];
     addTask: (task: Partial<Task>) => void;
     updateTask: (id: string, updates: Partial<Task>) => void;
     deleteTask: (id: string) => void;
+    assignToEpic: (taskId: string, epicId: string | null) => void;
     clearTasks: () => void;
 }
 
@@ -34,6 +36,10 @@ export const useTaskStore = create<TaskState>((set, get) => ({
         return get().tasks.find(t => t.id === id);
     },
 
+    getTasksByEpicId: (epicId) => {
+        return get().tasks.filter(t => t.epicId === epicId);
+    },
+
     addTask: (task) => {
         const newTask = {
             id: `task-${Date.now()}`,
@@ -42,6 +48,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             status: 'todo',
             createdAt: new Date().toISOString(),
             completedAt: null,
+            epicId: null,
             ...task,
         } as Task;
 
@@ -58,6 +65,14 @@ export const useTaskStore = create<TaskState>((set, get) => ({
 
     deleteTask: (id) => {
         set(state => ({ tasks: state.tasks.filter(t => t.id !== id) }));
+    },
+
+    assignToEpic: (taskId, epicId) => {
+        set(state => ({
+            tasks: state.tasks.map(t =>
+                t.id === taskId ? { ...t, epicId } : t
+            ),
+        }));
     },
 
     clearTasks: () => {
