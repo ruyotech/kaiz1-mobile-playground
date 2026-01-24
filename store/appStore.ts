@@ -6,6 +6,7 @@ interface AppState {
 
     setOnboarded: (value: boolean) => void;
     setTheme: (theme: 'light' | 'dark' | 'auto') => void;
+    reset: () => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -18,5 +19,9 @@ export const useAppStore = create<AppState>((set) => ({
 
     setTheme: (theme) => {
         set({ theme });
+    },
+
+    reset: () => {
+        set({ isOnboarded: false, theme: 'auto' });
     },
 }));

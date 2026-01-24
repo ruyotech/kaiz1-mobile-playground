@@ -1,0 +1,225 @@
+import { View, Text, Pressable, Alert } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'expo-router';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { Container } from '../../components/layout/Container';
+import { Button } from '../../components/ui/Button';
+import { TextInput } from 'react-native';
+
+const CODE_LENGTH = 6;
+
+export default function VerifyEmailScreen() {
+    const router = useRouter();
+    const [code, setCode] = useState(['', '', '', '', '', '']);
+    const [loading, setLoading] = useState(false);
+    const [resendCooldown, setResendCooldown] = useState(0);
+    const inputRefs = useRef<Array<TextInput | null>>([]);
+
+    useEffect(() => {
+        if (resendCooldown > 0) {
+            const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [resendCooldown]);
+
+    useEffect(() => {
+        // Auto-focus first input
+        inputRefs.current[0]?.focus();
+    }, []);
+
+    const handleCodeChange = (text: string, index: number) => {
+        // Only allow digits
+        const digit = text.replace(/[^0-9]/g, '');
+        
+        if (digit.length > 1) {
+            // Handle paste
+            const digits = digit.slice(0, CODE_LENGTH).split('');
+            const newCode = [...code];
+            digits.forEach((d, i) => {
+                if (index + i < CODE_LENGTH) {
+                    newCode[index + i] = d;
+                }
+            });
+            setCode(newCode);
+            
+            // Focus the next empty input or the last one
+            const nextIndex = Math.min(index + digits.length, CODE_LENGTH - 1);
+            inputRefs.current[nextIndex]?.focus();
+        } else {
+            const newCode = [...code];
+            newCode[index] = digit;
+            setCode(newCode);
+
+            // Auto-advance to next input
+            if (digit && index < CODE_LENGTH - 1) {
+                inputRefs.current[index + 1]?.focus();
+            }
+        }
+    };
+
+    const handleKeyPress = (key: string, index: number) => {
+        if (key === 'Backspace' && !code[index] && index > 0) {
+            inputRefs.current[index - 1]?.focus();
+        }
+    };
+
+    const handleVerify = async () => {
+        const verificationCode = code.join('');
+        
+        if (verificationCode.length !== CODE_LENGTH) {
+            Alert.alert('Invalid Code', 'Please enter the complete verification code');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+
+            Alert.alert(
+                'Success!',
+                'Your email has been verified successfully.',
+                [
+                    {
+                        text: 'Continue',
+                        onPress: () => router.replace('/(tabs)'),
+                    },
+                ]
+            );
+        } catch (error) {
+            Alert.alert(
+                'Verification Failed',
+                'Invalid verification code. Please try again.',
+                [{ text: 'OK' }]
+            );
+            setCode(['', '', '', '', '', '']);
+            inputRefs.current[0]?.focus();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResend = async () => {
+        if (resendCooldown > 0) return;
+
+        setLoading(true);
+        
+        try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setResendCooldown(60);
+            Alert.alert('Success', 'A new verification code has been sent to your email');
+        } catch (error) {
+            Alert.alert('Error', 'Failed to resend code. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const isCodeComplete = code.every((digit) => digit !== '');
+
+    return (
+        <Container safeArea={false}>
+            <View className="flex-1 px-6 pt-20">
+                {/* Header */}
+                <Animated.View
+                    entering={FadeInDown.delay(100).springify()}
+                    className="items-center mb-12"
+                >
+                    <View className="w-24 h-24 rounded-full bg-blue-100 items-center justify-center mb-6">
+                        <Text className="text-6xl">📬</Text>
+                    </View>
+
+                    <Text className="text-3xl font-bold text-center mb-3">
+                        Verify Your Email
+                    </Text>
+                    
+                    <Text className="text-base text-gray-600 text-center px-8">
+                        We've sent a 6-digit verification code to your email address. Please
+                        enter it below.
+                    </Text>
+                </Animated.View>
+
+                {/* Verification Code Input */}
+                <Animated.View
+                    entering={FadeInDown.delay(200).springify()}
+                    className="mb-8"
+                >
+                    <View className="flex-row justify-center gap-2 mb-8">
+                        {code.map((digit, index) => (
+                            <TextInput
+                                key={index}
+                                ref={(ref) => (inputRefs.current[index] = ref)}
+                                value={digit}
+                                onChangeText={(text) => handleCodeChange(text, index)}
+                                onKeyPress={({ nativeEvent }) =>
+                                    handleKeyPress(nativeEvent.key, index)
+                                }
+                                keyboardType="number-pad"
+                                maxLength={1}
+                                selectTextOnFocus
+                                className={`
+                                    w-12 h-14 text-center text-2xl font-bold rounded-lg border-2
+                                    ${digit ? 'border-blue-600 bg-blue-50' : 'border-gray-300 bg-white'}
+                                `}
+                            />
+                        ))}
+                    </View>
+
+                    <Button
+                        onPress={handleVerify}
+                        loading={loading}
+                        disabled={!isCodeComplete}
+                        fullWidth
+                        size="lg"
+                    >
+                        Verify Email
+                    </Button>
+                </Animated.View>
+
+                {/* Resend Section */}
+                <Animated.View
+                    entering={FadeInDown.delay(300).springify()}
+                    className="items-center"
+                >
+                    <Text className="text-gray-600 mb-3">Didn't receive the code?</Text>
+                    
+                    {resendCooldown > 0 ? (
+                        <Text className="text-gray-500">
+                            Resend available in {resendCooldown}s
+                        </Text>
+                    ) : (
+                        <Pressable onPress={handleResend} disabled={loading}>
+                            <Text className="text-blue-600 font-semibold">
+                                Resend Code
+                            </Text>
+                        </Pressable>
+                    )}
+                </Animated.View>
+
+                {/* Help Section */}
+                <Animated.View
+                    entering={FadeInDown.delay(400).springify()}
+                    className="mt-12"
+                >
+                    <View className="bg-yellow-50 p-4 rounded-lg">
+                        <Text className="text-sm text-yellow-900 text-center mb-2">
+                            💡 <Text className="font-semibold">Tip:</Text> Check your spam folder
+                            if you don't see the email
+                        </Text>
+                    </View>
+
+                    <Pressable
+                        onPress={() => router.back()}
+                        className="mt-6"
+                    >
+                        <Text className="text-blue-600 font-semibold text-center">
+                            ← Change Email Address
+                        </Text>
+                    </Pressable>
+                </Animated.View>
+            </View>
+        </Container>
+    );
+}

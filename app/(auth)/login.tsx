@@ -1,6 +1,15 @@
-import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+    View,
+    Text,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    Alert,
+} from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { Container } from '../../components/layout/Container';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -9,12 +18,69 @@ import { useAuthStore } from '../../store/authStore';
 export default function LoginScreen() {
     const router = useRouter();
     const { login, loading } = useAuthStore();
-    const [email, setEmail] = useState('john.doe@example.com');
-    const [password, setPassword] = useState('password123');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+    const validateEmail = (email: string): boolean => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+            setEmailError('Email is required');
+            return false;
+        }
+        if (!emailRegex.test(email)) {
+            setEmailError('Please enter a valid email');
+            return false;
+        }
+        setEmailError('');
+        return true;
+    };
+
+    const validatePassword = (password: string): boolean => {
+        if (!password) {
+            setPasswordError('Password is required');
+            return false;
+        }
+        if (password.length < 6) {
+            setPasswordError('Password must be at least 6 characters');
+            return false;
+        }
+        setPasswordError('');
+        return true;
+    };
 
     const handleLogin = async () => {
-        await login(email, password);
-        router.replace('/(tabs)');
+        const isEmailValid = validateEmail(email);
+        const isPasswordValid = validatePassword(password);
+
+        if (!isEmailValid || !isPasswordValid) {
+            return;
+        }
+
+        try {
+            await login(email, password);
+            router.replace('/(tabs)');
+        } catch (error) {
+            Alert.alert(
+                'Login Failed',
+                'Invalid email or password. Please try again.',
+                [{ text: 'OK' }]
+            );
+        }
+    };
+
+    const handleDemoLogin = async () => {
+        setEmail('john.doe@example.com');
+        setPassword('password123');
+        
+        try {
+            await login('john.doe@example.com', 'password123');
+            router.replace('/(tabs)');
+        } catch (error) {
+            Alert.alert('Error', 'Demo login failed');
+        }
     };
 
     return (
@@ -23,44 +89,135 @@ export default function LoginScreen() {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
             >
-                <View className="flex-1 justify-center p-6">
-                    <Text className="text-4xl font-bold mb-2">Welcome Back</Text>
-                    <Text className="text-gray-600 mb-8">Sign in to continue</Text>
-
-                    <Input
-                        label="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                        placeholder="your@email.com"
-                        keyboardType="email-address"
-                    />
-
-                    <Input
-                        label="Password"
-                        value={password}
-                        onChangeText={setPassword}
-                        placeholder="Enter password"
-                        secureTextEntry
-                    />
-
-                    <Button
-                        onPress={handleLogin}
-                        loading={loading}
-                        fullWidth
-                    >
-                        Sign In
-                    </Button>
-
-                    <View className="flex-row justify-center mt-4">
-                        <Text className="text-gray-600">Don't have an account? </Text>
-                        <Text
-                            className="text-blue-600 font-semibold"
-                            onPress={() => router.push('/(auth)/register')}
+                <ScrollView
+                    className="flex-1"
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <View className="flex-1 justify-center px-6 pt-20 pb-8">
+                        {/* Logo/Header Section */}
+                        <Animated.View
+                            entering={FadeInDown.delay(100).springify()}
+                            className="items-center mb-12"
                         >
-                            Sign Up
-                        </Text>
+                            <View className="w-20 h-20 rounded-full bg-blue-600 items-center justify-center mb-4">
+                                <Text className="text-5xl">🚀</Text>
+                            </View>
+                            <Text className="text-4xl font-bold text-gray-900">
+                                Welcome Back
+                            </Text>
+                            <Text className="text-base text-gray-600 mt-2">
+                                Sign in to continue your journey
+                            </Text>
+                        </Animated.View>
+
+                        {/* Login Form */}
+                        <Animated.View entering={FadeInDown.delay(200).springify()}>
+                            <Input
+                                label="Email"
+                                value={email}
+                                onChangeText={(text) => {
+                                    setEmail(text);
+                                    if (emailError) validateEmail(text);
+                                }}
+                                placeholder="your@email.com"
+                                keyboardType="email-address"
+                                error={emailError}
+                            />
+
+                            <View className="relative">
+                                <Input
+                                    label="Password"
+                                    value={password}
+                                    onChangeText={(text) => {
+                                        setPassword(text);
+                                        if (passwordError) validatePassword(text);
+                                    }}
+                                    placeholder="Enter your password"
+                                    secureTextEntry={!showPassword}
+                                    error={passwordError}
+                                />
+                                <Pressable
+                                    onPress={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-11"
+                                >
+                                    <Text className="text-blue-600 font-semibold">
+                                        {showPassword ? 'Hide' : 'Show'}
+                                    </Text>
+                                </Pressable>
+                            </View>
+
+                            <Pressable
+                                onPress={() => router.push('/(auth)/forgot-password')}
+                                className="mb-6"
+                            >
+                                <Text className="text-blue-600 font-semibold text-right">
+                                    Forgot Password?
+                                </Text>
+                            </Pressable>
+
+                            <Button
+                                onPress={handleLogin}
+                                loading={loading}
+                                fullWidth
+                                size="lg"
+                            >
+                                Sign In
+                            </Button>
+
+                            {/* Demo Login Button */}
+                            <Button
+                                onPress={handleDemoLogin}
+                                variant="outline"
+                                fullWidth
+                                size="lg"
+                            >
+                                Try Demo Account
+                            </Button>
+                        </Animated.View>
+
+                        {/* Divider */}
+                        <Animated.View
+                            entering={FadeInDown.delay(300).springify()}
+                            className="flex-row items-center my-8"
+                        >
+                            <View className="flex-1 h-px bg-gray-300" />
+                            <Text className="mx-4 text-gray-500 font-medium">OR</Text>
+                            <View className="flex-1 h-px bg-gray-300" />
+                        </Animated.View>
+
+                        {/* Social Login Options */}
+                        <Animated.View
+                            entering={FadeInDown.delay(400).springify()}
+                            className="gap-3"
+                        >
+                            <Pressable className="flex-row items-center justify-center py-4 border-2 border-gray-300 rounded-lg bg-white">
+                                <Text className="text-2xl mr-2">🍎</Text>
+                                <Text className="font-semibold text-gray-900">
+                                    Continue with Apple
+                                </Text>
+                            </Pressable>
+
+                            <Pressable className="flex-row items-center justify-center py-4 border-2 border-gray-300 rounded-lg bg-white">
+                                <Text className="text-2xl mr-2">📧</Text>
+                                <Text className="font-semibold text-gray-900">
+                                    Continue with Google
+                                </Text>
+                            </Pressable>
+                        </Animated.View>
+
+                        {/* Sign Up Link */}
+                        <Animated.View
+                            entering={FadeInUp.delay(500).springify()}
+                            className="flex-row justify-center mt-8"
+                        >
+                            <Text className="text-gray-600">Don't have an account? </Text>
+                            <Pressable onPress={() => router.push('/(auth)/register')}>
+                                <Text className="text-blue-600 font-semibold">Sign Up</Text>
+                            </Pressable>
+                        </Animated.View>
                     </View>
-                </View>
+                </ScrollView>
             </KeyboardAvoidingView>
         </Container>
     );

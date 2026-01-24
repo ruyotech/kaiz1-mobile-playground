@@ -1,17 +1,66 @@
-import { View, Text, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { useState } from 'react';
 import { Container } from '../../../components/layout/Container';
 import { ScreenHeader } from '../../../components/layout/ScreenHeader';
 import { Card } from '../../../components/ui/Card';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useAppStore } from '../../../store/appStore';
+import { useAuthStore } from '../../../store/authStore';
 
 export default function SettingsScreen() {
     const router = useRouter();
+    const { reset: resetApp } = useAppStore();
+    const { reset: resetAuth, logout } = useAuthStore();
     const [motivationBgColor, setMotivationBgColor] = useState('#3B82F6');
     const [notificationFrequency, setNotificationFrequency] = useState('daily');
     const [autoRefresh, setAutoRefresh] = useState(true);
     const [darkMode, setDarkMode] = useState(false);
+
+    const handleResetDemo = () => {
+        Alert.alert(
+            '🔄 Reset Demo',
+            'This will clear all app data and show the welcome/onboarding screens again. Perfect for testing the complete flow!',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Reset',
+                    style: 'destructive',
+                    onPress: () => {
+                        resetApp();
+                        resetAuth();
+                        // @ts-ignore - Dynamic route
+                        router.replace('/');
+                    },
+                },
+            ]
+        );
+    };
+
+    const handleLogout = () => {
+        Alert.alert(
+            'Logout',
+            'Are you sure you want to logout?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Logout',
+                    style: 'destructive',
+                    onPress: () => {
+                        logout();
+                        // @ts-ignore - Dynamic route
+                        router.replace('/(auth)/login');
+                    },
+                },
+            ]
+        );
+    };
 
     const bgColorOptions = [
         { name: 'Ocean Blue', value: '#3B82F6', gradient: ['#3B82F6', '#2563EB'] },
@@ -37,8 +86,49 @@ export default function SettingsScreen() {
             />
 
             <ScrollView className="flex-1 p-4">
+                {/* Developer/Demo Section */}
+                <Text className="text-lg font-bold text-gray-800 mb-3 mt-2">Demo Controls</Text>
+                
+                <Card className="mb-4">
+                    <TouchableOpacity 
+                        onPress={handleResetDemo}
+                        className="flex-row items-center justify-between py-4 border-b border-gray-100"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <View className="w-10 h-10 rounded-full bg-blue-100 items-center justify-center">
+                                <MaterialCommunityIcons name="restart" size={20} color="#3B82F6" />
+                            </View>
+                            <View className="ml-3 flex-1">
+                                <Text className="text-sm font-semibold text-gray-900">Reset Demo</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">
+                                    Clear data and restart onboarding flow
+                                </Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        onPress={handleLogout}
+                        className="flex-row items-center justify-between py-4"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <View className="w-10 h-10 rounded-full bg-red-100 items-center justify-center">
+                                <MaterialCommunityIcons name="logout" size={20} color="#EF4444" />
+                            </View>
+                            <View className="ml-3 flex-1">
+                                <Text className="text-sm font-semibold text-gray-900">Logout</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">
+                                    Return to login screen
+                                </Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+                </Card>
+
                 {/* Motivation Settings */}
-                <Text className="text-lg font-bold text-gray-800 mb-3 mt-2">Motivation</Text>
+                <Text className="text-lg font-bold text-gray-800 mb-3 mt-4">Motivation</Text>
 
                 <Card className="mb-4">
                     <Text className="text-sm font-semibold text-gray-700 mb-3">Background Color</Text>

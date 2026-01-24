@@ -1,7 +1,10 @@
-import { View, Text, TouchableOpacity, Modal, ScrollView, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, ScrollView, Animated, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'expo-router';
+import { useAppStore } from '../../store/appStore';
+import { useAuthStore } from '../../store/authStore';
 
 interface SettingsDrawerProps {
     visible: boolean;
@@ -11,6 +14,9 @@ interface SettingsDrawerProps {
 export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
     const insets = useSafeAreaInsets();
     const slideAnim = useRef(new Animated.Value(-320)).current;
+    const router = useRouter();
+    const { reset: resetApp } = useAppStore();
+    const { reset: resetAuth, logout } = useAuthStore();
 
     useEffect(() => {
         if (visible) {
@@ -27,6 +33,57 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
             }).start();
         }
     }, [visible]);
+
+    const handleResetDemo = () => {
+        Alert.alert(
+            '🔄 Reset Demo',
+            'This will clear all app data and show the welcome/onboarding screens again. Perfect for testing!',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Reset',
+                    style: 'destructive',
+                    onPress: () => {
+                        onClose();
+                        resetApp();
+                        resetAuth();
+                        setTimeout(() => {
+                            // @ts-ignore - Dynamic route
+                            router.replace('/');
+                        }, 100);
+                    },
+                },
+            ]
+        );
+    };
+
+    const handleLogout = () => {
+        Alert.alert(
+            'Logout',
+            'Are you sure you want to logout?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Logout',
+                    style: 'destructive',
+                    onPress: () => {
+                        onClose();
+                        logout();
+                        setTimeout(() => {
+                            // @ts-ignore - Dynamic route
+                            router.replace('/(auth)/login');
+                        }, 100);
+                    },
+                },
+            ]
+        );
+    };
 
     if (!visible) return null;
 
@@ -65,6 +122,41 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
 
                             {/* Settings Options */}
                             <ScrollView className="flex-1">
+                                {/* Demo Controls Section */}
+                                <View className="bg-blue-50 p-3 m-4 rounded-lg">
+                                    <Text className="text-xs font-semibold text-blue-900 mb-2">DEMO CONTROLS</Text>
+                                    
+                                    {/* Reset Demo */}
+                                    <TouchableOpacity 
+                                        onPress={handleResetDemo}
+                                        className="flex-row items-center bg-white rounded-lg p-3 mb-2"
+                                    >
+                                        <View className="w-8 h-8 rounded-full bg-blue-100 items-center justify-center">
+                                            <MaterialCommunityIcons name="restart" size={18} color="#3B82F6" />
+                                        </View>
+                                        <View className="ml-3 flex-1">
+                                            <Text className="text-sm font-semibold text-gray-900">Reset Demo</Text>
+                                            <Text className="text-xs text-gray-500">Restart onboarding</Text>
+                                        </View>
+                                        <MaterialCommunityIcons name="chevron-right" size={18} color="#9CA3AF" />
+                                    </TouchableOpacity>
+
+                                    {/* Logout */}
+                                    <TouchableOpacity 
+                                        onPress={handleLogout}
+                                        className="flex-row items-center bg-white rounded-lg p-3"
+                                    >
+                                        <View className="w-8 h-8 rounded-full bg-red-100 items-center justify-center">
+                                            <MaterialCommunityIcons name="logout" size={18} color="#EF4444" />
+                                        </View>
+                                        <View className="ml-3 flex-1">
+                                            <Text className="text-sm font-semibold text-gray-900">Logout</Text>
+                                            <Text className="text-xs text-gray-500">Back to login</Text>
+                                        </View>
+                                        <MaterialCommunityIcons name="chevron-right" size={18} color="#9CA3AF" />
+                                    </TouchableOpacity>
+                                </View>
+
                                 {/* Language */}
                                 <TouchableOpacity className="flex-row items-center justify-between p-4 border-b border-gray-100">
                                     <View className="flex-row items-center">
