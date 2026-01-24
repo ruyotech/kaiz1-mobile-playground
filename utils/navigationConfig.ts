@@ -1,4 +1,4 @@
-export type AppContext = 'sdlc' | 'motivation' | 'books' | 'bills' | 'challenges';
+export type AppContext = 'sdlc' | 'motivation' | 'books' | 'bills' | 'challenges' | 'pomodoro';
 
 export interface NavIcon {
     name: string;
@@ -31,6 +31,10 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
     ],
     challenges: [
         { name: 'Active', icon: 'trophy', route: '/(tabs)/challenges' },
+        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+    ],
+    pomodoro: [
+        { name: 'Focus', icon: 'timer-sand', route: '/(tabs)/pomodoro' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
 };
@@ -70,6 +74,11 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'Achievements', icon: 'trophy-variant', route: 'achievements' },
         { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
     ],
+    pomodoro: [
+        { name: 'Settings', icon: 'cog', route: '/(tabs)/pomodoro/settings' },
+        { name: 'History', icon: 'history', route: '/(tabs)/pomodoro/history' },
+        { name: 'Focus Analytics', icon: 'chart-line', route: '/(tabs)/reports?tab=focus' },
+    ],
 };
 
 export interface App {
@@ -84,6 +93,7 @@ export const APPS: App[] = [
     { id: 'sdlc', name: 'Tasks', icon: 'check-circle', color: '#3B82F6', route: '/(tabs)/sdlc' },
     { id: 'bills', name: 'Bills', icon: 'cash-multiple', color: '#10B981', route: '/(tabs)/bills' },
     { id: 'challenges', name: 'Challenges', icon: 'trophy', color: '#F59E0B', route: '/(tabs)/challenges' },
+    { id: 'pomodoro', name: 'Focus', icon: 'timer-sand', color: '#EF4444', route: '/(tabs)/pomodoro' },
     { id: 'books', name: 'Books', icon: 'book-open-variant', color: '#8B5CF6', route: '/(tabs)/books' },
     { id: 'motivation', name: 'Motivation', icon: 'lightbulb-on', color: '#EC4899', route: '/(tabs)/motivation' },
     { id: 'report', name: 'Reports', icon: 'chart-box', color: '#06B6D4', route: '/reports' },

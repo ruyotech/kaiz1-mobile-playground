@@ -13,7 +13,7 @@ export function ScreenHeader({ title, subtitle, showBack = false, rightAction }:
     const router = useRouter();
 
     return (
-        <View className="bg-white border-b border-gray-200 px-4 py-3">
+        <View className="bg-white border-b border-gray-200 px-4 pt-12 pb-3">
             <View className="flex-row items-center justify-between">
                 <View className="flex-row items-center flex-1">
                     {showBack && (

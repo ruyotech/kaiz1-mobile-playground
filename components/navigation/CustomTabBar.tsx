@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigationStore } from '../../store/navigationStore';
+import { usePomodoroStore } from '../../store/pomodoroStore';
 import { NAV_CONFIGS } from '../../utils/navigationConfig';
 import { useRouter, usePathname } from 'expo-router';
 import { AppSwitcher } from './AppSwitcher';
@@ -20,6 +21,7 @@ const CREATE_OPTIONS = [
 
 export function CustomTabBar() {
     const { currentApp, toggleAppSwitcher, toggleMoreMenu } = useNavigationStore();
+    const { isActive: isPomodoroActive, timeRemaining, isPaused } = usePomodoroStore();
     const router = useRouter();
     const pathname = usePathname();
     const insets = useSafeAreaInsets();
@@ -39,6 +41,13 @@ export function CustomTabBar() {
         if (option.route) {
             router.push(option.route as any);
         }
+    };
+
+    // Format time for pomodoro display
+    const formatTime = (seconds: number) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
     // Navigation helpers for normal tab bar
