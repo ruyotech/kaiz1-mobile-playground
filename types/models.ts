@@ -173,38 +173,115 @@ export interface BookSummary {
 }
 
 // Challenges
+export type ChallengeMetricType = 'count' | 'yesno' | 'streak' | 'time' | 'completion';
+export type ChallengeRecurrence = 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'custom';
+export type ChallengeVisibility = 'private' | 'shared' | 'community';
+export type ChallengeStatus = 'draft' | 'active' | 'paused' | 'completed' | 'abandoned';
+
 export interface Challenge {
     id: string;
-    challengeType: 'solo' | 'group';
-    goal: string;
-    unit: string;
-    targetValue: number;
-    createdByUserId: string;
+    name: string;
+    description?: string;
+    lifeWheelAreaId: string;
+    metricType: ChallengeMetricType;
+    targetValue?: number; // for count, time types
+    unit?: string; // steps, minutes, pages, etc.
+    duration: number; // in days
+    recurrence: ChallengeRecurrence;
+    customRecurrencePattern?: {
+        daysOfWeek?: number[]; // 0-6, Sunday = 0
+        timesPerWeek?: number;
+    };
+    
+    // Status & Dates
+    status: ChallengeStatus;
     startDate: string;
     endDate: string;
+    
+    // Motivation & Rewards
+    whyStatement?: string;
+    rewardDescription?: string;
+    
+    // Flexibility
+    graceDays: number; // missed days allowed
+    
+    // Sprint Integration
+    sprintIntegration: boolean;
+    pointValue?: number; // story points per completion
+    linkedTaskIds?: string[]; // auto-generated sprint tasks
+    
+    // Social
+    challengeType: 'solo' | 'group';
+    visibility: ChallengeVisibility;
+    createdByUserId: string;
+    accountabilityPartnerIds?: string[];
+    
+    // Notifications
+    reminderEnabled: boolean;
+    reminderTime?: string; // HH:mm format
+    
+    // Progress Tracking
+    currentStreak: number;
+    bestStreak: number;
+    totalCompletions: number;
+    totalMissed: number;
+    
+    // Metadata
     createdAt: string;
+    updatedAt: string;
+    completedAt?: string;
+}
+
+export interface ChallengeTemplate {
+    id: string;
+    name: string;
+    description: string;
+    lifeWheelAreaId: string;
+    metricType: ChallengeMetricType;
+    targetValue?: number;
+    unit?: string;
+    suggestedDuration: number; // in days
+    recurrence: ChallengeRecurrence;
+    icon: string;
+    tags: string[];
+    popularityScore: number;
+    difficulty: 'easy' | 'moderate' | 'hard';
 }
 
 export interface ChallengeParticipant {
     id: string;
     challengeId: string;
     userId: string;
+    joinedAt: string;
     currentProgress: number;
     lastUpdated: string;
     streakDays: number;
+    isAccountabilityPartner: boolean; // can view only, not log
 }
 
 export interface ChallengeEntry {
     id: string;
     challengeId: string;
     userId: string;
-    entryValue: number;
-    entryDate: string;
+    date: string; // YYYY-MM-DD
+    value: number | boolean; // depends on metric type
+    note?: string;
     timestamp: string;
+    synced: boolean; // offline support
     reactions: Array<{
         userId: string;
-        type: 'thumbsup' | 'fire' | 'muscle';
+        type: 'thumbsup' | 'fire' | 'muscle' | 'celebrate';
     }>;
+}
+
+export interface ChallengeAnalytics {
+    challengeId: string;
+    completionRate: number; // percentage
+    averageValue?: number; // for count/time types
+    bestDay?: string;
+    worstDay?: string;
+    totalImpact: number; // contribution to life wheel
+    consistencyScore: number; // 0-100
 }
 
 // Notifications

@@ -69,9 +69,11 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
     ],
     challenges: [
-        { name: 'Create', icon: 'plus-circle', route: 'create' },
-        { name: 'Friends', icon: 'account-group', route: 'friends' },
-        { name: 'Achievements', icon: 'trophy-variant', route: 'achievements' },
+        { name: 'Create Challenge', icon: 'plus-circle', route: '/(tabs)/challenges/create' },
+        { name: 'Templates', icon: 'book-open-variant', route: '/(tabs)/challenges/templates' },
+        { name: 'Completed', icon: 'trophy', route: '/(tabs)/challenges/completed' },
+        { name: 'Community', icon: 'account-group', route: '/(tabs)/challenges/community' },
+        { name: 'Leaderboard', icon: 'podium', route: '/(tabs)/challenges/leaderboard' },
         { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
     ],
     pomodoro: [

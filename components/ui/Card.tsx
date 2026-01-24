@@ -1,14 +1,15 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 interface CardProps {
     children: React.ReactNode;
     className?: string;
+    style?: ViewStyle;
 }
 
-export function Card({ children, className = '' }: CardProps) {
+export function Card({ children, className = '', style }: CardProps) {
     return (
-        <View className={`bg-white rounded-lg shadow-md p-4 ${className}`}>
+        <View className={`bg-white rounded-lg shadow-md p-4 ${className}`} style={style}>
             {children}
         </View>
     );

@@ -13,10 +13,12 @@ import quoteCategoriesData from '../data/mock/quoteCategories.json';
 import quotesData from '../data/mock/quotes.json';
 import booksData from '../data/mock/bookSummaries.json';
 import challengesData from '../data/mock/challenges.json';
+import challengeTemplatesData from '../data/mock/challengeTemplates.json';
 import participantsData from '../data/mock/challengeParticipants.json';
 import entriesData from '../data/mock/challengeEntries.json';
 import notificationsData from '../data/mock/notifications.json';
 import familiesData from '../data/mock/families.json';
+import { Challenge, ChallengeEntry, ChallengeTemplate } from '../types/models';
 
 // Simulate API delay
 const delay = (ms: number = 500) => new Promise(resolve => setTimeout(resolve, ms));
@@ -193,16 +195,131 @@ export const mockApi = {
     },
 
     // Challenges
-    async getChallenges(userId?: string) {
+    async getChallenges(userId?: string, status?: string) {
         await delay();
+        let filtered: any[] = challengesData;
+        
         if (userId) {
             // Return challenges where user is participant
             const userChallengeIds = participantsData
                 .filter(p => p.userId === userId)
                 .map(p => p.challengeId);
-            return challengesData.filter(c => userChallengeIds.includes(c.id));
+            filtered = challengesData.filter(c => userChallengeIds.includes(c.id));
         }
-        return challengesData;
+        
+        if (status) {
+            filtered = filtered.filter(c => (c as any).status === status);
+        }
+        
+        return filtered;
+    },
+    
+    async getChallengeTemplates(lifeWheelAreaId?: string) {
+        await delay();
+        if (lifeWheelAreaId) {
+            return (challengeTemplatesData as ChallengeTemplate[]).filter(t => t.lifeWheelAreaId === lifeWheelAreaId);
+        }
+        return challengeTemplatesData as ChallengeTemplate[];
+    },
+    
+    async createChallenge(challengeData: Partial<Challenge>) {
+        await delay();
+        const newChallenge: Challenge = {
+            id: `challenge-${Date.now()}`,
+            name: challengeData.name || 'New Challenge',
+            description: challengeData.description,
+            lifeWheelAreaId: challengeData.lifeWheelAreaId || 'life-health',
+            metricType: challengeData.metricType || 'count',
+            targetValue: challengeData.targetValue,
+            unit: challengeData.unit,
+            duration: challengeData.duration || 30,
+            recurrence: challengeData.recurrence || 'daily',
+            customRecurrencePattern: challengeData.customRecurrencePattern,
+            status: challengeData.status || 'active',
+            startDate: challengeData.startDate || new Date().toISOString(),
+            endDate: challengeData.endDate || new Date(Date.now() + (challengeData.duration || 30) * 24 * 60 * 60 * 1000).toISOString(),
+            whyStatement: challengeData.whyStatement,
+            rewardDescription: challengeData.rewardDescription,
+            graceDays: challengeData.graceDays || 0,
+            sprintIntegration: challengeData.sprintIntegration || false,
+            pointValue: challengeData.pointValue,
+            linkedTaskIds: challengeData.linkedTaskIds,
+            challengeType: challengeData.challengeType || 'solo',
+            visibility: challengeData.visibility || 'private',
+            createdByUserId: challengeData.createdByUserId || 'user-1',
+            accountabilityPartnerIds: challengeData.accountabilityPartnerIds,
+            reminderEnabled: challengeData.reminderEnabled !== undefined ? challengeData.reminderEnabled : true,
+            reminderTime: challengeData.reminderTime,
+            currentStreak: challengeData.currentStreak || 0,
+            bestStreak: challengeData.bestStreak || 0,
+            totalCompletions: challengeData.totalCompletions || 0,
+            totalMissed: challengeData.totalMissed || 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            completedAt: challengeData.completedAt,
+        };
+        
+        (challengesData as any).push(newChallenge);
+        return newChallenge;
+    },
+    
+    async updateChallenge(challengeId: string, updates: Partial<Challenge>) {
+        await delay();
+        const index = challengesData.findIndex(c => c.id === challengeId);
+        if (index !== -1) {
+            (challengesData as any)[index] = {
+                ...challengesData[index],
+                ...updates,
+                updatedAt: new Date().toISOString(),
+            };
+        }
+    },
+    
+    async deleteChallenge(challengeId: string) {
+        await delay();
+        const index = challengesData.findIndex(c => c.id === challengeId);
+        if (index !== -1) {
+            (challengesData as any).splice(index, 1);
+        }
+    },
+    
+    async logChallengeEntry(entryData: {
+        challengeId: string;
+        value: number | boolean;
+        note?: string;
+        date: string;
+    }) {
+        await delay();
+        const newEntry: ChallengeEntry = {
+            id: `entry-${Date.now()}`,
+            challengeId: entryData.challengeId,
+            userId: 'user-1', // TODO: get from auth
+            date: entryData.date,
+            value: entryData.value,
+            note: entryData.note,
+            timestamp: new Date().toISOString(),
+            synced: true,
+            reactions: [],
+        };
+        
+        (entriesData as any).push(newEntry);
+        return newEntry;
+    },
+    
+    async inviteAccountabilityPartner(challengeId: string, userId: string) {
+        await delay();
+        // Add participant
+        const newParticipant = {
+            id: `participant-${Date.now()}`,
+            challengeId,
+            userId,
+            joinedAt: new Date().toISOString(),
+            currentProgress: 0,
+            lastUpdated: new Date().toISOString(),
+            streakDays: 0,
+            isAccountabilityPartner: true,
+        };
+        (participantsData as any).push(newParticipant);
     },
 
     async getChallengeById(id: string) {
