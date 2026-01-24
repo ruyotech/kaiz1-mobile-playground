@@ -15,6 +15,7 @@ export default function TabsLayout() {
                 <Stack.Screen name="books" />
                 <Stack.Screen name="motivation" />
                 <Stack.Screen name="command-center" />
+                <Stack.Screen name="settings" />
             </Stack>
 
             <CustomTabBar />

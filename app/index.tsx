@@ -14,7 +14,11 @@ export default function Index() {
 
     useEffect(() => {
         // Log current state for debugging
-        console.log('🔍 App State:', { isOnboarded, hasUser: !!user });
+        console.log('🔍 App State:', { 
+            isOnboarded, 
+            hasUser: !!user,
+            userName: user?.fullName 
+        });
     }, [isOnboarded, user]);
 
     useEffect(() => {
@@ -22,17 +26,19 @@ export default function Index() {
             // Determine where to navigate based on app state
             console.log('🚀 Navigating based on state...');
             
+            // Check onboarding first - if not onboarded, go to setup
             if (!isOnboarded) {
-                console.log('→ Going to Welcome (not onboarded)');
+                console.log('→ Going to Onboarding Setup (not onboarded)');
                 // @ts-ignore - Dynamic route
-                router.replace('/(onboarding)/welcome');
+                router.replace('/(onboarding)/setup');
             } else if (!user) {
                 console.log('→ Going to Login (onboarded but no user)');
                 // @ts-ignore - Dynamic route
                 router.replace('/(auth)/login');
             } else {
-                console.log('→ Going to Tabs (onboarded and has user)');
-                router.replace('/(tabs)');
+                // User exists - go directly to sprint calendar
+                console.log('→ Going to Sprint Calendar (user exists)');
+                router.replace('/(tabs)/sdlc/calendar');
             }
         }
     }, [showSplash, isOnboarded, user]);
@@ -41,17 +47,22 @@ export default function Index() {
         setShowSplash(false);
     };
 
-    const handleDevReset = () => {
+    const handleDevReset = async () => {
         console.log('🔄 Resetting app state...');
+        const { reset: resetPreferences } = require('../store/preferencesStore').usePreferencesStore.getState();
+        
+        // Clear all stores
         resetApp();
         resetAuth();
+        resetPreferences();
         setShowDevReset(false);
-        setShowSplash(true);
         
-        // Reload after a short delay
-        setTimeout(() => {
-            setShowSplash(false);
-        }, 100);
+        // Wait for AsyncStorage to clear
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Go directly to onboarding setup
+        // @ts-ignore - Dynamic route
+        router.replace('/(onboarding)/setup');
     };
 
     if (showSplash) {

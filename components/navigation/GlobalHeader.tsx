@@ -8,8 +8,8 @@ export function GlobalHeader() {
     const router = useRouter();
 
     const handleMenuPress = () => {
-        // TODO: Open drawer/menu
-        console.log('Menu pressed');
+        // Navigate to full-screen settings
+        router.push('/(tabs)/settings' as any);
     };
 
     const handleNotificationsPress = () => {

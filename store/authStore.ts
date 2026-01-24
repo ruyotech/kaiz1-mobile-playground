@@ -43,14 +43,19 @@ export const useAuthStore = create<AuthState>()(
                 set({ loading: true, error: null });
                 try {
                     // Create demo user with default credentials
-                    // NOTE: This inherits all preferences from onboarding
-                    // Do NOT overwrite user's onboarding choices
+                    // IMPORTANT: This preserves all user preferences from onboarding
+                    // We do NOT overwrite the user's onboarding choices
+                    // The preferences (language, life wheel areas, notifications, etc.) 
+                    // are already saved in preferencesStore during onboarding setup
                     const user = await mockApi.login('john.doe@example.com', 'password123');
                     set({ 
                         user, 
                         loading: false, 
                         isDemoUser: true 
                     });
+                    
+                    // No need to call loadDemoPreferences() because we want to keep
+                    // what the user selected during onboarding
                 } catch (error) {
                     set({ error: 'Demo login failed', loading: false });
                     throw error;

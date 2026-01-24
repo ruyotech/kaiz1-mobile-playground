@@ -61,7 +61,8 @@ export default function LoginScreen() {
 
         try {
             await login(email, password);
-            router.replace('/(tabs)');
+            // @ts-ignore - Dynamic route
+            router.replace('/(tabs)/sdlc/calendar');
         } catch (error) {
             Alert.alert(
                 'Login Failed',

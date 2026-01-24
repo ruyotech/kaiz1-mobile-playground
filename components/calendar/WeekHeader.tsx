@@ -5,7 +5,6 @@ import { useState, useRef } from 'react';
 import { MonthSelector } from './MonthSelector';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { SettingsDrawer } from '../navigation/SettingsDrawer';
 
 interface WeekHeaderProps {
     currentDate: Date;
@@ -36,7 +35,6 @@ export function WeekHeader({
 }: WeekHeaderProps) {
     const router = useRouter();
     const [monthViewDate, setMonthViewDate] = useState(currentDate);
-    const [drawerVisible, setDrawerVisible] = useState(false);
     const touchStart = useRef({ x: 0, y: 0 });
     const touchMove = useRef({ x: 0, y: 0 });
 
@@ -211,13 +209,11 @@ export function WeekHeader({
 
     return (
         <View className={`${bgColor} pt-12 pb-3 px-4`}>
-            <SettingsDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} />
-
             {/* Header row with icons */}
             <View className="flex-row items-center justify-between mb-1">
-                {/* Hamburger Menu - Left */}
+                {/* Hamburger Menu - Left - Navigate to full-screen settings */}
                 <TouchableOpacity
-                    onPress={() => setDrawerVisible(true)}
+                    onPress={() => router.push('/(tabs)/settings' as any)}
                     className="p-2 -ml-2"
                 >
                     <MaterialCommunityIcons name="menu" size={24} color="white" />

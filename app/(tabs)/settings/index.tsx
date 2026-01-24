@@ -49,10 +49,10 @@ export default function SettingsScreen() {
 
     const currentLanguage = SUPPORTED_LANGUAGES.find(lang => lang.code === locale) || SUPPORTED_LANGUAGES[0];
 
-    const handleResetDemo = () => {
+    const handleResetDemo = async () => {
         Alert.alert(
             '🔄 Reset Demo',
-            'This will clear all app data and show the welcome/onboarding screens again. Perfect for testing the complete flow!',
+            'This will clear all app data and show the onboarding screens again. Perfect for testing the complete flow!',
             [
                 {
                     text: 'Cancel',
@@ -61,12 +61,18 @@ export default function SettingsScreen() {
                 {
                     text: 'Reset',
                     style: 'destructive',
-                    onPress: () => {
+                    onPress: async () => {
+                        // Clear all stores
                         resetApp();
                         resetAuth();
                         resetPreferences();
+                        
+                        // Wait a moment for AsyncStorage to clear
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        
+                        // Go directly to onboarding setup
                         // @ts-ignore - Dynamic route
-                        router.replace('/');
+                        router.replace('/(onboarding)/setup');
                     },
                 },
             ]
@@ -109,10 +115,21 @@ export default function SettingsScreen() {
 
     return (
         <Container>
-            <ScreenHeader
-                title="Settings"
-                subtitle="Customize your experience"
-            />
+            {/* Header with Close Button */}
+            <View className="bg-white border-b border-gray-200 px-4 pt-12 pb-4">
+                <View className="flex-row items-center justify-between">
+                    <View className="flex-1">
+                        <Text className="text-2xl font-bold text-gray-900">Settings</Text>
+                        <Text className="text-sm text-gray-600 mt-1">Customize your experience</Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center ml-3"
+                    >
+                        <MaterialCommunityIcons name="close" size={24} color="#374151" />
+                    </TouchableOpacity>
+                </View>
+            </View>
 
             <ScrollView className="flex-1 p-4">
                 {/* Demo Mode Indicator */}
@@ -341,12 +358,205 @@ export default function SettingsScreen() {
                     </TouchableOpacity>
                 </Card>
 
-                {/* About */}
+                {/* Sprint Preferences */}
+                <Text className="text-lg font-bold text-gray-800 mb-3 mt-4">Sprint Settings</Text>
+                <Card className="mb-4">
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4 border-b border-gray-100"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="calendar-week" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Week Starts On</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">Monday</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4 border-b border-gray-100"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="speedometer" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Velocity Target</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">25-35 points/week (Moderate)</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="format-list-checks" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Default Task Points</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">3 points (Medium)</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+                </Card>
+
+                {/* AI Coach Settings */}
+                <Text className="text-lg font-bold text-gray-800 mb-3 mt-4">AI Scrum Master</Text>
+                <Card className="mb-4">
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4 border-b border-gray-100"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="robot-happy" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Coaching Style</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">Supportive Coach</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <View className="flex-row items-center justify-between py-3 border-b border-gray-100">
+                        <View className="flex-1">
+                            <Text className="text-sm font-semibold text-gray-700">Overcommit Warnings</Text>
+                            <Text className="text-xs text-gray-500 mt-1">
+                                Alert when sprint scope exceeds velocity
+                            </Text>
+                        </View>
+                        <Switch
+                            value={true}
+                            trackColor={{ false: '#D1D5DB', true: '#93C5FD' }}
+                            thumbColor={'#3B82F6'}
+                        />
+                    </View>
+
+                    <View className="flex-row items-center justify-between py-3">
+                        <View className="flex-1">
+                            <Text className="text-sm font-semibold text-gray-700">Q2 Balance Monitor</Text>
+                            <Text className="text-xs text-gray-500 mt-1">
+                                Nudge when important tasks are neglected
+                            </Text>
+                        </View>
+                        <Switch
+                            value={true}
+                            trackColor={{ false: '#D1D5DB', true: '#93C5FD' }}
+                            thumbColor={'#3B82F6'}
+                        />
+                    </View>
+                </Card>
+
+                {/* Data & Sync */}
+                <Text className="text-lg font-bold text-gray-800 mb-3 mt-4">Data & Sync</Text>
+                <Card className="mb-4">
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4 border-b border-gray-100"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="cloud-sync" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Sync Status</Text>
+                                <Text className="text-xs text-green-600 mt-0.5">✓ All data synced</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <View className="flex-row items-center justify-between py-3 border-b border-gray-100">
+                        <View className="flex-1">
+                            <Text className="text-sm font-semibold text-gray-700">Offline Mode</Text>
+                            <Text className="text-xs text-gray-500 mt-1">
+                                Work without internet, sync later
+                            </Text>
+                        </View>
+                        <Switch
+                            value={true}
+                            trackColor={{ false: '#D1D5DB', true: '#93C5FD' }}
+                            thumbColor={'#3B82F6'}
+                        />
+                    </View>
+
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="database-export" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Export Data</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">Download your data (CSV/PDF)</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+                </Card>
+
+                {/* About & Support */}
+                <Text className="text-lg font-bold text-gray-800 mb-3 mt-4">About & Support</Text>
+                <Card className="mb-4">
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4 border-b border-gray-100"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="help-circle" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Help Center</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">Guides, tutorials & FAQs</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4 border-b border-gray-100"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="book-open-variant" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">About Kaiz LifeOS</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">Learn about the system</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        className="flex-row items-center justify-between py-4"
+                    >
+                        <View className="flex-row items-center flex-1">
+                            <MaterialCommunityIcons name="information" size={24} color="#6B7280" />
+                            <View className="flex-1 ml-3">
+                                <Text className="text-sm font-semibold text-gray-900">Version</Text>
+                                <Text className="text-xs text-gray-500 mt-0.5">1.0.0 (Build 100)</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                </Card>
+
+                {/* Follow Us */}
+                <Text className="text-lg font-bold text-gray-800 mb-3 mt-4">Follow Us</Text>
                 <Card className="mb-8">
-                    <View className="items-center py-4">
-                        <Text className="text-gray-900 text-base font-bold">Kaiz LifeOS</Text>
-                        <Text className="text-gray-500 text-sm mt-1">Your Life, Engineered</Text>
-                        <Text className="text-gray-400 text-xs mt-2">Version 1.0.0</Text>
+                    <Text className="text-sm text-gray-600 text-center mb-4">
+                        Join our community and stay updated
+                    </Text>
+                    <View className="flex-row justify-center items-center gap-4">
+                        <TouchableOpacity className="w-14 h-14 rounded-full bg-blue-100 items-center justify-center">
+                            <MaterialCommunityIcons name="twitter" size={28} color="#1DA1F2" />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="w-14 h-14 rounded-full bg-purple-100 items-center justify-center">
+                            <MaterialCommunityIcons name="instagram" size={28} color="#E4405F" />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="w-14 h-14 rounded-full bg-blue-100 items-center justify-center">
+                            <MaterialCommunityIcons name="linkedin" size={28} color="#0A66C2" />
+                        </TouchableOpacity>
+                        <TouchableOpacity className="w-14 h-14 rounded-full bg-gray-100 items-center justify-center">
+                            <MaterialCommunityIcons name="youtube" size={28} color="#FF0000" />
+                        </TouchableOpacity>
+                    </View>
+                    <View className="mt-4 pt-4 border-t border-gray-100">
+                        <TouchableOpacity className="flex-row items-center justify-center py-2">
+                            <MaterialCommunityIcons name="web" size={20} color="#6B7280" />
+                            <Text className="text-sm text-gray-700 ml-2 font-medium">kaizlifeos.com</Text>
+                        </TouchableOpacity>
                     </View>
                 </Card>
             </ScrollView>
