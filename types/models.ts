@@ -145,20 +145,78 @@ export interface Bill {
     createdAt: string;
 }
 
-// Motivation - Quotes
-export interface QuoteCategory {
+// Motivation - Mindset Content (Kaiz Contextual System)
+export type LifeWheelDimensionTag = 
+    | 'lw-1' // Health & Fitness
+    | 'lw-2' // Career & Work
+    | 'lw-3' // Finance & Money
+    | 'lw-4' // Personal Growth
+    | 'lw-5' // Relationships & Family
+    | 'lw-6' // Social Life
+    | 'lw-7' // Fun & Recreation
+    | 'lw-8' // Environment & Home
+    | 'generic' // Universal/No specific dimension
+    | 'q2_growth'; // Eisenhower Q2 specific
+
+export type MindsetThemePreset = 
+    | 'dark'
+    | 'nature'
+    | 'cyberpunk'
+    | 'minimalist'
+    | 'gradient-blue'
+    | 'gradient-purple'
+    | 'gradient-sunset';
+
+export interface MindsetContent {
     id: string;
-    name: string;
-    icon: string;
+    body: string; // The quote/message text
+    author: string | null; // Attribution (can be null for system-generated)
+    dimensionTag: LifeWheelDimensionTag; // Primary Life Wheel dimension
+    secondaryTags?: LifeWheelDimensionTag[]; // Additional relevant dimensions
+    themePreset: MindsetThemePreset; // Visual theme identifier
+    assetUrl?: string; // Background image/video URL
+    assetType?: 'image' | 'video'; // Asset media type
+    interventionWeight: number; // 0-100: Higher = more targeted for intervention
+    emotionalTone?: 'motivational' | 'reflective' | 'actionable' | 'calming';
+    dwellTimeMs?: number; // User engagement tracking
+    isFavorite?: boolean;
+    createdAt: string;
+    lastShownAt?: string;
 }
 
-export interface Quote {
+export interface MindsetFavorite {
     id: string;
-    text: string;
-    author: string;
-    categoryId: string;
-    createdAt: string;
+    userId: string;
+    contentId: string;
+    savedAt: string;
+    note?: string; // User's personal note on why they saved it
 }
+
+export interface MindsetTheme {
+    id: MindsetThemePreset;
+    name: string;
+    backgroundColor: string;
+    textColor: string;
+    accentColor: string;
+    defaultAsset?: string; // Default background for this theme
+    gradientColors?: string[]; // For gradient themes
+}
+
+export interface MindsetSession {
+    id: string;
+    userId: string;
+    startedAt: string;
+    endedAt?: string;
+    contentViewedIds: string[];
+    totalDwellTime: number; // milliseconds
+    actionsTriggered: {
+        internalized: number; // Added to journal
+        operationalized: number; // Converted to tasks
+        favorited: number;
+    };
+}
+
+// Note: Legacy Quote interfaces removed - replaced by MindsetContent system
 
 // Books
 export interface BookSummary {

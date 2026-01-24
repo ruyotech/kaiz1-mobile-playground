@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Modal, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigationStore } from '../../store/navigationStore';
+import { useNavigationStore, AppContext } from '../../store/navigationStore';
 import { usePomodoroStore } from '../../store/pomodoroStore';
 import { NAV_CONFIGS } from '../../utils/navigationConfig';
 import { useRouter, usePathname } from 'expo-router';
@@ -50,7 +50,7 @@ export function CustomTabBar() {
     };
 
     // Navigation helpers for normal tab bar
-    const icons = NAV_CONFIGS[currentApp];
+    const icons = NAV_CONFIGS[currentApp as AppContext] || NAV_CONFIGS['sdlc'];
     const mainIcon = icons[0];
     const moreIcon = icons[icons.length - 1];
 

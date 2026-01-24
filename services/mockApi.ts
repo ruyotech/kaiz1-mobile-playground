@@ -9,8 +9,6 @@ import taskCommentsData from '../data/mock/taskComments.json';
 import templatesData from '../data/mock/templates.json';
 import billCategoriesData from '../data/mock/billCategories.json';
 import billsData from '../data/mock/bills.json';
-import quoteCategoriesData from '../data/mock/quoteCategories.json';
-import quotesData from '../data/mock/quotes.json';
 import booksData from '../data/mock/bookSummaries.json';
 import challengesData from '../data/mock/challenges.json';
 import challengeTemplatesData from '../data/mock/challengeTemplates.json';
@@ -18,7 +16,9 @@ import participantsData from '../data/mock/challengeParticipants.json';
 import entriesData from '../data/mock/challengeEntries.json';
 import notificationsData from '../data/mock/notifications.json';
 import familiesData from '../data/mock/families.json';
-import { Challenge, ChallengeEntry, ChallengeTemplate } from '../types/models';
+import mindsetContentData from '../data/mock/mindsetContent.json';
+import mindsetThemesData from '../data/mock/mindsetThemes.json';
+import { Challenge, ChallengeEntry, ChallengeTemplate, MindsetContent, MindsetTheme, LifeWheelDimensionTag } from '../types/models';
 
 // Simulate API delay
 const delay = (ms: number = 500) => new Promise(resolve => setTimeout(resolve, ms));
@@ -160,25 +160,7 @@ export const mockApi = {
         return billCategoriesData;
     },
 
-    // Quotes
-    async getDailyQuote() {
-        await delay();
-        // Return random quote for demo
-        return quotesData[Math.floor(Math.random() * quotesData.length)];
-    },
-
-    async getQuotes(categoryId?: string) {
-        await delay();
-        if (categoryId) {
-            return quotesData.filter(q => q.categoryId === categoryId);
-        }
-        return quotesData;
-    },
-
-    async getQuoteCategories() {
-        await delay();
-        return quoteCategoriesData;
-    },
+    // Legacy quote methods removed - use getMindsetContent() instead
 
     // Books
     async getBookSummaries(lifeWheelAreaId?: string) {
@@ -372,5 +354,43 @@ export const mockApi = {
     async getUserFamily(userId: string) {
         await delay();
         return familiesData.find(f => f.memberIds.includes(userId));
+    },
+
+    // Mindset Content
+    async getMindsetContent(filters?: { dimensionTag?: LifeWheelDimensionTag; interventionOnly?: boolean }) {
+        await delay();
+        let filtered = mindsetContentData as MindsetContent[];
+
+        if (filters?.dimensionTag) {
+            filtered = filtered.filter(c => c.dimensionTag === filters.dimensionTag);
+        }
+        if (filters?.interventionOnly) {
+            filtered = filtered.filter(c => c.interventionWeight >= 50);
+        }
+
+        return filtered;
+    },
+
+    async getMindsetContentById(id: string) {
+        await delay();
+        return (mindsetContentData as MindsetContent[]).find(c => c.id === id);
+    },
+
+    async getMindsetThemes() {
+        await delay();
+        return mindsetThemesData as MindsetTheme[];
+    },
+
+    async getRandomMindsetContent(count: number = 1) {
+        await delay();
+        const shuffled = [...mindsetContentData].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count) as MindsetContent[];
+    },
+
+    async getMindsetContentForDimensions(dimensions: LifeWheelDimensionTag[]) {
+        await delay();
+        return (mindsetContentData as MindsetContent[]).filter(c => 
+            dimensions.includes(c.dimensionTag) && c.interventionWeight >= 70
+        );
     },
 };

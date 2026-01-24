@@ -1,4 +1,4 @@
-export type AppContext = 'sdlc' | 'motivation' | 'books' | 'challenges' | 'pomodoro';
+import { AppContext } from '../store/navigationStore';
 
 export interface NavIcon {
     name: string;
@@ -17,8 +17,8 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
         { name: 'Sprint', icon: 'clock-fast', route: '/(tabs)/sdlc/calendar' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
-    motivation: [
-        { name: 'Daily', icon: 'lightbulb-on', route: '/(tabs)/motivation' },
+    mindset: [
+        { name: 'Mindset', icon: 'lightbulb-on', route: '/(tabs)/motivation' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     books: [
@@ -31,6 +31,10 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
     ],
     pomodoro: [
         { name: 'Focus', icon: 'timer-sand', route: '/(tabs)/pomodoro' },
+        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+    ],
+    bills: [
+        { name: 'Bills', icon: 'currency-usd', route: '/(tabs)/bills' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
 };
@@ -46,10 +50,10 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'Knowledge Hub', icon: 'school', route: '/(tabs)/sdlc/wiki' },
         { name: 'Templates', icon: 'file-document-multiple', route: 'templates' },
     ],
-    motivation: [
-        { name: 'Categories', icon: 'tag-multiple', route: 'categories' },
-        { name: 'Favorites', icon: 'heart', route: 'favorites' },
-        { name: 'History', icon: 'history', route: 'history' },
+    mindset: [
+        { name: 'Favorites', icon: 'heart', route: '/(tabs)/motivation/favorites' },
+        { name: 'Themes', icon: 'palette', route: '/(tabs)/motivation/themes' },
+        { name: 'Analytics', icon: 'chart-box', route: '/(tabs)/motivation/analytics' },
         { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
     ],
     books: [
@@ -71,6 +75,12 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'History', icon: 'history', route: '/(tabs)/pomodoro/history' },
         { name: 'Focus Analytics', icon: 'chart-line', route: '/(tabs)/reports?tab=focus' },
     ],
+    bills: [
+        { name: 'Categories', icon: 'tag-multiple', route: '/(tabs)/bills/categories' },
+        { name: 'Recurring', icon: 'calendar-repeat', route: '/(tabs)/bills/recurring' },
+        { name: 'Reports', icon: 'chart-pie', route: '/(tabs)/bills/reports' },
+        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
+    ],
 };
 
 export interface App {
@@ -86,6 +96,6 @@ export const APPS: App[] = [
     { id: 'challenges', name: 'Challenges', icon: 'trophy', color: '#F59E0B', route: '/(tabs)/challenges' },
     { id: 'pomodoro', name: 'Focus', icon: 'timer-sand', color: '#EF4444', route: '/(tabs)/pomodoro' },
     { id: 'books', name: 'Books', icon: 'book-open-variant', color: '#8B5CF6', route: '/(tabs)/books' },
-    { id: 'motivation', name: 'Motivation', icon: 'lightbulb-on', color: '#EC4899', route: '/(tabs)/motivation' },
+    { id: 'mindset', name: 'Mindset', icon: 'lightbulb-on', color: '#EC4899', route: '/(tabs)/motivation' },
     { id: 'community', name: 'Community', icon: 'account-group', color: '#EF4444', route: '/community' },
 ];
