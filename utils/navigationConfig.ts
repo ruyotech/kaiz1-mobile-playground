@@ -1,4 +1,4 @@
-export type AppContext = 'sdlc' | 'motivation' | 'books' | 'bills' | 'challenges' | 'pomodoro';
+export type AppContext = 'sdlc' | 'motivation' | 'books' | 'challenges' | 'pomodoro';
 
 export interface NavIcon {
     name: string;
@@ -23,10 +23,6 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
     ],
     books: [
         { name: 'Library', icon: 'book-open-variant', route: '/(tabs)/books' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
-    ],
-    bills: [
-        { name: 'All Bills', icon: 'cash-multiple', route: '/(tabs)/bills' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     challenges: [
@@ -62,12 +58,6 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'Notes', icon: 'note-text', route: 'notes' },
         { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
     ],
-    bills: [
-        { name: 'Categories', icon: 'tag-multiple', route: 'categories' },
-        { name: 'Recurring', icon: 'sync', route: 'recurring' },
-        { name: 'Analytics', icon: 'chart-pie', route: 'analytics' },
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
-    ],
     challenges: [
         { name: 'Create Challenge', icon: 'plus-circle', route: '/(tabs)/challenges/create' },
         { name: 'Templates', icon: 'book-open-variant', route: '/(tabs)/challenges/templates' },
@@ -84,7 +74,7 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
 };
 
 export interface App {
-    id: AppContext | 'report' | 'community';
+    id: AppContext | 'community';
     name: string;
     icon: string;
     color: string;
@@ -93,11 +83,9 @@ export interface App {
 
 export const APPS: App[] = [
     { id: 'sdlc', name: 'Tasks', icon: 'check-circle', color: '#3B82F6', route: '/(tabs)/sdlc' },
-    { id: 'bills', name: 'Bills', icon: 'cash-multiple', color: '#10B981', route: '/(tabs)/bills' },
     { id: 'challenges', name: 'Challenges', icon: 'trophy', color: '#F59E0B', route: '/(tabs)/challenges' },
     { id: 'pomodoro', name: 'Focus', icon: 'timer-sand', color: '#EF4444', route: '/(tabs)/pomodoro' },
     { id: 'books', name: 'Books', icon: 'book-open-variant', color: '#8B5CF6', route: '/(tabs)/books' },
     { id: 'motivation', name: 'Motivation', icon: 'lightbulb-on', color: '#EC4899', route: '/(tabs)/motivation' },
-    { id: 'report', name: 'Reports', icon: 'chart-box', color: '#06B6D4', route: '/reports' },
     { id: 'community', name: 'Community', icon: 'account-group', color: '#EF4444', route: '/community' },
 ];

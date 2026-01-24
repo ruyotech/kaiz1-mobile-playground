@@ -55,9 +55,34 @@ Then:
 ## 🎯 Features
 
 - ✅ SDLC Task Management with Story Points
-- ✅ Bill Tracking with OCR Drafts
 - ✅ Motivational Quotes
 - ✅ Book Summaries
 - ✅ Group Challenges with Leaderboards
+- ✅ Pomodoro Focus Timer
 - ✅ AI Scrum Master Notifications
 - ✅ Family Account Management
+
+## 🚧 Features Removed for Launch Phase
+
+The following features have been temporarily removed to focus on core functionality for the initial launch. They will be added back in post-launch iterations:
+
+### 📊 Reports & Analytics
+A comprehensive analytics dashboard that provides:
+- Task completion metrics and velocity tracking
+- Sprint performance visualization
+- Focus time analytics from Pomodoro sessions
+- Challenge completion statistics
+- Cross-feature performance reports
+
+**Why Removed:** The reports feature requires significant backend infrastructure for data aggregation and visualization. To ensure a stable launch, we're focusing on core task management and challenge features first. Analytics will be gradually introduced as we collect sufficient user data.
+
+### 💰 Bills Management
+A bill tracking system with features including:
+- Bill tracking with payment status (paid, unpaid, overdue)
+- OCR scanning for automatic bill data extraction
+- Recurring bill management
+- Payment reminders and notifications
+- Category-based organization
+- Financial analytics and spending insights
+
+**Why Removed:** The bills feature involves financial data management, payment integrations, and OCR processing that require additional security considerations and third-party service integrations. We're deferring this to ensure proper security measures and compliance are in place before handling financial information.

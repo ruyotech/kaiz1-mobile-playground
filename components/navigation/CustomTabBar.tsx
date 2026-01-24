@@ -13,7 +13,6 @@ import { BlurView } from 'expo-blur';
 const CREATE_OPTIONS = [
     { id: 'task', icon: 'checkbox-marked-circle-outline', label: 'Task', color: '#3B82F6', route: '/(tabs)/sdlc/create-task' },
     { id: 'challenge', icon: 'trophy-outline', label: 'Challenge', color: '#F59E0B', route: '/(tabs)/challenges/create' },
-    { id: 'bill', icon: 'cash-multiple', label: 'Bill', color: '#10B981', route: '/(tabs)/bills/create' },
     { id: 'note', icon: 'note-text-outline', label: 'Note', color: '#8B5CF6', route: '/(tabs)/command-center' },
     { id: 'book', icon: 'book-open-variant', label: 'Book', color: '#EC4899', route: '/(tabs)/books/add' },
     { id: 'event', icon: 'calendar-star', label: 'Event', color: '#06B6D4', route: '/(tabs)/command-center' },

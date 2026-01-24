@@ -10,7 +10,6 @@ export default function TabsLayout() {
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="index" />
                 <Stack.Screen name="sdlc" />
-                <Stack.Screen name="bills" />
                 <Stack.Screen name="challenges" />
                 <Stack.Screen name="books" />
                 <Stack.Screen name="motivation" />
