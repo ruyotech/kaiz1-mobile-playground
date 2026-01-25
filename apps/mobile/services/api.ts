@@ -1025,6 +1025,821 @@ export const aiApi = {
     },
 };
 
+// ==========================================
+// Community API - Clean, DRY, SOLID
+// ==========================================
+
+// Response Types for Community API
+export interface CommunityMemberResponse {
+    id: string;
+    userId: string;
+    displayName: string;
+    avatar: string;
+    bio?: string;
+    level: number;
+    levelTitle: string;
+    reputationPoints: number;
+    badges: string[];
+    role: string;
+    joinedAt: string;
+    isOnline: boolean;
+    sprintsCompleted: number;
+    helpfulAnswers: number;
+    templatesShared: number;
+    currentStreak: number;
+    showActivity: boolean;
+    acceptPartnerRequests: boolean;
+}
+
+export interface CommunityHomeResponse {
+    currentMember: CommunityMemberResponse;
+    featuredArticle: any;
+    activePoll: any;
+    weeklyChallenge: any;
+    recentActivity: any[];
+    topContributors: any[];
+}
+
+export interface PaginatedResponse<T> {
+    content: T[];
+    totalElements: number;
+    totalPages: number;
+    page: number;
+    size: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
+}
+
+export interface CreateQuestionRequest {
+    title: string;
+    body: string;
+    tags: string[];
+}
+
+export interface CreateAnswerRequest {
+    body: string;
+}
+
+export interface CreateStoryRequest {
+    title: string;
+    story: string;
+    category: string;
+    lifeWheelAreaId?: string;
+    metrics?: Array<{ label: string; value: string }>;
+    imageUrls?: string[];
+}
+
+export interface CreateTemplateRequest {
+    name: string;
+    description: string;
+    type: string;
+    content: Record<string, any>;
+    lifeWheelAreaId?: string;
+    tags: string[];
+}
+
+export interface PartnerRequestPayload {
+    toUserId: string;
+    message?: string;
+}
+
+export interface CreateGroupRequest {
+    name: string;
+    description: string;
+    lifeWheelAreaId?: string;
+    isPrivate: boolean;
+    maxMembers: number;
+    tags: string[];
+}
+
+export interface FeatureRequestPayload {
+    title: string;
+    description: string;
+}
+
+export interface SendComplimentRequest {
+    toUserId: string;
+    message: string;
+    category: string;
+}
+
+// Community API Service
+export const communityApi = {
+    // ========== Member Profile ==========
+    
+    /**
+     * Get current user's community profile
+     */
+    async getCurrentMember(): Promise<CommunityMemberResponse> {
+        return request<CommunityMemberResponse>('/community/members/me', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get member by ID
+     */
+    async getMemberById(id: string): Promise<CommunityMemberResponse> {
+        return request<CommunityMemberResponse>(`/community/members/${id}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Update member profile
+     */
+    async updateProfile(data: Partial<{ displayName: string; avatar: string; bio: string; showActivity: boolean; acceptPartnerRequests: boolean }>): Promise<CommunityMemberResponse> {
+        return request<CommunityMemberResponse>('/community/members/me', {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Get community home data (featured content, poll, challenge, activity)
+     */
+    async getCommunityHome(): Promise<CommunityHomeResponse> {
+        return request<CommunityHomeResponse>('/community/home', { method: 'GET' }, true);
+    },
+
+    // ========== Knowledge Hub (Articles) ==========
+
+    /**
+     * Get all articles with optional filters
+     */
+    async getArticles(params?: { category?: string; page?: number; size?: number }): Promise<PaginatedResponse<any>> {
+        const queryParams = new URLSearchParams();
+        if (params?.category) queryParams.append('category', params.category);
+        if (params?.page !== undefined) queryParams.append('page', params.page.toString());
+        if (params?.size) queryParams.append('size', params.size.toString());
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
+        return request<PaginatedResponse<any>>(`/community/articles${query}`, { method: 'GET' });
+    },
+
+    /**
+     * Get featured article
+     */
+    async getFeaturedArticle(): Promise<any> {
+        return request<any>('/community/articles/featured', { method: 'GET' });
+    },
+
+    /**
+     * Get article by ID
+     */
+    async getArticleById(id: string): Promise<any> {
+        return request<any>(`/community/articles/${id}`, { method: 'GET' });
+    },
+
+    /**
+     * Like/unlike article
+     */
+    async toggleArticleLike(id: string): Promise<{ liked: boolean; likeCount: number }> {
+        return request<{ liked: boolean; likeCount: number }>(`/community/articles/${id}/toggle-like`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Bookmark/unbookmark article
+     */
+    async toggleArticleBookmark(id: string): Promise<{ bookmarked: boolean }> {
+        return request<{ bookmarked: boolean }>(`/community/articles/${id}/toggle-bookmark`, { method: 'POST' }, true);
+    },
+
+    // ========== Release Notes & Wiki ==========
+
+    /**
+     * Get release notes
+     */
+    async getReleaseNotes(page: number = 0, size: number = 10): Promise<PaginatedResponse<any>> {
+        return request<PaginatedResponse<any>>(`/community/release-notes?page=${page}&size=${size}`, { method: 'GET' });
+    },
+
+    /**
+     * Get wiki entries
+     */
+    async getWikiEntries(category?: string): Promise<any[]> {
+        const query = category ? `?category=${category}` : '';
+        return request<any[]>(`/community/wiki${query}`, { method: 'GET' });
+    },
+
+    /**
+     * Search wiki
+     */
+    async searchWiki(term: string): Promise<any[]> {
+        return request<any[]>(`/community/wiki/search?q=${encodeURIComponent(term)}`, { method: 'GET' });
+    },
+
+    // ========== Q&A Forum ==========
+
+    /**
+     * Get questions with filters
+     */
+    async getQuestions(params?: { status?: string; tag?: string; page?: number; size?: number }): Promise<PaginatedResponse<any>> {
+        const queryParams = new URLSearchParams();
+        if (params?.status) queryParams.append('status', params.status);
+        if (params?.tag) queryParams.append('tag', params.tag);
+        if (params?.page !== undefined) queryParams.append('page', params.page.toString());
+        if (params?.size) queryParams.append('size', params.size.toString());
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
+        return request<PaginatedResponse<any>>(`/community/questions${query}`, { method: 'GET' });
+    },
+
+    /**
+     * Get question by ID with answers
+     */
+    async getQuestionById(id: string): Promise<any> {
+        return request<any>(`/community/questions/${id}`, { method: 'GET' });
+    },
+
+    /**
+     * Get answers for a question
+     */
+    async getAnswers(questionId: string): Promise<any[]> {
+        return request<any[]>(`/community/questions/${questionId}/answers`, { method: 'GET' });
+    },
+
+    /**
+     * Create a new question
+     */
+    async createQuestion(data: CreateQuestionRequest): Promise<any> {
+        return request<any>('/community/questions', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Update a question
+     */
+    async updateQuestion(id: string, data: Partial<CreateQuestionRequest>): Promise<any> {
+        return request<any>(`/community/questions/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Delete a question
+     */
+    async deleteQuestion(id: string): Promise<void> {
+        await request<void>(`/community/questions/${id}`, { method: 'DELETE' }, true);
+    },
+
+    /**
+     * Upvote/downvote question
+     */
+    async toggleQuestionUpvote(id: string): Promise<{ upvoted: boolean; upvoteCount: number }> {
+        return request<{ upvoted: boolean; upvoteCount: number }>(`/community/questions/${id}/toggle-upvote`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Create an answer
+     */
+    async createAnswer(questionId: string, data: CreateAnswerRequest): Promise<any> {
+        return request<any>(`/community/questions/${questionId}/answers`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Upvote/downvote answer
+     */
+    async toggleAnswerUpvote(id: string): Promise<{ upvoted: boolean; upvoteCount: number }> {
+        return request<{ upvoted: boolean; upvoteCount: number }>(`/community/answers/${id}/toggle-upvote`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Accept an answer (question author only)
+     */
+    async acceptAnswer(questionId: string, answerId: string): Promise<void> {
+        await request<void>(`/community/questions/${questionId}/accept/${answerId}`, { method: 'POST' }, true);
+    },
+
+    // ========== Success Stories ==========
+
+    /**
+     * Get success stories
+     */
+    async getStories(params?: { category?: string; lifeWheelAreaId?: string; page?: number; size?: number }): Promise<PaginatedResponse<any>> {
+        const queryParams = new URLSearchParams();
+        if (params?.category) queryParams.append('category', params.category);
+        if (params?.lifeWheelAreaId) queryParams.append('lifeWheelAreaId', params.lifeWheelAreaId);
+        if (params?.page !== undefined) queryParams.append('page', params.page.toString());
+        if (params?.size) queryParams.append('size', params.size.toString());
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
+        return request<PaginatedResponse<any>>(`/community/stories${query}`, { method: 'GET' });
+    },
+
+    /**
+     * Get story by ID
+     */
+    async getStoryById(id: string): Promise<any> {
+        return request<any>(`/community/stories/${id}`, { method: 'GET' });
+    },
+
+    /**
+     * Create a success story
+     */
+    async createStory(data: CreateStoryRequest): Promise<any> {
+        return request<any>('/community/stories', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Update a story
+     */
+    async updateStory(id: string, data: Partial<CreateStoryRequest>): Promise<any> {
+        return request<any>(`/community/stories/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Delete a story
+     */
+    async deleteStory(id: string): Promise<void> {
+        await request<void>(`/community/stories/${id}`, { method: 'DELETE' }, true);
+    },
+
+    /**
+     * Like a story
+     */
+    async toggleStoryLike(id: string): Promise<{ liked: boolean; likeCount: number }> {
+        return request<{ liked: boolean; likeCount: number }>(`/community/stories/${id}/toggle-like`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Celebrate a story
+     */
+    async toggleStoryCelebrate(id: string): Promise<{ celebrated: boolean; celebrateCount: number }> {
+        return request<{ celebrated: boolean; celebrateCount: number }>(`/community/stories/${id}/toggle-celebrate`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Get story comments
+     */
+    async getStoryComments(storyId: string): Promise<any[]> {
+        return request<any[]>(`/community/stories/${storyId}/comments`, { method: 'GET' });
+    },
+
+    /**
+     * Add comment to story
+     */
+    async addStoryComment(storyId: string, text: string): Promise<any> {
+        return request<any>(`/community/stories/${storyId}/comments`, {
+            method: 'POST',
+            body: JSON.stringify({ text }),
+        }, true);
+    },
+
+    // ========== Community Templates ==========
+
+    /**
+     * Get templates with filters
+     */
+    async getTemplates(params?: { type?: string; lifeWheelAreaId?: string; page?: number; size?: number }): Promise<PaginatedResponse<any>> {
+        const queryParams = new URLSearchParams();
+        if (params?.type) queryParams.append('type', params.type);
+        if (params?.lifeWheelAreaId) queryParams.append('lifeWheelAreaId', params.lifeWheelAreaId);
+        if (params?.page !== undefined) queryParams.append('page', params.page.toString());
+        if (params?.size) queryParams.append('size', params.size.toString());
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
+        return request<PaginatedResponse<any>>(`/community/templates${query}`, { method: 'GET' });
+    },
+
+    /**
+     * Get featured templates
+     */
+    async getFeaturedTemplates(): Promise<any[]> {
+        return request<any[]>('/community/templates/featured', { method: 'GET' });
+    },
+
+    /**
+     * Get template by ID
+     */
+    async getTemplateById(id: string): Promise<any> {
+        return request<any>(`/community/templates/${id}`, { method: 'GET' });
+    },
+
+    /**
+     * Create a template
+     */
+    async createTemplate(data: CreateTemplateRequest): Promise<any> {
+        return request<any>('/community/templates', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Update a template
+     */
+    async updateTemplate(id: string, data: Partial<CreateTemplateRequest>): Promise<any> {
+        return request<any>(`/community/templates/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Delete a template
+     */
+    async deleteTemplate(id: string): Promise<void> {
+        await request<void>(`/community/templates/${id}`, { method: 'DELETE' }, true);
+    },
+
+    /**
+     * Download/use a template
+     */
+    async downloadTemplate(id: string): Promise<any> {
+        return request<any>(`/community/templates/${id}/download`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Rate a template
+     */
+    async rateTemplate(id: string, rating: number): Promise<{ rating: number; ratingCount: number }> {
+        return request<{ rating: number; ratingCount: number }>(`/community/templates/${id}/rate`, {
+            method: 'POST',
+            body: JSON.stringify({ rating }),
+        }, true);
+    },
+
+    /**
+     * Bookmark/unbookmark template
+     */
+    async toggleTemplateBookmark(id: string): Promise<{ bookmarked: boolean }> {
+        return request<{ bookmarked: boolean }>(`/community/templates/${id}/toggle-bookmark`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Get template reviews
+     */
+    async getTemplateReviews(templateId: string): Promise<any[]> {
+        return request<any[]>(`/community/templates/${templateId}/reviews`, { method: 'GET' });
+    },
+
+    // ========== Leaderboard ==========
+
+    /**
+     * Get leaderboard
+     */
+    async getLeaderboard(period: 'weekly' | 'monthly' | 'all_time', category: 'reputation' | 'helpful' | 'streaks' | 'velocity'): Promise<any[]> {
+        return request<any[]>(`/community/leaderboard?period=${period}&category=${category}`, { method: 'GET' });
+    },
+
+    /**
+     * Get current user's rank
+     */
+    async getUserRank(period: 'weekly' | 'monthly' | 'all_time', category: 'reputation' | 'helpful' | 'streaks' | 'velocity'): Promise<any> {
+        return request<any>(`/community/leaderboard/me?period=${period}&category=${category}`, { method: 'GET' }, true);
+    },
+
+    // ========== Support Circle (Accountability Partners) ==========
+
+    /**
+     * Get accountability partners
+     */
+    async getPartners(): Promise<any[]> {
+        return request<any[]>('/community/partners', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get partner by ID
+     */
+    async getPartnerById(id: string): Promise<any> {
+        return request<any>(`/community/partners/${id}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get incoming partner requests
+     */
+    async getPartnerRequests(): Promise<any[]> {
+        return request<any[]>('/community/partners/requests', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get sent partner requests
+     */
+    async getSentPartnerRequests(): Promise<any[]> {
+        return request<any[]>('/community/partners/requests/sent', { method: 'GET' }, true);
+    },
+
+    /**
+     * Send partner request
+     */
+    async sendPartnerRequest(data: PartnerRequestPayload): Promise<any> {
+        return request<any>('/community/partners/requests', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Respond to partner request
+     */
+    async respondToPartnerRequest(requestId: string, accept: boolean): Promise<void> {
+        await request<void>(`/community/partners/requests/${requestId}/${accept ? 'accept' : 'decline'}`, {
+            method: 'POST',
+        }, true);
+    },
+
+    /**
+     * Remove partner
+     */
+    async removePartner(partnerId: string): Promise<void> {
+        await request<void>(`/community/partners/${partnerId}`, { method: 'DELETE' }, true);
+    },
+
+    /**
+     * Check-in with partner
+     */
+    async checkInWithPartner(partnerId: string, message?: string): Promise<any> {
+        return request<any>(`/community/partners/${partnerId}/check-in`, {
+            method: 'POST',
+            body: JSON.stringify({ message }),
+        }, true);
+    },
+
+    // ========== Motivation Groups ==========
+
+    /**
+     * Get motivation groups
+     */
+    async getGroups(params?: { lifeWheelAreaId?: string; joined?: boolean; page?: number; size?: number }): Promise<PaginatedResponse<any>> {
+        const queryParams = new URLSearchParams();
+        if (params?.lifeWheelAreaId) queryParams.append('lifeWheelAreaId', params.lifeWheelAreaId);
+        if (params?.joined !== undefined) queryParams.append('joined', params.joined.toString());
+        if (params?.page !== undefined) queryParams.append('page', params.page.toString());
+        if (params?.size) queryParams.append('size', params.size.toString());
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
+        return request<PaginatedResponse<any>>(`/community/groups${query}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get group by ID
+     */
+    async getGroupById(id: string): Promise<any> {
+        return request<any>(`/community/groups/${id}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Create a group
+     */
+    async createGroup(data: CreateGroupRequest): Promise<any> {
+        return request<any>('/community/groups', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Update a group
+     */
+    async updateGroup(id: string, data: Partial<CreateGroupRequest>): Promise<any> {
+        return request<any>(`/community/groups/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Delete a group
+     */
+    async deleteGroup(id: string): Promise<void> {
+        await request<void>(`/community/groups/${id}`, { method: 'DELETE' }, true);
+    },
+
+    /**
+     * Join a group
+     */
+    async joinGroup(id: string): Promise<void> {
+        await request<void>(`/community/groups/${id}/join`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Leave a group
+     */
+    async leaveGroup(id: string): Promise<void> {
+        await request<void>(`/community/groups/${id}/leave`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Get group members
+     */
+    async getGroupMembers(groupId: string): Promise<any[]> {
+        return request<any[]>(`/community/groups/${groupId}/members`, { method: 'GET' }, true);
+    },
+
+    // ========== Activity Feed ==========
+
+    /**
+     * Get activity feed
+     */
+    async getActivityFeed(page: number = 0, size: number = 20): Promise<PaginatedResponse<any>> {
+        return request<PaginatedResponse<any>>(`/community/activity?page=${page}&size=${size}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Celebrate an activity
+     */
+    async celebrateActivity(activityId: string): Promise<{ celebrateCount: number }> {
+        return request<{ celebrateCount: number }>(`/community/activity/${activityId}/celebrate`, { method: 'POST' }, true);
+    },
+
+    // ========== Polls & Weekly Challenges ==========
+
+    /**
+     * Get active poll
+     */
+    async getActivePoll(): Promise<any | null> {
+        return request<any>('/community/polls/active', { method: 'GET' });
+    },
+
+    /**
+     * Vote on a poll
+     */
+    async votePoll(pollId: string, optionId: string): Promise<any> {
+        return request<any>(`/community/polls/${pollId}/vote`, {
+            method: 'POST',
+            body: JSON.stringify({ optionId }),
+        }, true);
+    },
+
+    /**
+     * Get poll results
+     */
+    async getPollResults(pollId: string): Promise<any> {
+        return request<any>(`/community/polls/${pollId}/results`, { method: 'GET' });
+    },
+
+    /**
+     * Get current weekly challenge
+     */
+    async getWeeklyChallenge(): Promise<any | null> {
+        return request<any>('/community/weekly-challenge', { method: 'GET' });
+    },
+
+    /**
+     * Join weekly challenge
+     */
+    async joinWeeklyChallenge(challengeId: string): Promise<void> {
+        await request<void>(`/community/weekly-challenge/${challengeId}/join`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Submit weekly challenge progress
+     */
+    async submitWeeklyChallengeProgress(challengeId: string, progress: number): Promise<any> {
+        return request<any>(`/community/weekly-challenge/${challengeId}/progress`, {
+            method: 'POST',
+            body: JSON.stringify({ progress }),
+        }, true);
+    },
+
+    // ========== Badges ==========
+
+    /**
+     * Get all badges definitions
+     */
+    async getAllBadges(): Promise<any[]> {
+        return request<any[]>('/community/badges', { method: 'GET' });
+    },
+
+    /**
+     * Get user's earned badges
+     */
+    async getUserBadges(): Promise<any[]> {
+        return request<any[]>('/community/badges/me', { method: 'GET' }, true);
+    },
+
+    // ========== Compliments & Kudos ==========
+
+    /**
+     * Send secret compliment
+     */
+    async sendCompliment(data: SendComplimentRequest): Promise<void> {
+        await request<void>('/community/compliments', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Get received compliments
+     */
+    async getReceivedCompliments(): Promise<any[]> {
+        return request<any[]>('/community/compliments/received', { method: 'GET' }, true);
+    },
+
+    /**
+     * Mark compliment as read
+     */
+    async markComplimentAsRead(id: string): Promise<void> {
+        await request<void>(`/community/compliments/${id}/read`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Send public kudos
+     */
+    async sendKudos(data: SendComplimentRequest): Promise<any> {
+        return request<any>('/community/kudos', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Get public kudos feed
+     */
+    async getKudosFeed(page: number = 0, size: number = 20): Promise<PaginatedResponse<any>> {
+        return request<PaginatedResponse<any>>(`/community/kudos?page=${page}&size=${size}`, { method: 'GET' });
+    },
+
+    /**
+     * Like a kudos post
+     */
+    async likeKudos(id: string): Promise<{ likeCount: number }> {
+        return request<{ likeCount: number }>(`/community/kudos/${id}/like`, { method: 'POST' }, true);
+    },
+
+    // ========== Feature Requests & Feedback ==========
+
+    /**
+     * Get feature requests
+     */
+    async getFeatureRequests(params?: { status?: string; page?: number; size?: number }): Promise<PaginatedResponse<any>> {
+        const queryParams = new URLSearchParams();
+        if (params?.status) queryParams.append('status', params.status);
+        if (params?.page !== undefined) queryParams.append('page', params.page.toString());
+        if (params?.size) queryParams.append('size', params.size.toString());
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
+        return request<PaginatedResponse<any>>(`/community/feature-requests${query}`, { method: 'GET' });
+    },
+
+    /**
+     * Get feature request by ID
+     */
+    async getFeatureRequestById(id: string): Promise<any> {
+        return request<any>(`/community/feature-requests/${id}`, { method: 'GET' });
+    },
+
+    /**
+     * Submit feature request
+     */
+    async submitFeatureRequest(data: FeatureRequestPayload): Promise<any> {
+        return request<any>('/community/feature-requests', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Upvote feature request
+     */
+    async toggleFeatureRequestUpvote(id: string): Promise<{ upvoted: boolean; upvoteCount: number }> {
+        return request<{ upvoted: boolean; upvoteCount: number }>(`/community/feature-requests/${id}/toggle-upvote`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Add comment to feature request
+     */
+    async addFeatureRequestComment(id: string, text: string): Promise<any> {
+        return request<any>(`/community/feature-requests/${id}/comments`, {
+            method: 'POST',
+            body: JSON.stringify({ text }),
+        }, true);
+    },
+
+    /**
+     * Submit bug report
+     */
+    async submitBugReport(data: { title: string; description: string; stepsToReproduce?: string; severity: string }): Promise<any> {
+        return request<any>('/community/bug-reports', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    // ========== Search ==========
+
+    /**
+     * Search community content
+     */
+    async search(query: string, types?: string[]): Promise<any> {
+        const queryParams = new URLSearchParams();
+        queryParams.append('q', query);
+        if (types?.length) queryParams.append('types', types.join(','));
+        return request<any>(`/community/search?${queryParams.toString()}`, { method: 'GET' });
+    },
+
+    /**
+     * Get popular tags
+     */
+    async getPopularTags(): Promise<string[]> {
+        return request<string[]>('/community/tags/popular', { method: 'GET' });
+    },
+};
+
 // Export configuration for debugging
 export const apiConfig = {
     baseUrl: API_BASE_URL,
