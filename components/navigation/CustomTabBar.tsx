@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Modal, Pressable, KeyboardAvoidingView, Platform, Alert, ActivityIndicator, Image, Animated } from 'react-native';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { View, Text, TouchableOpacity, TextInput, Modal, Pressable, KeyboardAvoidingView, Platform, Alert, ActivityIndicator, Image, Animated, Linking } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigationStore, AppContext } from '../../store/navigationStore';
 import { usePomodoroStore } from '../../store/pomodoroStore';
@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
+import { Audio } from 'expo-av';
 import { mockApi } from '../../services/mockApi';
 
 const CREATE_OPTIONS = [
@@ -33,6 +34,8 @@ type AttachmentType = {
     source?: 'camera' | 'gallery';
 } | null;
 
+type PendingAction = 'camera' | 'image' | 'file' | 'voice' | null;
+
 export function CustomTabBar() {
     const { currentApp, toggleAppSwitcher, toggleMoreMenu } = useNavigationStore();
     const { isActive: isPomodoroActive, timeRemaining, isPaused } = usePomodoroStore();
@@ -45,6 +48,9 @@ export function CustomTabBar() {
     const [isRecording, setIsRecording] = useState(false);
     const [recordingDuration, setRecordingDuration] = useState(0);
     const [attachment, setAttachment] = useState<AttachmentType>(null);
+    const [pendingAction, setPendingAction] = useState<PendingAction>(null);
+    const recordingRef = useRef<Audio.Recording | null>(null);
+    const isExecutingAction = useRef(false);
     
     // Voice wave animation
     const waveAnim1 = useRef(new Animated.Value(0.3)).current;
@@ -96,24 +102,59 @@ export function CustomTabBar() {
         };
     }, [isRecording]);
 
-    // Handle camera capture
-    const handleCamera = async () => {
+    // Simple handlers that set pending action and close modal
+    const handleCamera = () => {
+        setPendingAction('camera');
         setShowCreateMenu(false);
+    };
+
+    const handleImagePicker = () => {
+        setPendingAction('image');
+        setShowCreateMenu(false);
+    };
+
+    const handleFilePicker = () => {
+        setPendingAction('file');
+        setShowCreateMenu(false);
+    };
+
+    const handleVoiceInput = () => {
+        setPendingAction('voice');
+        setShowCreateMenu(false);
+    };
+
+    // Actual launcher functions (called from useEffect after modal closes)
+    const launchCamera = async () => {
         try {
+            console.log('📷 Requesting camera permission...');
             const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+            console.log('📷 Camera permission result:', permissionResult);
             
             if (!permissionResult.granted) {
-                Alert.alert('Permission Required', 'Camera access is needed to take photos');
+                if (!permissionResult.canAskAgain) {
+                    Alert.alert(
+                        'Camera Permission Required',
+                        'Camera access was denied. Please enable it in Settings to take photos.',
+                        [
+                            { text: 'Cancel', style: 'cancel' },
+                            { text: 'Open Settings', onPress: () => Linking.openSettings() }
+                        ]
+                    );
+                } else {
+                    Alert.alert('Permission Required', 'Camera access is needed to take photos.');
+                }
                 return;
             }
 
+            console.log('📷 Launching camera...');
             const result = await ImagePicker.launchCameraAsync({
-                mediaTypes: ['images'],
                 allowsEditing: true,
                 quality: 0.8,
             });
+            console.log('📷 Camera result:', JSON.stringify(result));
 
-            if (!result.canceled && result.assets[0]) {
+            if (!result.canceled && result.assets && result.assets[0]) {
+                console.log('📷 Setting attachment with URI:', result.assets[0].uri);
                 setAttachment({
                     type: 'image',
                     uri: result.assets[0].uri,
@@ -121,105 +162,196 @@ export function CustomTabBar() {
                 });
             }
         } catch (error) {
-            Alert.alert('Error', 'Failed to access camera');
+            console.error('📷 Camera error:', error);
+            Alert.alert('Error', 'Failed to access camera. Please try again.');
         }
     };
 
-    // Handle image picker
-    const handleImagePicker = async () => {
-        setShowCreateMenu(false);
+    const launchImagePicker = async () => {
         try {
+            console.log('🖼️ Requesting media library permission...');
             const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            console.log('🖼️ Media library permission result:', permissionResult);
             
             if (!permissionResult.granted) {
-                Alert.alert('Permission Required', 'Gallery access is needed to select images');
+                if (!permissionResult.canAskAgain) {
+                    Alert.alert(
+                        'Photo Library Permission Required',
+                        'Photo library access was denied. Please enable it in Settings.',
+                        [
+                            { text: 'Cancel', style: 'cancel' },
+                            { text: 'Open Settings', onPress: () => Linking.openSettings() }
+                        ]
+                    );
+                } else {
+                    Alert.alert('Permission Required', 'Photo library access is needed to select images.');
+                }
                 return;
             }
 
+            console.log('🖼️ Launching image library...');
             const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ['images'],
-                allowsEditing: true,
+                allowsEditing: false,
                 quality: 0.8,
             });
+            console.log('🖼️ Image library result:', JSON.stringify(result));
 
-            if (!result.canceled && result.assets[0]) {
+            if (!result.canceled && result.assets && result.assets[0]) {
+                console.log('🖼️ Setting attachment with URI:', result.assets[0].uri);
                 setAttachment({
                     type: 'image',
                     uri: result.assets[0].uri,
                     source: 'gallery',
                 });
+            } else {
+                console.log('🖼️ User cancelled or no assets');
             }
         } catch (error) {
-            Alert.alert('Error', 'Failed to access gallery');
+            console.error('🖼️ Image picker error:', error);
+            Alert.alert('Error', 'Failed to access photo library. Please try again.');
         }
     };
 
-    // Handle file picker
-    const handleFilePicker = async () => {
-        setShowCreateMenu(false);
+    const launchFilePicker = async () => {
         try {
+            console.log('📄 Launching document picker...');
+            
+            // Note: Document picker can be unstable on iOS simulator
+            // It works better on real devices
             const result = await DocumentPicker.getDocumentAsync({
                 type: ['*/*'],
-                copyToCacheDirectory: true,
+                copyToCacheDirectory: false,
+                multiple: false,
             });
+            console.log('📄 Document picker result:', JSON.stringify(result));
 
             if (!result.canceled && result.assets && result.assets[0]) {
+                console.log('📄 Setting attachment with file:', result.assets[0].name);
                 setAttachment({
                     type: 'file',
                     uri: result.assets[0].uri,
                     name: result.assets[0].name || 'Document',
                 });
+            } else {
+                console.log('📄 User cancelled or no assets');
             }
         } catch (error: any) {
-            console.log('DocumentPicker error:', error);
-            // In simulator, file picker may not work - provide mock attachment for testing
-            if (__DEV__) {
-                Alert.alert(
-                    'Simulator Limitation',
-                    'File picker may not work in simulator. Would you like to add a mock file attachment for testing?',
-                    [
-                        { text: 'Cancel', style: 'cancel' },
-                        {
-                            text: 'Add Mock File',
-                            onPress: () => {
-                                setAttachment({
-                                    type: 'file',
-                                    uri: 'mock-file://document.pdf',
-                                    name: 'Sample Document.pdf',
-                                });
-                            }
-                        },
-                    ]
-                );
-            } else {
-                Alert.alert('Error', 'Failed to pick file. Please try again.');
-            }
+            console.error('📄 Document picker error:', error);
+            Alert.alert('Error', 'Failed to pick file. Please try again.');
         }
     };
 
-    // Handle voice input - start recording
-    const handleVoiceInput = async () => {
-        setShowCreateMenu(false);
-        setIsRecording(true);
-        setRecordingDuration(0);
+    const startVoiceRecording = async () => {
+        try {
+            console.log('🎤 Requesting audio permission...');
+            const permission = await Audio.requestPermissionsAsync();
+            console.log('🎤 Audio permission result:', permission);
+            
+            if (!permission.granted) {
+                Alert.alert('Permission Required', 'Microphone access is needed to record voice. Please enable it in Settings.');
+                return;
+            }
+
+            await Audio.setAudioModeAsync({
+                allowsRecordingIOS: true,
+                playsInSilentModeIOS: true,
+            });
+
+            console.log('🎤 Starting recording...');
+            const { recording } = await Audio.Recording.createAsync(
+                Audio.RecordingOptionsPresets.HIGH_QUALITY
+            );
+            recordingRef.current = recording;
+            setIsRecording(true);
+            setRecordingDuration(0);
+            console.log('🎤 Recording started');
+        } catch (error) {
+            console.error('🎤 Voice recording error:', error);
+            Alert.alert('Error', 'Failed to start recording. Please try again.');
+        }
     };
+
+    // Execute pending action after modal is closed
+    // This useEffect must be after the launcher functions are defined
+    useEffect(() => {
+        if (pendingAction && !showCreateMenu && !isExecutingAction.current) {
+            isExecutingAction.current = true;
+            const currentAction = pendingAction;
+            setPendingAction(null); // Clear immediately to prevent re-triggering
+            
+            const executeAction = async () => {
+                console.log('🔄 Executing pending action:', currentAction);
+                try {
+                    switch (currentAction) {
+                        case 'camera':
+                            await launchCamera();
+                            break;
+                        case 'image':
+                            await launchImagePicker();
+                            break;
+                        case 'file':
+                            await launchFilePicker();
+                            break;
+                        case 'voice':
+                            await startVoiceRecording();
+                            break;
+                    }
+                } finally {
+                    isExecutingAction.current = false;
+                }
+            };
+            // Small delay to ensure modal animation is complete
+            const timer = setTimeout(executeAction, 200);
+            return () => {
+                clearTimeout(timer);
+                isExecutingAction.current = false;
+            };
+        }
+    }, [pendingAction, showCreateMenu]);
     
     // Cancel voice recording
-    const cancelVoiceRecording = () => {
+    const cancelVoiceRecording = async () => {
+        console.log('🎤 Cancelling recording...');
+        try {
+            if (recordingRef.current) {
+                await recordingRef.current.stopAndUnloadAsync();
+                recordingRef.current = null;
+            }
+        } catch (error) {
+            console.error('🎤 Error stopping recording:', error);
+        }
         setIsRecording(false);
         setRecordingDuration(0);
     };
     
     // Accept voice recording
-    const acceptVoiceRecording = () => {
-        setIsRecording(false);
-        const duration = recordingDuration;
-        setRecordingDuration(0);
-        setAttachment({
-            type: 'voice',
-            uri: 'voice-recording',
-            name: `Voice Message (${formatRecordingTime(duration)})`,
-        });
+    const acceptVoiceRecording = async () => {
+        console.log('🎤 Accepting recording...');
+        try {
+            if (recordingRef.current) {
+                await recordingRef.current.stopAndUnloadAsync();
+                const uri = recordingRef.current.getURI();
+                console.log('🎤 Recording saved to:', uri);
+                recordingRef.current = null;
+                
+                const duration = recordingDuration;
+                setIsRecording(false);
+                setRecordingDuration(0);
+                
+                setAttachment({
+                    type: 'voice',
+                    uri: uri || 'voice-recording',
+                    name: `Voice Message (${formatRecordingTime(duration)})`,
+                });
+            } else {
+                setIsRecording(false);
+                setRecordingDuration(0);
+            }
+        } catch (error) {
+            console.error('🎤 Error accepting recording:', error);
+            setIsRecording(false);
+            setRecordingDuration(0);
+        }
     };
     
     // Format recording time
