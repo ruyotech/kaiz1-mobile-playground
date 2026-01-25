@@ -19,7 +19,11 @@
       "supportsTablet": true,
       "bundleIdentifier": "app.kaiz.mobile",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsLocalNetworking": true
+        }
       }
     },
     "android": {
@@ -47,9 +51,7 @@
         "projectId": "8151a7db-91cc-4549-9af6-2b4a1a93eeaa"
       }
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/8151a7db-91cc-4549-9af6-2b4a1a93eeaa"
     }
