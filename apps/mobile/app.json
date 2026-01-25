@@ -58,7 +58,8 @@
         {
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone to record voice messages."
         }
-      ]
+      ],
+      "expo-audio"
     ],
     "experiments": {
       "typedRoutes": true
