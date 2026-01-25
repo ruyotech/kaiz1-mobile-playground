@@ -1,56 +1,76 @@
-# Kaiz1 Mobile Playground
+# Kaiz LifeOS
 
-Personal SDLC Super-App mobile playground built with Expo and TypeScript.
+Personal SDLC Super-App monorepo with mobile app and Spring Boot backend.
 
-## ⚠️ Setup Required
+## 📂 Project Structure
 
-**This project requires Node.js 18+ to run.** Since Node.js is not currently installed on your system, you'll need to install it before running the app.
-
-### Install Node.js
-
-Choose one of these methods:
-
-1. **Homebrew** (requires password):
-   ```bash
-   brew install node
-   ```
-
-2. **Official Installer**: Download from [nodejs.org](https://nodejs.org/)
-
-3. **NVM (Node Version Manager)**:
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-   nvm install 18
-   ```
-
-## 📦 Installation
-
-Once Node.js is installed:
-
-```bash
-npm install
+```
+kaiz1-mobile-playground/
+├── apps/
+│   ├── mobile/          # Expo React Native app
+│   └── backend/         # Spring Boot API server
+└── README.md
 ```
 
-## 🚀 Running the App
+## ⚠️ Prerequisites
+
+- **Node.js 18+** for the mobile app
+- **Java 21+** for the backend
+- **Docker** for running the backend with PostgreSQL
+
+## 🚀 Quick Start
+
+### Backend (Spring Boot API)
 
 ```bash
-npm start
+cd apps/backend
+docker compose up -d
+```
+
+This starts:
+- PostgreSQL database on port 5433
+- Spring Boot API on port 8080
+
+API Documentation: http://localhost:8080/swagger-ui.html
+
+### Mobile App (Expo)
+
+```bash
+cd apps/mobile
+npm install
+npx expo start --clear
 ```
 
 Then:
 - Press `i` for iOS simulator
 - Press `a` for Android emulator
+- Press `s` to switch between Expo Go and development build
 - Scan QR code with Expo Go app on your phone
 
-## 📂 Project Structure
+## 📂 Mobile App Structure
 
-- `app/` - Expo Router screens
-- `components/` - Reusable UI components
-- `data/mock/` - Dummy JSON data files
-- `services/` - Mock API layer
-- `store/` - Zustand state management
-- `types/` - TypeScript definitions
-- `utils/` - Helper functions
+```
+apps/mobile/
+├── app/           # Expo Router screens
+├── components/    # Reusable UI components
+├── data/mock/     # Dummy JSON data (for demo mode)
+├── services/      # API layer (real + mock)
+├── store/         # Zustand state management
+├── types/         # TypeScript definitions
+└── utils/         # Helper functions
+```
+
+## 📂 Backend Structure
+
+```
+apps/backend/
+├── src/main/java/com/kaiz/lifeos/
+│   ├── identity/      # Auth & user management
+│   ├── lifewheel/     # Life wheel areas
+│   └── shared/        # Common utilities
+└── src/main/resources/
+    └── db/migration/  # Flyway migrations
+```
 
 ## 🎯 Features
 
