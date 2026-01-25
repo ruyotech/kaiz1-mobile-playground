@@ -7,7 +7,9 @@ CREATE TABLE mindset_themes (
     accent_color VARCHAR(20),
     default_asset VARCHAR(500),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(36),
+    updated_by VARCHAR(36)
 );
 
 -- Create gradient colors for themes
@@ -23,7 +25,7 @@ CREATE TABLE mindset_contents (
     id UUID PRIMARY KEY,
     body TEXT NOT NULL,
     author VARCHAR(200),
-    life_wheel_area_id UUID REFERENCES life_wheel_areas(id),
+    life_wheel_area_id VARCHAR(10) REFERENCES life_wheel_areas(id),
     dimension_tag VARCHAR(50),
     theme_preset VARCHAR(50),
     intervention_weight INTEGER DEFAULT 50,
@@ -31,7 +33,9 @@ CREATE TABLE mindset_contents (
     dwell_time_ms INTEGER DEFAULT 4000,
     is_favorite BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(36),
+    updated_by VARCHAR(36)
 );
 
 -- Create secondary tags for mindset content

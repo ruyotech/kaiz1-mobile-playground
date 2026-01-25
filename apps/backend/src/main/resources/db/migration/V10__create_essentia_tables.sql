@@ -3,7 +3,7 @@ CREATE TABLE essentia_books (
     id UUID PRIMARY KEY,
     title VARCHAR(300) NOT NULL,
     author VARCHAR(200) NOT NULL,
-    life_wheel_area_id UUID REFERENCES life_wheel_areas(id),
+    life_wheel_area_id VARCHAR(10) REFERENCES life_wheel_areas(id),
     category VARCHAR(100),
     duration INTEGER,
     card_count INTEGER,
@@ -13,7 +13,9 @@ CREATE TABLE essentia_books (
     rating DECIMAL(3, 2),
     completion_count INTEGER DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(36),
+    updated_by VARCHAR(36)
 );
 
 -- Create book tags table
@@ -39,7 +41,9 @@ CREATE TABLE essentia_cards (
     text TEXT NOT NULL,
     image_url VARCHAR(500),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(36),
+    updated_by VARCHAR(36)
 );
 
 -- Create user progress table
@@ -52,6 +56,8 @@ CREATE TABLE essentia_user_progress (
     is_favorite BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(36),
+    updated_by VARCHAR(36),
     UNIQUE(user_id, book_id)
 );
 
@@ -65,13 +71,13 @@ CREATE INDEX idx_essentia_user_progress_book_id ON essentia_user_progress(book_i
 
 -- Insert seed data for books
 
--- Book 1: Atomic Habits
+-- Book 1: Atomic Habits (Personal Growth - lw-4)
 INSERT INTO essentia_books (id, title, author, life_wheel_area_id, category, duration, card_count, difficulty, description, publication_year, rating, completion_count)
-SELECT 
+VALUES (
     '33333333-3333-3333-3333-333333333301'::UUID,
     'Atomic Habits',
     'James Clear',
-    id,
+    'lw-4',
     'Personal Growth',
     8,
     6,
@@ -80,15 +86,15 @@ SELECT
     2018,
     4.80,
     1250
-FROM life_wheel_areas WHERE display_id = 'lw-4' LIMIT 1;
+);
 
--- Book 2: Deep Work
+-- Book 2: Deep Work (Career & Work - lw-2)
 INSERT INTO essentia_books (id, title, author, life_wheel_area_id, category, duration, card_count, difficulty, description, publication_year, rating, completion_count)
-SELECT 
+VALUES (
     '33333333-3333-3333-3333-333333333302'::UUID,
     'Deep Work',
     'Cal Newport',
-    id,
+    'lw-2',
     'Career & Work',
     7,
     4,
@@ -97,15 +103,15 @@ SELECT
     2016,
     4.60,
     980
-FROM life_wheel_areas WHERE display_id = 'lw-2' LIMIT 1;
+);
 
--- Book 3: The Psychology of Money
+-- Book 3: The Psychology of Money (Finance & Money - lw-3)
 INSERT INTO essentia_books (id, title, author, life_wheel_area_id, category, duration, card_count, difficulty, description, publication_year, rating, completion_count)
-SELECT 
+VALUES (
     '33333333-3333-3333-3333-333333333303'::UUID,
     'The Psychology of Money',
     'Morgan Housel',
-    id,
+    'lw-3',
     'Finance & Money',
     6,
     4,
@@ -114,15 +120,15 @@ SELECT
     2020,
     4.70,
     1100
-FROM life_wheel_areas WHERE display_id = 'lw-3' LIMIT 1;
+);
 
--- Book 4: Cant Hurt Me
+-- Book 4: Cant Hurt Me (Health & Fitness - lw-1)
 INSERT INTO essentia_books (id, title, author, life_wheel_area_id, category, duration, card_count, difficulty, description, publication_year, rating, completion_count)
-SELECT 
+VALUES (
     '33333333-3333-3333-3333-333333333304'::UUID,
     'Cant Hurt Me',
     'David Goggins',
-    id,
+    'lw-1',
     'Health & Fitness',
     9,
     4,
@@ -131,7 +137,7 @@ SELECT
     2018,
     4.75,
     890
-FROM life_wheel_areas WHERE display_id = 'lw-1' LIMIT 1;
+);
 
 -- Insert book tags
 INSERT INTO essentia_book_tags (book_id, tag) VALUES
