@@ -1,0 +1,54 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kaizapp-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/kaizapp
+      SPRING_DATASOURCE_USERNAME: kaiz
+      SPRING_DATASOURCE_PASSWORD: kaiz_dev_password
+      JWT_SECRET: dev-secret-key-that-is-at-least-256-bits-long-for-hs256
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health/liveness"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - kaizapp-network
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: kaizapp-db
+    environment:
+      POSTGRES_DB: kaizapp
+      POSTGRES_USER: kaizapp
+      POSTGRES_PASSWORD: kaiz_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kaizapp -d kaizapp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kaizapp-network
+    restart: unless-stopped
+
+networks:
+  kaizapp-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
