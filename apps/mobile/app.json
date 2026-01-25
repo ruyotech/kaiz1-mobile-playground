@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Kaiz1 Mobile Playground",
-    "slug": "kaiz1-mobile-playground",
+    "name": "KaizApp",
+    "slug": "kaizapp",
     "owner": "ruyotech",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kaiz1.mobileplayground",
+      "bundleIdentifier": "app.kaiz.mobile",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kaiz1.mobileplayground"
+      "package": "app.kaiz.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -40,7 +40,7 @@
     "experiments": {
       "typedRoutes": true
     },
-    "scheme": "kaiz1",
+    "scheme": "kaizapp",
     "extra": {
       "router": {},
       "eas": {

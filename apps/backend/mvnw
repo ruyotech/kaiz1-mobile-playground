@@ -1,0 +1,32 @@
+#!/bin/sh
+# Maven Wrapper script
+
+set -euf
+[ -n "${MVNW_VERBOSE-}" ] && set -x
+
+# OS specific support
+case "$(uname -s)" in
+CYGWIN*|MINGW*|MSYS*) cygwin=true ;;
+*) cygwin=false ;;
+esac
+
+# Find the project basedir
+MAVEN_BASEDIR="${MAVEN_BASEDIR:-$(cd "$(dirname "$0")" && pwd)}"
+
+# Use the wrapper jar
+MAVEN_WRAPPER_JAR="${MAVEN_BASEDIR}/.mvn/wrapper/maven-wrapper.jar"
+
+# Download wrapper if not present
+if [ ! -f "${MAVEN_WRAPPER_JAR}" ]; then
+    WRAPPER_URL="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.3.2/maven-wrapper-3.3.2.jar"
+    mkdir -p "${MAVEN_BASEDIR}/.mvn/wrapper"
+    curl -fsSL "${WRAPPER_URL}" -o "${MAVEN_WRAPPER_JAR}" || wget -q "${WRAPPER_URL}" -O "${MAVEN_WRAPPER_JAR}"
+fi
+
+# Run Maven
+exec java \
+    ${MAVEN_OPTS:-} \
+    -classpath "${MAVEN_WRAPPER_JAR}" \
+    org.apache.maven.wrapper.MavenWrapperMain \
+    ${MAVEN_CONFIG:-} \
+    "$@"
