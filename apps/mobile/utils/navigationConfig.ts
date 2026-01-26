@@ -22,10 +22,8 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     essentia: [
-        { name: 'Today', icon: 'home', route: '/(tabs)/essentia' },
-        { name: 'Explore', icon: 'compass', route: '/(tabs)/essentia/explore' },
-        { name: 'Library', icon: 'bookshelf', route: '/(tabs)/essentia/library' },
-        { name: 'Growth', icon: 'chart-line', route: '/(tabs)/essentia/growth' },
+        { name: 'Today', icon: 'book-open-page-variant', route: '/(tabs)/essentia' },
+        { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
     challenges: [
         { name: 'Active', icon: 'target', route: '/(tabs)/challenges' },
@@ -63,10 +61,14 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
     ],
     essentia: [
-        { name: 'Challenges', icon: 'trophy-variant', route: '/(tabs)/essentia/challenges' },
+        { name: 'Explore Books', icon: 'compass-outline', route: '/(tabs)/essentia/explore' },
+        { name: 'My Library', icon: 'bookshelf', route: '/(tabs)/essentia/library' },
+        { name: 'Growth Stats', icon: 'chart-line', route: '/(tabs)/essentia/growth' },
         { name: 'Highlights', icon: 'marker', route: '/(tabs)/essentia/highlights' },
-        { name: 'Flashcards', icon: 'cards', route: '/(tabs)/essentia/flashcards' },
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
+        { name: 'Flashcards', icon: 'cards-outline', route: '/(tabs)/essentia/flashcards' },
+        { name: 'Reading Goals', icon: 'flag-checkered', route: '/(tabs)/essentia/goals' },
+        { name: 'Collections', icon: 'folder-multiple', route: '/(tabs)/essentia/collections' },
+        { name: 'Settings', icon: 'cog-outline', route: '/(tabs)/settings' },
     ],
     challenges: [
         { name: 'Create Challenge', icon: 'plus-circle', route: '/(tabs)/challenges/create' },
