@@ -2374,6 +2374,310 @@ export const communityApi = {
     },
 };
 
+// ============================================================================
+// SENSAI API - AI Scrum Master & Life Coach
+// ============================================================================
+
+import type {
+    VelocityMetrics,
+    SprintHealth,
+    DailyStandup,
+    Intervention,
+    SprintCeremony,
+    LifeWheelMetrics,
+    CoachMessage,
+    SensAISettings,
+    IntakeResult,
+    SensAIAnalytics,
+    GetStandupResponse,
+    CompleteStandupRequest,
+    AcknowledgeInterventionRequest,
+    ProcessIntakeRequest,
+    RecoveryTask,
+    SprintCeremonyType,
+} from '../types/sensai.types';
+
+export const sensaiApi = {
+    // ========== Velocity & Capacity ==========
+
+    /**
+     * Get user's velocity metrics
+     */
+    async getVelocityMetrics(): Promise<VelocityMetrics> {
+        return request<VelocityMetrics>('/sensai/velocity', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get sprint health for a specific sprint
+     */
+    async getSprintHealth(sprintId: string): Promise<SprintHealth> {
+        return request<SprintHealth>(`/sensai/sprints/${sprintId}/health`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get current sprint health
+     */
+    async getCurrentSprintHealth(): Promise<SprintHealth> {
+        return request<SprintHealth>('/sensai/sprints/current/health', { method: 'GET' }, true);
+    },
+
+    /**
+     * Calculate adjusted capacity based on calendar
+     */
+    async getAdjustedCapacity(): Promise<{ baseVelocity: number; adjustedCapacity: number; blockedHours: number }> {
+        return request<any>('/sensai/capacity/adjusted', { method: 'GET' }, true);
+    },
+
+    // ========== Daily Standup ==========
+
+    /**
+     * Get today's standup (or create if not exists)
+     */
+    async getTodayStandup(): Promise<GetStandupResponse> {
+        return request<GetStandupResponse>('/sensai/standups/today', { method: 'GET' }, true);
+    },
+
+    /**
+     * Complete today's standup
+     */
+    async completeStandup(data: CompleteStandupRequest): Promise<DailyStandup> {
+        return request<DailyStandup>('/sensai/standups/today/complete', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Skip today's standup
+     */
+    async skipStandup(reason?: string): Promise<void> {
+        await request<void>('/sensai/standups/today/skip', {
+            method: 'POST',
+            body: JSON.stringify({ reason }),
+        }, true);
+    },
+
+    /**
+     * Get standup history
+     */
+    async getStandupHistory(days: number = 7): Promise<DailyStandup[]> {
+        return request<DailyStandup[]>(`/sensai/standups/history?days=${days}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Convert blocker to task
+     */
+    async convertBlockerToTask(blockerId: string): Promise<{ taskId: string }> {
+        return request<{ taskId: string }>(`/sensai/standups/blockers/${blockerId}/convert`, {
+            method: 'POST',
+        }, true);
+    },
+
+    // ========== Interventions ==========
+
+    /**
+     * Get active interventions
+     */
+    async getActiveInterventions(): Promise<Intervention[]> {
+        return request<Intervention[]>('/sensai/interventions/active', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get intervention history
+     */
+    async getInterventionHistory(page: number = 0, size: number = 20): Promise<Intervention[]> {
+        return request<Intervention[]>(`/sensai/interventions/history?page=${page}&size=${size}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Acknowledge/override/defer an intervention
+     */
+    async acknowledgeIntervention(data: AcknowledgeInterventionRequest): Promise<void> {
+        await request<void>(`/sensai/interventions/${data.interventionId}/acknowledge`, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: data.action,
+                overrideReason: data.overrideReason,
+            }),
+        }, true);
+    },
+
+    /**
+     * Check for new interventions (triggered on data changes)
+     */
+    async checkInterventions(): Promise<Intervention[]> {
+        return request<Intervention[]>('/sensai/interventions/check', { method: 'POST' }, true);
+    },
+
+    // ========== Sprint Ceremonies ==========
+
+    /**
+     * Start a ceremony
+     */
+    async startCeremony(type: SprintCeremonyType): Promise<SprintCeremony> {
+        return request<SprintCeremony>(`/sensai/ceremonies/${type}/start`, { method: 'POST' }, true);
+    },
+
+    /**
+     * Get upcoming ceremonies
+     */
+    async getUpcomingCeremonies(): Promise<SprintCeremony[]> {
+        return request<SprintCeremony[]>('/sensai/ceremonies/upcoming', { method: 'GET' }, true);
+    },
+
+    /**
+     * Complete sprint planning
+     */
+    async completeSprintPlanning(data: { selectedTaskIds: string[]; notes?: string }): Promise<SprintCeremony> {
+        return request<SprintCeremony>('/sensai/ceremonies/planning/complete', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Complete sprint review
+     */
+    async completeSprintReview(notes?: string): Promise<SprintCeremony> {
+        return request<SprintCeremony>('/sensai/ceremonies/review/complete', {
+            method: 'POST',
+            body: JSON.stringify({ notes }),
+        }, true);
+    },
+
+    /**
+     * Complete retrospective
+     */
+    async completeRetrospective(data: { whatWorked: string[]; whatBlocked: string[]; keyLearnings: string[] }): Promise<SprintCeremony> {
+        return request<SprintCeremony>('/sensai/ceremonies/retrospective/complete', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    // ========== Life Wheel ==========
+
+    /**
+     * Get life wheel metrics
+     */
+    async getLifeWheelMetrics(): Promise<LifeWheelMetrics> {
+        return request<LifeWheelMetrics>('/sensai/lifewheel/metrics', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get dimension history
+     */
+    async getDimensionHistory(dimension: string, sprints: number = 4): Promise<any[]> {
+        return request<any[]>(`/sensai/lifewheel/dimensions/${dimension}/history?sprints=${sprints}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Add recovery task
+     */
+    async addRecoveryTask(task: RecoveryTask): Promise<{ taskId: string }> {
+        return request<{ taskId: string }>('/sensai/lifewheel/recovery-task', {
+            method: 'POST',
+            body: JSON.stringify(task),
+        }, true);
+    },
+
+    // ========== Universal Intake ==========
+
+    /**
+     * Process intake (voice, text, image, etc.)
+     */
+    async processIntake(data: ProcessIntakeRequest): Promise<IntakeResult> {
+        return request<IntakeResult>('/sensai/intake/process', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }, true);
+    },
+
+    /**
+     * Confirm intake suggestions
+     */
+    async confirmIntakeSuggestions(intakeId: string, selectedSuggestionIds: string[]): Promise<void> {
+        await request<void>(`/sensai/intake/${intakeId}/confirm`, {
+            method: 'POST',
+            body: JSON.stringify({ selectedSuggestionIds }),
+        }, true);
+    },
+
+    // ========== Coach Messages ==========
+
+    /**
+     * Get coach messages
+     */
+    async getCoachMessages(unreadOnly: boolean = false): Promise<CoachMessage[]> {
+        return request<CoachMessage[]>(`/sensai/messages?unreadOnly=${unreadOnly}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Mark message as read
+     */
+    async markMessageRead(messageId: string): Promise<void> {
+        await request<void>(`/sensai/messages/${messageId}/read`, { method: 'POST' }, true);
+    },
+
+    // ========== Settings ==========
+
+    /**
+     * Get SensAI settings
+     */
+    async getSettings(): Promise<SensAISettings> {
+        return request<SensAISettings>('/sensai/settings', { method: 'GET' }, true);
+    },
+
+    /**
+     * Update SensAI settings
+     */
+    async updateSettings(settings: Partial<SensAISettings>): Promise<SensAISettings> {
+        return request<SensAISettings>('/sensai/settings', {
+            method: 'PATCH',
+            body: JSON.stringify(settings),
+        }, true);
+    },
+
+    // ========== Analytics ==========
+
+    /**
+     * Get SensAI analytics
+     */
+    async getAnalytics(period: 'week' | 'month' | 'quarter' | 'year'): Promise<SensAIAnalytics> {
+        return request<SensAIAnalytics>(`/sensai/analytics?period=${period}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get pattern insights
+     */
+    async getPatternInsights(): Promise<any[]> {
+        return request<any[]>('/sensai/analytics/patterns', { method: 'GET' }, true);
+    },
+
+    // ========== Motivation Integration ==========
+
+    /**
+     * Get contextual motivation content
+     */
+    async getMotivationContent(): Promise<any> {
+        return request<any>('/sensai/motivation/contextual', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get knowledge prescription based on patterns
+     */
+    async getKnowledgePrescription(): Promise<any[]> {
+        return request<any[]>('/sensai/motivation/prescriptions', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get micro-challenges
+     */
+    async getMicroChallenges(): Promise<any[]> {
+        return request<any[]>('/sensai/motivation/micro-challenges', { method: 'GET' }, true);
+    },
+};
+
 // Export configuration for debugging
 export const apiConfig = {
     baseUrl: API_BASE_URL,

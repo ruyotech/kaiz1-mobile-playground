@@ -10,6 +10,7 @@ export default function TabsLayout() {
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="index" />
                 <Stack.Screen name="sdlc" />
+                <Stack.Screen name="sensai" />
                 <Stack.Screen name="challenges" />
                 <Stack.Screen name="essentia" />
                 <Stack.Screen name="motivation" />

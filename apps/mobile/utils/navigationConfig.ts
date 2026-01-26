@@ -17,6 +17,10 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
         { name: 'Sprint', icon: 'view-dashboard-outline', route: '/(tabs)/sdlc/calendar' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
+    sensai: [
+        { name: 'Coach', icon: 'robot', route: '/(tabs)/sensai' },
+        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+    ],
     mindset: [
         { name: 'Mindset', icon: 'creation', route: '/(tabs)/motivation' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
@@ -53,6 +57,18 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'Epics', icon: 'bookmark-multiple', route: '/(tabs)/sdlc/epics' },
         { name: 'Knowledge Hub', icon: 'school', route: '/(tabs)/sdlc/wiki' },
         { name: 'Templates', icon: 'file-document-multiple', route: 'templates' },
+    ],
+    sensai: [
+        { name: 'Daily Standup', icon: 'coffee', route: '/(tabs)/sensai/standup' },
+        { name: 'Sprint Planning', icon: 'calendar-plus', route: '/(tabs)/sensai/planning' },
+        { name: 'Sprint Review', icon: 'presentation', route: '/(tabs)/sensai/review' },
+        { name: 'Retrospective', icon: 'comment-multiple-outline', route: '/(tabs)/sensai/retrospective' },
+        { name: 'Interventions', icon: 'alert-decagram', route: '/(tabs)/sensai/interventions' },
+        { name: 'Life Wheel', icon: 'chart-donut', route: '/(tabs)/sensai/lifewheel' },
+        { name: 'Velocity', icon: 'speedometer', route: '/(tabs)/sensai/velocity' },
+        { name: 'Quick Intake', icon: 'plus-box', route: '/(tabs)/sensai/intake' },
+        { name: 'Analytics', icon: 'chart-box-outline', route: '/(tabs)/sensai/analytics' },
+        { name: 'Settings', icon: 'cog-outline', route: '/(tabs)/sensai/settings' },
     ],
     mindset: [
         { name: 'Favorites', icon: 'heart', route: '/(tabs)/motivation/favorites' },
@@ -110,9 +126,10 @@ export interface App {
 
 export const APPS: App[] = [
     { id: 'sdlc', name: 'Tasks', icon: 'view-dashboard-outline', color: '#3B82F6', route: '/(tabs)/sdlc' },
+    { id: 'sensai', name: 'SensAI', icon: 'robot', color: '#10B981', route: '/(tabs)/sensai' },
     { id: 'challenges', name: 'Challenges', icon: 'target', color: '#F59E0B', route: '/(tabs)/challenges' },
     { id: 'pomodoro', name: 'Focus', icon: 'circle-slice-8', color: '#EF4444', route: '/(tabs)/pomodoro' },
     { id: 'essentia', name: 'Essentia', icon: 'brain', color: '#8B5CF6', route: '/(tabs)/essentia' },
     { id: 'mindset', name: 'Mindset', icon: 'creation', color: '#EC4899', route: '/(tabs)/motivation' },
-    { id: 'community', name: 'Community', icon: 'account-group', color: '#10B981', route: '/(tabs)/community' },
+    { id: 'community', name: 'Community', icon: 'account-group', color: '#06B6D4', route: '/(tabs)/community' },
 ];
