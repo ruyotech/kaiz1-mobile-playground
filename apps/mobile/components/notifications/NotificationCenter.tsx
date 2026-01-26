@@ -425,17 +425,27 @@ export function NotificationCenter({ onClose, isModal = false }: NotificationCen
         if (onClose) onClose();
     };
 
+    const handleBack = () => {
+        if (onClose) {
+            onClose();
+        } else {
+            router.back();
+        }
+    };
+
     return (
         <View className="flex-1 bg-gray-100">
             {/* Header */}
             <View className="bg-white px-4 pt-2 pb-3 border-b border-gray-100">
                 <View className="flex-row items-center justify-between mb-3">
                     <View className="flex-row items-center">
-                        {isModal && onClose && (
-                            <TouchableOpacity onPress={onClose} className="mr-3">
-                                <MaterialCommunityIcons name="close" size={24} color="#374151" />
-                            </TouchableOpacity>
-                        )}
+                        <TouchableOpacity onPress={handleBack} className="mr-3">
+                            <MaterialCommunityIcons 
+                                name={isModal ? "close" : "arrow-left"} 
+                                size={24} 
+                                color="#374151" 
+                            />
+                        </TouchableOpacity>
                         <Text className="text-2xl font-bold text-gray-900">Notifications</Text>
                         {unreadCount > 0 && (
                             <View className="ml-2 bg-blue-600 px-2 py-0.5 rounded-full">
