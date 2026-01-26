@@ -3,8 +3,6 @@ import { format, addDays, isSameMonth, addMonths, subMonths } from 'date-fns';
 import { getWeekStartDate, getMonthCalendarDays, getSprintStatus } from '../../utils/dateHelpers';
 import { useState, useRef } from 'react';
 import { MonthSelector } from './MonthSelector';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 
 interface WeekHeaderProps {
     currentDate: Date;
@@ -33,7 +31,6 @@ export function WeekHeader({
     onMonthSelect,
     viewType = 'week',
 }: WeekHeaderProps) {
-    const router = useRouter();
     const [monthViewDate, setMonthViewDate] = useState(currentDate);
     const touchStart = useRef({ x: 0, y: 0 });
     const touchMove = useRef({ x: 0, y: 0 });
@@ -209,17 +206,9 @@ export function WeekHeader({
 
     return (
         <View className={`${bgColor} pt-12 pb-3 px-4`}>
-            {/* Header row with icons */}
+            {/* Header row */}
             <View className="flex-row items-center justify-between mb-1">
-                {/* Hamburger Menu - Left - Navigate to full-screen settings */}
-                <TouchableOpacity
-                    onPress={() => router.push('/(tabs)/settings' as any)}
-                    className="p-2 -ml-2"
-                >
-                    <MaterialCommunityIcons name="menu" size={24} color="white" />
-                </TouchableOpacity>
-
-                {/* Sprint Name - Center/Left */}
+                {/* Sprint Name - Left */}
                 <TouchableOpacity
                     onPress={onSprintNamePress}
                     className="flex-1"
@@ -231,14 +220,6 @@ export function WeekHeader({
 
                 {/* Toggle Element */}
                 {toggleElement}
-
-                {/* Notification Icon - Right */}
-                <TouchableOpacity
-                    onPress={() => router.push('/notifications' as any)}
-                    className="p-2 -mr-2"
-                >
-                    <MaterialCommunityIcons name="bell-outline" size={24} color="white" />
-                </TouchableOpacity>
             </View>
 
             {/* Week or Month View */}

@@ -45,6 +45,14 @@ export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
         { name: 'Hub', icon: 'account-group', route: '/(tabs)/community' },
         { name: 'More', icon: 'dots-horizontal', route: 'more' },
     ],
+    settings: [
+        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
+        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+    ],
+    notifications: [
+        { name: 'Inbox', icon: 'bell', route: '/(tabs)/notifications' },
+        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+    ],
 };
 
 export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
@@ -114,6 +122,22 @@ export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
         { name: 'Support Circle', icon: 'account-heart', route: '/(tabs)/community/support' },
         { name: 'My Profile', icon: 'account-circle', route: '/(tabs)/community/profile' },
     ],
+    settings: [
+        { name: 'Theme & Display', icon: 'palette', route: '/(tabs)/settings/appearance' },
+        { name: 'Language', icon: 'translate', route: '/(tabs)/settings/language' },
+        { name: 'Privacy', icon: 'shield-lock', route: '/(tabs)/settings/privacy' },
+        { name: 'Data & Storage', icon: 'database', route: '/(tabs)/settings/storage' },
+        { name: 'About', icon: 'information', route: '/(tabs)/settings/about' },
+        { name: 'Sign Out', icon: 'logout', route: 'logout' },
+    ],
+    notifications: [
+        { name: 'Unread', icon: 'bell-badge', route: '/(tabs)/notifications/unread' },
+        { name: 'Mentions', icon: 'at', route: '/(tabs)/notifications/mentions' },
+        { name: 'Task Updates', icon: 'checkbox-marked', route: '/(tabs)/notifications/tasks' },
+        { name: 'Challenge Alerts', icon: 'trophy', route: '/(tabs)/notifications/challenges' },
+        { name: 'Settings', icon: 'cog', route: '/(tabs)/notifications/settings' },
+        { name: 'Clear All', icon: 'notification-clear-all', route: 'clear-notifications' },
+    ],
 };
 
 export interface App {
@@ -132,4 +156,6 @@ export const APPS: App[] = [
     { id: 'essentia', name: 'Essentia', icon: 'brain', color: '#8B5CF6', route: '/(tabs)/essentia' },
     { id: 'mindset', name: 'Mindset', icon: 'creation', color: '#EC4899', route: '/(tabs)/motivation' },
     { id: 'community', name: 'Community', icon: 'account-group', color: '#06B6D4', route: '/(tabs)/community' },
+    { id: 'notifications', name: 'Notifications', icon: 'bell', color: '#F97316', route: '/(tabs)/notifications' },
+    { id: 'settings', name: 'Settings', icon: 'cog', color: '#6B7280', route: '/(tabs)/settings' },
 ];

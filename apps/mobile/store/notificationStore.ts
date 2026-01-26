@@ -67,6 +67,7 @@ interface NotificationState {
     markCategoryAsRead: (category: NotificationCategory) => Promise<void>;
     archiveNotification: (id: string) => void;
     deleteNotification: (id: string) => Promise<void>;
+    clearAllNotifications: () => void;
     
     // Actions - Pin
     pinNotification: (id: string) => void;
@@ -500,6 +501,14 @@ export const useNotificationStore = create<NotificationState>()(
                 set({
                     enhancedNotifications: demoNotifications,
                     unreadCount: demoNotifications.filter(n => !n.isRead).length,
+                });
+            },
+
+            clearAllNotifications: () => {
+                set({
+                    notifications: [],
+                    enhancedNotifications: [],
+                    unreadCount: 0,
                 });
             },
         }),
