@@ -14,6 +14,7 @@ import {
     InterventionUrgency,
     SuggestedAction,
 } from '../../types/sensai.types';
+import { useTranslation } from '../../hooks';
 
 interface InterventionCardProps {
     intervention: Intervention;
@@ -57,13 +58,6 @@ const TYPE_ICONS: Record<InterventionType, string> = {
     celebration: 'party-popper',
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-    capacity: 'Capacity',
-    balance: 'Balance',
-    execution: 'Execution',
-    motivation: 'Motivation',
-};
-
 export function InterventionCard({
     intervention,
     onAcknowledge,
@@ -71,8 +65,16 @@ export function InterventionCard({
     expanded = false,
     onToggleExpand,
 }: InterventionCardProps) {
+    const { t } = useTranslation();
     const style = URGENCY_STYLES[intervention.urgency];
     const icon = TYPE_ICONS[intervention.type];
+
+    const CATEGORY_LABELS: Record<string, string> = {
+        capacity: t('sensai.interventions.capacity'),
+        balance: t('sensai.interventions.balance'),
+        execution: t('sensai.interventions.execution'),
+        motivation: t('sensai.interventions.motivation'),
+    };
 
     const renderDataSummary = () => {
         const { data } = intervention;
@@ -83,15 +85,15 @@ export function InterventionCard({
                 return (
                     <View className="bg-white/60 rounded-lg p-3 mt-2">
                         <View className="flex-row justify-between mb-1">
-                            <Text className="text-xs text-gray-500">Planned</Text>
-                            <Text className="text-sm font-semibold text-gray-900">{data.plannedPoints} pts</Text>
+                            <Text className="text-xs text-gray-500">{t('sensai.interventions.planned')}</Text>
+                            <Text className="text-sm font-semibold text-gray-900">{data.plannedPoints} {t('common.pts')}</Text>
                         </View>
                         <View className="flex-row justify-between mb-1">
-                            <Text className="text-xs text-gray-500">Your Velocity</Text>
-                            <Text className="text-sm font-semibold text-gray-900">{data.velocity} pts</Text>
+                            <Text className="text-xs text-gray-500">{t('sensai.interventions.yourVelocity')}</Text>
+                            <Text className="text-sm font-semibold text-gray-900">{data.velocity} {t('common.pts')}</Text>
                         </View>
                         <View className="flex-row justify-between">
-                            <Text className="text-xs text-gray-500">Overcommit</Text>
+                            <Text className="text-xs text-gray-500">{t('sensai.interventions.overcommit')}</Text>
                             <Text className={`text-sm font-bold ${style.text}`}>+{data.overcommitPercentage}%</Text>
                         </View>
                     </View>
@@ -103,13 +105,13 @@ export function InterventionCard({
                         <View className="flex-row items-center mb-2">
                             <MaterialCommunityIcons name="alert-circle" size={16} color="#F59E0B" />
                             <Text className="text-sm text-gray-700 ml-2">
-                                {data.dimensionName} at zero for {data.weeksNeglected} weeks
+                                {data.dimensionName} {t('sensai.interventions.atZeroFor', { weeks: data.weeksNeglected })}
                             </Text>
                         </View>
                         <View className="bg-amber-100 rounded-lg p-2">
-                            <Text className="text-xs text-amber-800 font-medium">Suggested Task:</Text>
+                            <Text className="text-xs text-amber-800 font-medium">{t('sensai.interventions.suggestedTask')}</Text>
                             <Text className="text-sm text-amber-900 mt-1">"{data.suggestedTask}"</Text>
-                            <Text className="text-xs text-amber-600 mt-1">{data.suggestedPoints} points</Text>
+                            <Text className="text-xs text-amber-600 mt-1">{data.suggestedPoints} {t('common.points')}</Text>
                         </View>
                     </View>
                 );
@@ -118,7 +120,7 @@ export function InterventionCard({
                 return (
                     <View className="bg-white/60 rounded-lg p-3 mt-2">
                         <View className="flex-row justify-between mb-2">
-                            <Text className="text-xs text-gray-500">Progress</Text>
+                            <Text className="text-xs text-gray-500">{t('common.progress')}</Text>
                             <Text className={`text-sm font-semibold ${style.text}`}>{data.completionPercentage}%</Text>
                         </View>
                         <View className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -128,8 +130,8 @@ export function InterventionCard({
                             />
                         </View>
                         <View className="flex-row justify-between mt-2">
-                            <Text className="text-xs text-gray-500">Day {data.dayOfSprint} of {data.totalDays}</Text>
-                            <Text className="text-xs text-gray-500">{data.remainingPoints} pts remaining</Text>
+                            <Text className="text-xs text-gray-500">{t('sensai.standup.dayOfSprint', { current: data.dayOfSprint, total: data.totalDays })}</Text>
+                            <Text className="text-xs text-gray-500">{data.remainingPoints} {t('common.pts')} {t('common.remaining').toLowerCase()}</Text>
                         </View>
                     </View>
                 );
@@ -139,9 +141,9 @@ export function InterventionCard({
                     <View className="bg-white/60 rounded-lg p-3 mt-2">
                         <View className="items-center">
                             <MaterialCommunityIcons name="trophy" size={32} color="#10B981" />
-                            <Text className="text-2xl font-bold text-green-600 mt-1">{data.newVelocity} pts</Text>
-                            <Text className="text-xs text-gray-500">New Personal Best</Text>
-                            <Text className="text-sm text-green-600 mt-1">+{data.improvementPercentage}% improvement</Text>
+                            <Text className="text-2xl font-bold text-green-600 mt-1">{data.newVelocity} {t('common.pts')}</Text>
+                            <Text className="text-xs text-gray-500">{t('sensai.interventions.personalBest')}</Text>
+                            <Text className="text-sm text-green-600 mt-1">+{data.improvementPercentage}% {t('common.improvement')}</Text>
                         </View>
                     </View>
                 );
@@ -207,7 +209,7 @@ export function InterventionCard({
                                 onPress={() => onAcknowledge('acknowledge')}
                                 className="flex-1 bg-green-600 py-3 rounded-xl items-center"
                             >
-                                <Text className="text-white font-semibold">Awesome! 🎉</Text>
+                                <Text className="text-white font-semibold">{t('sensai.interventions.awesome')}</Text>
                             </TouchableOpacity>
                         ) : (
                             <>
@@ -215,7 +217,7 @@ export function InterventionCard({
                                     onPress={() => onAcknowledge('acknowledge')}
                                     className="flex-1 bg-blue-600 py-3 rounded-xl items-center"
                                 >
-                                    <Text className="text-white font-semibold">Got It</Text>
+                                    <Text className="text-white font-semibold">{t('sensai.interventions.gotIt')}</Text>
                                 </TouchableOpacity>
                                 
                                 {intervention.urgency !== 'positive' && (
@@ -223,7 +225,7 @@ export function InterventionCard({
                                         onPress={() => onAcknowledge('defer')}
                                         className="px-4 py-3 bg-white border border-gray-200 rounded-xl"
                                     >
-                                        <Text className="text-gray-700 font-medium">Later</Text>
+                                        <Text className="text-gray-700 font-medium">{t('common.later')}</Text>
                                     </TouchableOpacity>
                                 )}
                                 
@@ -232,7 +234,7 @@ export function InterventionCard({
                                         onPress={() => onAcknowledge('override')}
                                         className="px-4 py-3 bg-gray-100 rounded-xl"
                                     >
-                                        <Text className="text-gray-500 font-medium">Override</Text>
+                                        <Text className="text-gray-500 font-medium">{t('sensai.interventions.override')}</Text>
                                     </TouchableOpacity>
                                 )}
                             </>

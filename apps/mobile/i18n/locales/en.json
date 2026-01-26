@@ -337,7 +337,8 @@
       "noEpicAssigned": "No epic assigned",
       "noSprintAssigned": "No sprint assigned",
       "noEpicsAvailable": "No epics available",
-      "createEpicFirst": "Create an epic first to organize tasks"
+      "createEpicFirst": "Create an epic first to organize tasks",
+      "changed": "Changed"
     },
     "tabs": {
       "overview": "Overview",
@@ -528,6 +529,16 @@
       "whatIsVelocity": "What is Velocity?",
       "whatIsVelocityDescription": "Velocity is the average story points you complete per sprint, calculated from your last 4 sprints. It helps predict what you can realistically accomplish.",
       "weekPrefix": "W",
+      "yourVelocity": "Your Velocity",
+      "ptsPerSprint": "pts/sprint",
+      "improving": "Improving",
+      "declining": "Declining",
+      "stable": "Stable",
+      "average": "Average",
+      "personalBest": "Personal Best",
+      "lastSprints": "Last {{count}} Sprints",
+      "projectedCapacity": "Projected Capacity",
+      "reducedCapacity": "Reduced due to calendar blocks",
       "tips": {
         "planRealisticTitle": "Plan realistically",
         "planRealisticDesc": "Commit to what you can actually complete",
@@ -583,7 +594,13 @@
       "personalBest": "New Personal Best",
       "awesome": "Awesome! 🎉",
       "gotIt": "Got It",
-      "override": "Override"
+      "override": "Override",
+      "capacity": "Capacity",
+      "balance": "Balance",
+      "execution": "Execution",
+      "motivation": "Motivation",
+      "atZeroFor": "at zero for {{weeks}} weeks",
+      "suggestedTask": "Suggested Task:"
     },
     "lifeWheel": {
       "title": "Life Balance",

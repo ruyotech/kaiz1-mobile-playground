@@ -3,58 +3,60 @@ import { Container } from '../../../../components/layout/Container';
 import { ScreenHeader } from '../../../../components/layout/ScreenHeader';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-
-const WIKI_TOPICS = [
-    {
-        id: 'agile',
-        title: 'Agile Methodology',
-        description: 'Iterative approach to software delivery.',
-        color: '#3B82F6',
-        icon: 'infinity'
-    },
-    {
-        id: 'scrum',
-        title: 'Scrum Framework',
-        description: 'Roles, events, and artifacts.',
-        color: '#10B981',
-        icon: 'account-group'
-    },
-    {
-        id: 'pomodoro',
-        title: 'Pomodoro Technique',
-        description: 'Time management method.',
-        color: '#EF4444',
-        icon: 'timer-outline'
-    },
-    {
-        id: 'eisenhower',
-        title: 'Eisenhower Matrix',
-        description: 'Prioritize tasks by urgency & importance.',
-        color: '#F59E0B',
-        icon: 'view-grid-plus'
-    },
-    {
-        id: 'life-wheel',
-        title: 'Life Wheel',
-        description: 'Balance different areas of your life.',
-        color: '#8B5CF6',
-        icon: 'chart-pie'
-    },
-    {
-        id: 'kaizen',
-        title: 'Kaizen Philosophy',
-        description: 'Continuous improvement.',
-        color: '#EC4899',
-        icon: 'leaf'
-    }
-];
+import { useTranslation } from '../../../../hooks/useTranslation';
 
 export default function WikiScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
+
+    const WIKI_TOPICS = [
+        {
+            id: 'agile',
+            title: t('wiki.topics.agile.title'),
+            description: t('wiki.topics.agile.description'),
+            color: '#3B82F6',
+            icon: 'infinity'
+        },
+        {
+            id: 'scrum',
+            title: t('wiki.topics.scrum.title'),
+            description: t('wiki.topics.scrum.description'),
+            color: '#10B981',
+            icon: 'account-group'
+        },
+        {
+            id: 'pomodoro',
+            title: t('wiki.topics.pomodoro.title'),
+            description: t('wiki.topics.pomodoro.description'),
+            color: '#EF4444',
+            icon: 'timer-outline'
+        },
+        {
+            id: 'eisenhower',
+            title: t('wiki.topics.eisenhower.title'),
+            description: t('wiki.topics.eisenhower.description'),
+            color: '#F59E0B',
+            icon: 'view-grid-plus'
+        },
+        {
+            id: 'life-wheel',
+            title: t('wiki.topics.lifeWheel.title'),
+            description: t('wiki.topics.lifeWheel.description'),
+            color: '#8B5CF6',
+            icon: 'chart-pie'
+        },
+        {
+            id: 'kaizen',
+            title: t('wiki.topics.kaizen.title'),
+            description: t('wiki.topics.kaizen.description'),
+            color: '#EC4899',
+            icon: 'leaf'
+        }
+    ];
 
     return (
         <Container>
-            <ScreenHeader title="Knowledge Hub" subtitle="Master the concepts" showBack />
+            <ScreenHeader title={t('wiki.title')} subtitle={t('wiki.subtitle')} showBack />
 
             <ScrollView className="flex-1 p-4">
                 {/* Hero Section */}
@@ -62,9 +64,9 @@ export default function WikiScreen() {
                     <View className="absolute right-0 top-0 opacity-20">
                         <MaterialCommunityIcons name="book-open-page-variant" size={120} color="white" />
                     </View>
-                    <Text className="text-white font-bold text-2xl w-2/3 mb-2">Learn, Apply, Improve.</Text>
+                    <Text className="text-white font-bold text-2xl w-2/3 mb-2">{t('wiki.heroTitle')}</Text>
                     <Text className="text-gray-300 text-sm w-3/4">
-                        Discover the methodologies that power high-performance teams and balanced lives.
+                        {t('wiki.heroDescription')}
                     </Text>
                 </View>
 

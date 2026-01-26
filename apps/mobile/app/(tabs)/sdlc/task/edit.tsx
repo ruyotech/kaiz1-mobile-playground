@@ -120,7 +120,7 @@ export default function TaskEditScreen() {
     if (loading) {
         return (
             <View className="flex-1 items-center justify-center bg-white">
-                <Text>Loading...</Text>
+                <Text>{t('common.loading')}</Text>
             </View>
         );
     }
@@ -132,31 +132,31 @@ export default function TaskEditScreen() {
                 <TouchableOpacity onPress={() => router.back()} className="mr-4">
                     <MaterialCommunityIcons name="close" size={24} color="white" />
                 </TouchableOpacity>
-                <Text className="text-white text-xl font-bold flex-1">Edit Task</Text>
+                <Text className="text-white text-xl font-bold flex-1">{t('tasks.edit.editTask')}</Text>
                 <TouchableOpacity onPress={handleSave} className="bg-white px-4 py-2 rounded-lg">
-                    <Text className="text-blue-600 font-semibold">Save</Text>
+                    <Text className="text-blue-600 font-semibold">{t('common.save')}</Text>
                 </TouchableOpacity>
             </View>
 
             <ScrollView className="flex-1 px-4">
                 {/* Title */}
                 <View className="mt-6">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Title</Text>
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">{t('tasks.edit.titleLabel')}</Text>
                     <TextInput
                         value={title}
                         onChangeText={setTitle}
-                        placeholder="Task title"
+                        placeholder={t('tasks.edit.titlePlaceholder')}
                         className="border border-gray-300 rounded-lg px-4 py-3 text-base"
                     />
                 </View>
 
                 {/* Description */}
                 <View className="mt-4">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Description</Text>
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">{t('tasks.edit.descriptionLabel')}</Text>
                     <TextInput
                         value={description}
                         onChangeText={setDescription}
-                        placeholder="Add details..."
+                        placeholder={t('tasks.edit.descriptionPlaceholder')}
                         multiline
                         numberOfLines={4}
                         className="border border-gray-300 rounded-lg px-4 py-3 text-base"
@@ -166,7 +166,7 @@ export default function TaskEditScreen() {
 
                 {/* Status */}
                 <View className="mt-4">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Status</Text>
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">{t('tasks.edit.statusLabel')}</Text>
                     <View className="flex-row flex-wrap gap-2">
                         {statusOptions.map((option) => (
                             <TouchableOpacity
@@ -185,7 +185,7 @@ export default function TaskEditScreen() {
 
                 {/* Story Points */}
                 <View className="mt-4">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Story Points</Text>
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">{t('tasks.edit.storyPointsLabel')}</Text>
                     <View className="flex-row flex-wrap gap-2">
                         {storyPointOptions.map((points) => (
                             <TouchableOpacity
@@ -204,7 +204,7 @@ export default function TaskEditScreen() {
 
                 {/* Eisenhower Matrix */}
                 <View className="mt-4">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Priority (Eisenhower Matrix)</Text>
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">{t('tasks.edit.priorityLabel')}</Text>
                     {eisenhowerOptions.map((option) => (
                         <TouchableOpacity
                             key={option.id}
@@ -219,7 +219,7 @@ export default function TaskEditScreen() {
 
                 {/* Epic Assignment - Simplified */}
                 <View className="mt-4 mb-4">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Epic</Text>
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">{t('tasks.edit.epicLabel')}</Text>
                     <TouchableOpacity
                         onPress={() => setShowEpicPicker(true)}
                         className="border border-gray-300 rounded-lg px-4 py-3 flex-row justify-between items-center bg-white"
@@ -239,14 +239,14 @@ export default function TaskEditScreen() {
                                 <View className="flex-1">
                                     <Text className="font-semibold text-gray-900">{selectedEpic.title}</Text>
                                     {epicChanged && (
-                                        <Text className="text-xs text-blue-600 mt-0.5">● Changed</Text>
+                                        <Text className="text-xs text-blue-600 mt-0.5">● {t('tasks.edit.changed')}</Text>
                                     )}
                                 </View>
                             </View>
                         ) : (
                             <View className="flex-row items-center flex-1">
                                 <MaterialCommunityIcons name="inbox-outline" size={20} color="#9CA3AF" />
-                                <Text className="ml-3 text-gray-600">No epic assigned</Text>
+                                <Text className="ml-3 text-gray-600">{t('tasks.edit.noEpicAssigned')}</Text>
                             </View>
                         )}
                         <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
@@ -255,13 +255,13 @@ export default function TaskEditScreen() {
 
                 {/* Sprint Assignment */}
                 <View className="mt-4 mb-8">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Assign to Sprint</Text>
+                    <Text className="text-sm font-semibold text-gray-700 mb-2">{t('tasks.edit.assignToSprint')}</Text>
                     <TouchableOpacity
                         className="border border-gray-300 rounded-lg px-4 py-3 flex-row justify-between items-center"
                         onPress={() => {/* TODO: Open sprint picker */ }}
                     >
                         <Text className="text-base text-gray-700">
-                            {sprintId ? `Sprint ${sprintId}` : 'No sprint assigned'}
+                            {sprintId ? `Sprint ${sprintId}` : t('tasks.edit.noSprintAssigned')}
                         </Text>
                         <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
                     </TouchableOpacity>
@@ -282,7 +282,7 @@ export default function TaskEditScreen() {
                     <Pressable>
                         <View className="bg-white rounded-t-3xl pt-4 pb-8 px-4 max-h-[70%]">
                             <View className="flex-row justify-between items-center mb-4 pb-3 border-b border-gray-200">
-                                <Text className="text-lg font-bold">Select Epic</Text>
+                                <Text className="text-lg font-bold">{t('tasks.edit.selectEpic')}</Text>
                                 <TouchableOpacity onPress={() => setShowEpicPicker(false)}>
                                     <MaterialCommunityIcons name="close" size={24} color="#000" />
                                 </TouchableOpacity>
@@ -301,9 +301,9 @@ export default function TaskEditScreen() {
                                     </View>
                                     <View className="flex-1">
                                         <Text className={`font-semibold ${!epicId ? 'text-gray-900' : 'text-gray-600'}`}>
-                                            No Epic
+                                            {t('tasks.edit.noEpic')}
                                         </Text>
-                                        <Text className="text-xs text-gray-500 mt-0.5">Standalone task</Text>
+                                        <Text className="text-xs text-gray-500 mt-0.5">{t('tasks.edit.standaloneTask')}</Text>
                                     </View>
                                     {!epicId && (
                                         <MaterialCommunityIcons name="check-circle" size={24} color="#1F2937" />
@@ -351,9 +351,9 @@ export default function TaskEditScreen() {
                                 ) : (
                                     <View className="py-8 items-center">
                                         <MaterialCommunityIcons name="rocket-launch-outline" size={48} color="#D1D5DB" />
-                                        <Text className="text-gray-500 mt-3 text-center">No epics available</Text>
+                                        <Text className="text-gray-500 mt-3 text-center">{t('tasks.edit.noEpicsAvailable')}</Text>
                                         <Text className="text-gray-400 text-sm mt-1 text-center">
-                                            Create an epic to group tasks
+                                            {t('tasks.edit.createEpicFirst')}
                                         </Text>
                                     </View>
                                 )}

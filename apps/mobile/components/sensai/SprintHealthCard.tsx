@@ -9,52 +9,55 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SprintHealth } from '../../types/sensai.types';
+import { useTranslation } from '../../hooks';
 
 interface SprintHealthCardProps {
     health: SprintHealth;
     compact?: boolean;
 }
 
-const STATUS_STYLES = {
-    on_track: {
-        bg: 'bg-green-50',
-        border: 'border-green-200',
-        progressBg: 'bg-green-500',
-        icon: 'check-circle',
-        iconColor: '#10B981',
-        label: 'On Track',
-        labelColor: 'text-green-700',
-    },
-    ahead: {
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        progressBg: 'bg-blue-500',
-        icon: 'rocket-launch',
-        iconColor: '#3B82F6',
-        label: 'Ahead',
-        labelColor: 'text-blue-700',
-    },
-    at_risk: {
-        bg: 'bg-amber-50',
-        border: 'border-amber-200',
-        progressBg: 'bg-amber-500',
-        icon: 'alert',
-        iconColor: '#F59E0B',
-        label: 'At Risk',
-        labelColor: 'text-amber-700',
-    },
-    behind: {
-        bg: 'bg-red-50',
-        border: 'border-red-200',
-        progressBg: 'bg-red-500',
-        icon: 'alert-octagon',
-        iconColor: '#EF4444',
-        label: 'Behind',
-        labelColor: 'text-red-700',
-    },
-};
-
 export function SprintHealthCard({ health, compact = false }: SprintHealthCardProps) {
+    const { t } = useTranslation();
+    
+    const STATUS_STYLES = {
+        on_track: {
+            bg: 'bg-green-50',
+            border: 'border-green-200',
+            progressBg: 'bg-green-500',
+            icon: 'check-circle',
+            iconColor: '#10B981',
+            label: t('sensai.sprintHealth.onTrack'),
+            labelColor: 'text-green-700',
+        },
+        ahead: {
+            bg: 'bg-blue-50',
+            border: 'border-blue-200',
+            progressBg: 'bg-blue-500',
+            icon: 'rocket-launch',
+            iconColor: '#3B82F6',
+            label: t('sensai.sprintHealth.ahead'),
+            labelColor: 'text-blue-700',
+        },
+        at_risk: {
+            bg: 'bg-amber-50',
+            border: 'border-amber-200',
+            progressBg: 'bg-amber-500',
+            icon: 'alert',
+            iconColor: '#F59E0B',
+            label: t('sensai.sprintHealth.atRisk'),
+            labelColor: 'text-amber-700',
+        },
+        behind: {
+            bg: 'bg-red-50',
+            border: 'border-red-200',
+            progressBg: 'bg-red-500',
+            icon: 'alert-octagon',
+            iconColor: '#EF4444',
+            label: t('sensai.sprintHealth.behind'),
+            labelColor: 'text-red-700',
+        },
+    };
+    
     const style = STATUS_STYLES[health.healthStatus];
 
     if (compact) {
@@ -97,13 +100,13 @@ export function SprintHealthCard({ health, compact = false }: SprintHealthCardPr
                         />
                     </View>
                     <View className="ml-3">
-                        <Text className="text-lg font-bold text-gray-900">Sprint Health</Text>
+                        <Text className="text-lg font-bold text-gray-900">{t('sensai.sprintHealth.title')}</Text>
                         <Text className={`text-sm font-medium ${style.labelColor}`}>{style.label}</Text>
                     </View>
                 </View>
                 <View className="items-end">
                     <Text className="text-2xl font-bold text-gray-900">{health.completionPercentage}%</Text>
-                    <Text className="text-xs text-gray-500">Complete</Text>
+                    <Text className="text-xs text-gray-500">{t('common.complete')}</Text>
                 </View>
             </View>
 
@@ -125,21 +128,21 @@ export function SprintHealthCard({ health, compact = false }: SprintHealthCardPr
             {/* Stats Grid */}
             <View className="flex-row">
                 <View className="flex-1 items-center border-r border-gray-200">
-                    <Text className="text-xs text-gray-500">Day</Text>
+                    <Text className="text-xs text-gray-500">{t('common.day')}</Text>
                     <Text className="text-lg font-bold text-gray-900">
                         {health.dayOfSprint}/{health.totalDays}
                     </Text>
                 </View>
                 <View className="flex-1 items-center border-r border-gray-200">
-                    <Text className="text-xs text-gray-500">Completed</Text>
+                    <Text className="text-xs text-gray-500">{t('common.completed')}</Text>
                     <Text className="text-lg font-bold text-gray-900">
-                        {health.completedPoints} pts
+                        {health.completedPoints} {t('common.pts')}
                     </Text>
                 </View>
                 <View className="flex-1 items-center">
-                    <Text className="text-xs text-gray-500">Remaining</Text>
+                    <Text className="text-xs text-gray-500">{t('common.remaining')}</Text>
                     <Text className="text-lg font-bold text-gray-900">
-                        {health.remainingPoints} pts
+                        {health.remainingPoints} {t('common.pts')}
                     </Text>
                 </View>
             </View>
@@ -159,8 +162,8 @@ export function SprintHealthCard({ health, compact = false }: SprintHealthCardPr
                             health.burndownTrend === 'concerning' ? 'text-amber-700' : 'text-red-700'
                         }`}>
                             {health.burndownTrend === 'concerning' 
-                                ? 'Burndown is flattening - consider focusing on priorities'
-                                : 'Sprint at risk - immediate action needed'}
+                                ? t('sensai.sprintHealth.burndownConcerning')
+                                : t('sensai.sprintHealth.burndownCritical')}
                         </Text>
                     </View>
                 </View>

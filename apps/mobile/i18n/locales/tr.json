@@ -204,6 +204,37 @@
       "velocity": "Hız",
       "retro": "Retrospektif",
       "wiki": "Wiki"
+    },
+    "moreMenu": {
+      "title": "Daha Fazla Seçenek",
+      "signOut": "Çıkış Yap",
+      "signOutConfirm": "Çıkış yapmak istediğinizden emin misiniz?",
+      "clearNotifications": "Tüm Bildirimleri Temizle",
+      "clearNotificationsConfirm": "Tüm bildirimler kaldırılsın mı?",
+      "clearAll": "Tümünü Temizle"
+    },
+    "appSwitcher": {
+      "title": "Uygulamalar"
+    },
+    "createMenu": {
+      "title": "Ne yapmak istersiniz?",
+      "task": "Görev",
+      "taskSubtitle": "Yeni bir yapılacak oluştur",
+      "note": "Not",
+      "noteSubtitle": "Hızlı kayıt",
+      "event": "Etkinlik",
+      "image": "Resim",
+      "camera": "Kamera",
+      "file": "Dosya",
+      "voice": "Ses"
+    },
+    "permissions": {
+      "cameraTitle": "Kamera İzni Gerekli",
+      "cameraMessage": "Görevleriniz ve notlarınız için fotoğraf çekmek için kamera erişimine ihtiyacımız var.",
+      "photoLibraryTitle": "Fotoğraf Kitaplığı İzni Gerekli",
+      "photoLibraryMessage": "Görevlerinize ve notlarınıza resim eklemek için fotoğraf kitaplığı erişimine ihtiyacımız var.",
+      "microphoneTitle": "Mikrofon İzni Gerekli",
+      "microphoneMessage": "Sesli notlar kaydetmek için mikrofon erişimine ihtiyacımız var."
     }
   },
   "tasks": {
@@ -270,10 +301,51 @@
     "statusTodo": "Yapılacak",
     "statusInProgress": "Devam Ediyor",
     "statusDone": "Tamamlandı",
+    "statusBlocked": "Engellendi",
+    "statusDraft": "Taslak",
     "sizeSmall": "Küçük (1-3)",
     "sizeMedium": "Orta (5-8)",
     "sizeLarge": "Büyük (13+)",
-    "pts": "puan"
+    "pts": "puan",
+    "details": {
+      "taskDetails": "Görev Detayları",
+      "description": "Açıklama",
+      "storyPoints": "Story Puanları",
+      "lifeWheel": "Yaşam Çarkı",
+      "priorityTags": "Öncelik ve Etiketler",
+      "eisenhowerMatrix": "Eisenhower Matrisi",
+      "quickActions": "Hızlı İşlemler",
+      "addRelatedTask": "İlgili Görev Ekle",
+      "postComment": "Yorum Gönder",
+      "addChecklistItem": "Kontrol Listesi Öğesi Ekle",
+      "changeStatus": "Durumu Değiştir"
+    },
+    "edit": {
+      "editTask": "Görevi Düzenle",
+      "titleLabel": "Başlık",
+      "titlePlaceholder": "Görev başlığını girin...",
+      "descriptionLabel": "Açıklama",
+      "descriptionPlaceholder": "Bir açıklama ekleyin...",
+      "statusLabel": "Durum",
+      "storyPointsLabel": "Story Puanları",
+      "priorityLabel": "Öncelik (Eisenhower Matrisi)",
+      "epicLabel": "Epik",
+      "assignToSprint": "Sprinte Ata",
+      "selectEpic": "Epik Seç",
+      "noEpic": "Epik Yok",
+      "standaloneTask": "Bağımsız görev",
+      "noEpicAssigned": "Atanmış epik yok",
+      "noSprintAssigned": "Atanmış sprint yok",
+      "noEpicsAvailable": "Mevcut epik yok",
+      "createEpicFirst": "Görevleri düzenlemek için önce bir epik oluşturun",
+      "changed": "Değiştirildi"
+    },
+    "tabs": {
+      "overview": "Genel Bakış",
+      "comments": "Yorumlar",
+      "checklist": "Kontrol Listesi",
+      "history": "Geçmiş"
+    }
   },
   "sprints": {
     "title": "Sprint",
@@ -351,6 +423,65 @@
       "title": "Aktif meydan okuma yok",
       "subtitle": "Motivasyonunu artırmak için bir meydan okumaya katıl",
       "action": "Meydan Okumalara Göz At"
+    },
+    "analytics": {
+      "title": "Meydan Okuma Analitiği",
+      "overallProgress": "Genel İlerleme",
+      "streakProgress": "Seri İlerlemesi",
+      "currentStreak": "Mevcut Seri",
+      "longestStreak": "En Uzun Seri",
+      "totalDays": "Toplam Gün",
+      "participantProgress": "Katılımcı İlerlemesi",
+      "logs": "Kayıtlar",
+      "noLogs": "Henüz kayıt yok"
+    },
+    "logEntry": {
+      "title": "Bugün İçin Günlük Kaydı",
+      "editTitle": "Kaydı Düzenle",
+      "dateLabel": "Tarih",
+      "todayLabel": "Bugün",
+      "statusLabel": "Durum",
+      "notesLabel": "Notlar (İsteğe bağlı)",
+      "notesPlaceholder": "Bugün hakkında ne hissediyorsunuz?",
+      "saveButton": "Kaydı Kaydet",
+      "updateButton": "Kaydı Güncelle"
+    },
+    "status": {
+      "completed": "Tamamlandı",
+      "partial": "Kısmi",
+      "missed": "Kaçırıldı"
+    }
+  },
+  "wiki": {
+    "title": "Bilgi Merkezi",
+    "subtitle": "Kavramları öğren",
+    "heroTitle": "Öğren. Uygula. Geliş.",
+    "heroDescription": "Yüksek performanslı ekiplere ve dengeli yaşamlara güç veren metodolojileri keşfet.",
+    "topics": {
+      "agile": {
+        "title": "Çevik Metodolojiler",
+        "description": "Scrum, Kanban ve lean ilkeleri"
+      },
+      "timeManagement": {
+        "title": "Zaman Yönetimi",
+        "description": "Pomodoro, zaman bloklaması ve önceliklendirme"
+      },
+      "productivity": {
+        "title": "Verimlilik Sistemleri",
+        "description": "GTD, derin çalışma ve akış durumları"
+      },
+      "lifeBalance": {
+        "title": "Yaşam Dengesi",
+        "description": "Yaşam çarkı ve sağlıklı yaşam çerçeveleri"
+      },
+      "goalSetting": {
+        "title": "Hedef Belirleme",
+        "description": "SMART hedefleri ve OKR metodolojisi"
+      },
+      "habits": {
+        "title": "Alışkanlık Oluşturma",
+        "description": "Kalıcı alışkanlıklar geliştirme bilimi"
+      }
     }
   },
   "community": {
@@ -396,6 +527,16 @@
       "whatIsVelocity": "Hız Nedir?",
       "whatIsVelocityDescription": "Hız, son 4 sprintinizden hesaplanan, sprint başına tamamladığınız ortalama hikaye puanıdır. Gerçekçi olarak neyi başarabileceğinizi tahmin etmenize yardımcı olur.",
       "weekPrefix": "H",
+      "yourVelocity": "Hızınız",
+      "ptsPerSprint": "puan/sprint",
+      "improving": "İyileşiyor",
+      "declining": "Düşüyor",
+      "stable": "Stabil",
+      "average": "Ortalama",
+      "personalBest": "Kişisel Rekor",
+      "lastSprints": "Son {{count}} Sprint",
+      "projectedCapacity": "Öngörülen Kapasite",
+      "reducedCapacity": "Takvim blokları nedeniyle azaltıldı",
       "tips": {
         "planRealisticTitle": "Gerçekçi planla",
         "planRealisticDesc": "Gerçekten tamamlayabileceklerinize taahhüt edin",
@@ -451,7 +592,13 @@
       "personalBest": "Yeni Kişisel Rekor",
       "awesome": "Harika! 🎉",
       "gotIt": "Anladım",
-      "override": "Geçersiz Kıl"
+      "override": "Geçersiz Kıl",
+      "capacity": "Kapasite",
+      "balance": "Denge",
+      "execution": "Uygulama",
+      "motivation": "Motivasyon",
+      "atZeroFor": "{{weeks}} haftadır sıfırda",
+      "suggestedTask": "Önerilen Görev:"
     },
     "lifeWheel": {
       "title": "Yaşam Dengesi",

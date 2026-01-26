@@ -8,6 +8,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DailyStandup, SprintHealth } from '../../types/sensai.types';
+import { useTranslation } from '../../hooks';
 
 interface StandupCardProps {
     standup: DailyStandup | null;
@@ -17,6 +18,7 @@ interface StandupCardProps {
 }
 
 export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStandup }: StandupCardProps) {
+    const { t } = useTranslation();
     const hasCompletedToday = standup?.status === 'completed';
     const wasSkipped = standup?.status === 'skipped';
 
@@ -32,7 +34,7 @@ export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStand
                         <MaterialCommunityIcons name="check" size={24} color="white" />
                     </View>
                     <View className="ml-3 flex-1">
-                        <Text className="text-base font-bold text-green-900">Standup Complete</Text>
+                        <Text className="text-base font-bold text-green-900">{t('sensai.standup.complete')}</Text>
                         <Text className="text-sm text-green-700">
                             {new Date(standup.completedAt || '').toLocaleTimeString([], { 
                                 hour: '2-digit', 
@@ -46,19 +48,19 @@ export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStand
                 {/* Summary */}
                 <View className="flex-row">
                     <View className="flex-1 bg-white/60 rounded-lg p-2 mr-2">
-                        <Text className="text-xs text-gray-500">Yesterday</Text>
+                        <Text className="text-xs text-gray-500">{t('sensai.standup.yesterday')}</Text>
                         <Text className="text-sm font-semibold text-gray-900">
-                            {standup.completedYesterday.length} tasks
+                            {standup.completedYesterday.length} {t('tasks.title').toLowerCase()}
                         </Text>
                     </View>
                     <View className="flex-1 bg-white/60 rounded-lg p-2 mr-2">
-                        <Text className="text-xs text-gray-500">Today</Text>
+                        <Text className="text-xs text-gray-500">{t('sensai.standup.todayPlan')}</Text>
                         <Text className="text-sm font-semibold text-gray-900">
-                            {standup.focusToday.length} tasks
+                            {standup.focusToday.length} {t('tasks.title').toLowerCase()}
                         </Text>
                     </View>
                     <View className="flex-1 bg-white/60 rounded-lg p-2">
-                        <Text className="text-xs text-gray-500">Blockers</Text>
+                        <Text className="text-xs text-gray-500">{t('sensai.standup.blockers')}</Text>
                         <Text className={`text-sm font-semibold ${
                             standup.blockers.length > 0 ? 'text-amber-600' : 'text-gray-900'
                         }`}>
@@ -78,14 +80,14 @@ export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStand
                         <MaterialCommunityIcons name="calendar-remove" size={24} color="white" />
                     </View>
                     <View className="ml-3 flex-1">
-                        <Text className="text-base font-bold text-gray-700">Standup Skipped</Text>
-                        <Text className="text-sm text-gray-500">You can still start one if needed</Text>
+                        <Text className="text-base font-bold text-gray-700">{t('sensai.standup.skipped')}</Text>
+                        <Text className="text-sm text-gray-500">{t('sensai.standup.skippedMessage')}</Text>
                     </View>
                     <TouchableOpacity 
                         onPress={onStartStandup}
                         className="bg-gray-200 px-4 py-2 rounded-full"
                     >
-                        <Text className="text-gray-700 font-medium">Start</Text>
+                        <Text className="text-gray-700 font-medium">{t('common.start')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -100,8 +102,8 @@ export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStand
                     <MaterialCommunityIcons name="clipboard-check-outline" size={26} color="white" />
                 </View>
                 <View className="ml-3 flex-1">
-                    <Text className="text-lg font-bold text-blue-900">Daily Standup</Text>
-                    <Text className="text-sm text-blue-700">Ready when you are</Text>
+                    <Text className="text-lg font-bold text-blue-900">{t('sensai.standup.dailyStandup')}</Text>
+                    <Text className="text-sm text-blue-700">{t('sensai.standup.readyMessage')}</Text>
                 </View>
             </View>
 
@@ -109,9 +111,9 @@ export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStand
             {sprintHealth && (
                 <View className="bg-white/60 rounded-xl p-3 mb-4">
                     <View className="flex-row items-center justify-between mb-2">
-                        <Text className="text-sm text-gray-600">Sprint Progress</Text>
+                        <Text className="text-sm text-gray-600">{t('sensai.standup.sprintProgress')}</Text>
                         <Text className="text-sm font-semibold text-gray-900">
-                            Day {sprintHealth.dayOfSprint} of {sprintHealth.totalDays}
+                            {t('sensai.standup.dayOfSprint', { current: sprintHealth.dayOfSprint, total: sprintHealth.totalDays })}
                         </Text>
                     </View>
                     <View className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -128,10 +130,10 @@ export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStand
                     </View>
                     <View className="flex-row justify-between mt-2">
                         <Text className="text-xs text-gray-500">
-                            {sprintHealth.completedPoints}/{sprintHealth.committedPoints} pts
+                            {sprintHealth.completedPoints}/{sprintHealth.committedPoints} {t('common.pts')}
                         </Text>
                         <Text className="text-xs text-gray-500">
-                            {sprintHealth.completionPercentage}% complete
+                            {sprintHealth.completionPercentage}% {t('common.complete')}
                         </Text>
                     </View>
                 </View>
@@ -143,14 +145,14 @@ export function StandupCard({ standup, sprintHealth, onStartStandup, onViewStand
                 activeOpacity={0.8}
             >
                 <MaterialCommunityIcons name="play" size={20} color="white" />
-                <Text className="text-white font-bold text-base ml-2">Start Standup</Text>
+                <Text className="text-white font-bold text-base ml-2">{t('sensai.standup.startStandup')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
                 onPress={() => {/* Skip logic */}}
                 className="mt-2 py-2 items-center"
             >
-                <Text className="text-blue-600 text-sm">Skip today</Text>
+                <Text className="text-blue-600 text-sm">{t('sensai.standup.skipToday')}</Text>
             </TouchableOpacity>
         </View>
     );

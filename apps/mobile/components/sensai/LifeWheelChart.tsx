@@ -9,6 +9,7 @@ import { View, Text, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Svg, { Circle, Path, Text as SvgText, G } from 'react-native-svg';
 import { LifeWheelMetrics, DimensionMetric, LIFE_WHEEL_DIMENSIONS } from '../../types/sensai.types';
+import { useTranslation } from '../../hooks';
 
 interface LifeWheelChartProps {
     metrics: LifeWheelMetrics;
@@ -17,6 +18,7 @@ interface LifeWheelChartProps {
 }
 
 export function LifeWheelChart({ metrics, size = 280, showLegend = true }: LifeWheelChartProps) {
+    const { t } = useTranslation();
     const center = size / 2;
     const maxRadius = (size / 2) - 30;
     const dimensions = metrics.dimensions;
@@ -49,12 +51,12 @@ export function LifeWheelChart({ metrics, size = 280, showLegend = true }: LifeW
             {/* Header */}
             <View className="flex-row items-center justify-between mb-4">
                 <View>
-                    <Text className="text-lg font-bold text-gray-900">Life Balance</Text>
-                    <Text className="text-sm text-gray-500">9-Dimension Overview</Text>
+                    <Text className="text-lg font-bold text-gray-900">{t('sensai.lifeWheel.title')}</Text>
+                    <Text className="text-sm text-gray-500">{t('sensai.lifeWheel.subtitle')}</Text>
                 </View>
                 <View className="bg-blue-50 px-3 py-1 rounded-full">
                     <Text className="text-sm font-semibold text-blue-700">
-                        Score: {metrics.balanceScore}/100
+                        {t('sensai.lifeWheel.score')} {metrics.balanceScore}/100
                     </Text>
                 </View>
             </View>
@@ -148,7 +150,7 @@ export function LifeWheelChart({ metrics, size = 280, showLegend = true }: LifeW
                     <View className="flex-row items-center mb-2">
                         <MaterialCommunityIcons name="alert-circle" size={18} color="#EF4444" />
                         <Text className="text-sm font-semibold text-red-700 ml-2">
-                            Needs Attention
+                            {t('sensai.lifeWheel.needsAttention')}
                         </Text>
                     </View>
                     <View className="flex-row flex-wrap">
