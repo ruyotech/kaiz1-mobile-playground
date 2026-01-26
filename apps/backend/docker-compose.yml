@@ -6,6 +6,8 @@ services:
     container_name: kaizapp-api
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/kaizapp
@@ -13,6 +15,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: kaiz_dev_password
       JWT_SECRET: dev-secret-key-that-is-at-least-256-bits-long-for-hs256
       JWT_ACCESS_TOKEN_EXPIRATION: 86400000  # 24 hours for development
+      # ANTHROPIC_API_KEY loaded from .env file
     depends_on:
       db:
         condition: service_healthy

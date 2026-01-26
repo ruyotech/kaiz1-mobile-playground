@@ -113,9 +113,17 @@ case $COMMAND in
         
         echo "Enter JWT secret (min 256 bits / 32 chars):"
         read -s JWT_SECRET
+        echo ""
+        
+        echo "Enter Anthropic API key (from https://console.anthropic.com/):"
+        read -s ANTHROPIC_API_KEY
+        echo ""
         
         echo -n "$JWT_SECRET" | gcloud secrets create jwt-secret --data-file=- 2>/dev/null || \
             (echo -n "$JWT_SECRET" | gcloud secrets versions add jwt-secret --data-file=-)
+        
+        echo -n "$ANTHROPIC_API_KEY" | gcloud secrets create anthropic-api-key --data-file=- 2>/dev/null || \
+            (echo -n "$ANTHROPIC_API_KEY" | gcloud secrets versions add anthropic-api-key --data-file=-)
         
         # Grant Cloud Run access to secrets
         PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
@@ -125,6 +133,10 @@ case $COMMAND in
             --role="roles/secretmanager.secretAccessor"
         
         gcloud secrets add-iam-policy-binding jwt-secret \
+            --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+            --role="roles/secretmanager.secretAccessor"
+        
+        gcloud secrets add-iam-policy-binding anthropic-api-key \
             --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
             --role="roles/secretmanager.secretAccessor"
         
@@ -155,7 +167,8 @@ case $COMMAND in
             --set-env-vars "SPRING_DATASOURCE_URL=jdbc:postgresql:///kaizapp?cloudSqlInstance=$PROJECT_ID:$REGION:$DB_INSTANCE_NAME&socketFactory=com.google.cloud.sql.postgres.SocketFactory" \
             --set-env-vars "SPRING_DATASOURCE_USERNAME=$DB_USER" \
             --set-secrets "SPRING_DATASOURCE_PASSWORD=db-password:latest" \
-            --set-secrets "JWT_SECRET=jwt-secret:latest"
+            --set-secrets "JWT_SECRET=jwt-secret:latest" \
+            --set-secrets "ANTHROPIC_API_KEY=anthropic-api-key:latest"
         
         # Get the URL
         SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format='value(status.url)')
@@ -203,6 +216,30 @@ case $COMMAND in
         SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format='value(status.url)')
         echo $SERVICE_URL
         ;;
+    
+    "set-anthropic-key")
+        echo_step "Setting Anthropic API key..."
+        echo "Enter your Anthropic API key (from https://console.anthropic.com/):"
+        read -s ANTHROPIC_API_KEY
+        echo ""
+        
+        # Create or update secret
+        echo -n "$ANTHROPIC_API_KEY" | gcloud secrets create anthropic-api-key --data-file=- 2>/dev/null || \
+            (echo -n "$ANTHROPIC_API_KEY" | gcloud secrets versions add anthropic-api-key --data-file=-)
+        
+        # Grant access
+        PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
+        gcloud secrets add-iam-policy-binding anthropic-api-key \
+            --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+            --role="roles/secretmanager.secretAccessor" 2>/dev/null || true
+        
+        # Update Cloud Run service
+        echo_step "Updating Cloud Run service with new secret..."
+        gcloud run services update $SERVICE_NAME --region=$REGION \
+            --set-secrets "ANTHROPIC_API_KEY=anthropic-api-key:latest"
+        
+        echo_step "Done! Anthropic API key has been set."
+        ;;
         
     "cleanup")
         echo_warn "This will delete ALL resources. Are you sure? (type 'yes' to confirm)"
@@ -217,6 +254,7 @@ case $COMMAND in
             echo_step "Deleting secrets..."
             gcloud secrets delete db-password --quiet || true
             gcloud secrets delete jwt-secret --quiet || true
+            gcloud secrets delete anthropic-api-key --quiet || true
             
             echo_step "Cleanup complete!"
         else
@@ -251,16 +289,17 @@ case $COMMAND in
         echo "Usage: ./deploy-gcp.sh <command>"
         echo ""
         echo "Commands:"
-        echo "  setup         - Initial GCP project setup"
-        echo "  create-db     - Create Cloud SQL PostgreSQL database"
-        echo "  create-secrets - Store secrets in Secret Manager"
-        echo "  deploy        - Build and deploy to Cloud Run"
-        echo "  redeploy      - Quick redeploy of code changes"
-        echo "  logs          - View recent logs"
-        echo "  status        - Check service status"
-        echo "  url           - Get the service URL"
-        echo "  cost          - Show cost estimates"
-        echo "  cleanup       - Delete all resources (DESTRUCTIVE!)"
+        echo "  setup             - Initial GCP project setup"
+        echo "  create-db         - Create Cloud SQL PostgreSQL database"
+        echo "  create-secrets    - Store secrets in Secret Manager"
+        echo "  set-anthropic-key - Add/update Anthropic API key for Claude AI"
+        echo "  deploy            - Build and deploy to Cloud Run"
+        echo "  redeploy          - Quick redeploy of code changes"
+        echo "  logs              - View recent logs"
+        echo "  status            - Check service status"
+        echo "  url               - Get the service URL"
+        echo "  cost              - Show cost estimates"
+        echo "  cleanup           - Delete all resources (DESTRUCTIVE!)"
         echo ""
         echo "Quick Start (run in order):"
         echo "  1. ./deploy-gcp.sh setup"
