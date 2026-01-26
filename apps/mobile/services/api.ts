@@ -724,35 +724,162 @@ export const challengeApi = {
     },
 };
 
+// Notification Types (matching backend DTOs)
+export interface NotificationResponse {
+    id: string;
+    type: string;
+    category: string;
+    priority: string;
+    title: string;
+    content: string;
+    isRead: boolean;
+    readAt: string | null;
+    isPinned: boolean;
+    isArchived: boolean;
+    icon: string;
+    deepLink: string | null;
+    expiresAt: string | null;
+    sender: {
+        id: number | null;
+        name: string | null;
+        avatar: string | null;
+    } | null;
+    metadata: Record<string, any> | null;
+    actions: Array<{
+        id: string;
+        label: string;
+        action: string;
+        style: string;
+    }> | null;
+    createdAt: string;
+}
+
+export interface NotificationPageResponse {
+    content: NotificationResponse[];
+    totalElements: number;
+    totalPages: number;
+    size: number;
+    number: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
+}
+
+export interface UnreadCountResponse {
+    total: number;
+    byCategory: Record<string, number>;
+}
+
+export interface GroupedNotificationsResponse {
+    today: NotificationResponse[];
+    yesterday: NotificationResponse[];
+    thisWeek: NotificationResponse[];
+    older: NotificationResponse[];
+}
+
+export interface NotificationPreferencesResponse {
+    pushEnabled: boolean;
+    emailEnabled: boolean;
+    inAppEnabled: boolean;
+    soundEnabled: boolean;
+    vibrationEnabled: boolean;
+    quietHoursEnabled: boolean;
+    quietHoursStart: string | null;
+    quietHoursEnd: string | null;
+    categorySettings: Record<string, {
+        enabled: boolean;
+        push: boolean;
+        email: boolean;
+        inApp: boolean;
+    }>;
+}
+
+export interface UpdatePreferencesRequest {
+    pushEnabled?: boolean;
+    emailEnabled?: boolean;
+    inAppEnabled?: boolean;
+    soundEnabled?: boolean;
+    vibrationEnabled?: boolean;
+    quietHoursEnabled?: boolean;
+    quietHoursStart?: string;
+    quietHoursEnd?: string;
+    categorySettings?: Record<string, {
+        enabled?: boolean;
+        push?: boolean;
+        email?: boolean;
+        inApp?: boolean;
+    }>;
+}
+
 // Notification API
 export const notificationApi = {
     /**
-     * Get all notifications (paginated)
+     * Get all notifications (paginated, excludes archived)
      */
-    async getNotifications(page: number = 0, size: number = 20): Promise<any> {
-        return request<any>(`/notifications?page=${page}&size=${size}`, { method: 'GET' }, true);
+    async getNotifications(page: number = 0, size: number = 20): Promise<NotificationPageResponse> {
+        return request<NotificationPageResponse>(`/notifications?page=${page}&size=${size}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get notifications by category
+     */
+    async getNotificationsByCategory(category: string, page: number = 0, size: number = 20): Promise<NotificationPageResponse> {
+        return request<NotificationPageResponse>(`/notifications/category/${category}?page=${page}&size=${size}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get grouped notifications (today, yesterday, this week, older)
+     */
+    async getGroupedNotifications(): Promise<GroupedNotificationsResponse> {
+        return request<GroupedNotificationsResponse>('/notifications/grouped', { method: 'GET' }, true);
+    },
+
+    /**
+     * Get archived notifications
+     */
+    async getArchivedNotifications(page: number = 0, size: number = 20): Promise<NotificationPageResponse> {
+        return request<NotificationPageResponse>(`/notifications/archived?page=${page}&size=${size}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get pinned notifications
+     */
+    async getPinnedNotifications(page: number = 0, size: number = 20): Promise<NotificationPageResponse> {
+        return request<NotificationPageResponse>(`/notifications/pinned?page=${page}&size=${size}`, { method: 'GET' }, true);
     },
 
     /**
      * Get unread notifications
      */
-    async getUnreadNotifications(): Promise<any[]> {
-        return request<any[]>('/notifications/unread', { method: 'GET' }, true);
+    async getUnreadNotifications(): Promise<NotificationResponse[]> {
+        return request<NotificationResponse[]>('/notifications/unread', { method: 'GET' }, true);
     },
 
     /**
-     * Get unread count
+     * Search notifications
      */
-    async getUnreadCount(): Promise<number> {
-        const response = await request<{ count: number }>('/notifications/unread-count', { method: 'GET' }, true);
-        return response.count;
+    async searchNotifications(query: string, page: number = 0, size: number = 20): Promise<NotificationPageResponse> {
+        return request<NotificationPageResponse>(`/notifications/search?query=${encodeURIComponent(query)}&page=${page}&size=${size}`, { method: 'GET' }, true);
+    },
+
+    /**
+     * Get unread count with category breakdown
+     */
+    async getUnreadCount(): Promise<UnreadCountResponse> {
+        return request<UnreadCountResponse>('/notifications/unread-count', { method: 'GET' }, true);
     },
 
     /**
      * Mark notification as read
      */
-    async markAsRead(id: string): Promise<any> {
-        return request<any>(`/notifications/${id}/read`, { method: 'PUT' }, true);
+    async markAsRead(id: string): Promise<NotificationResponse> {
+        return request<NotificationResponse>(`/notifications/${id}/read`, { method: 'PUT' }, true);
+    },
+
+    /**
+     * Mark notification as unread
+     */
+    async markAsUnread(id: string): Promise<NotificationResponse> {
+        return request<NotificationResponse>(`/notifications/${id}/unread`, { method: 'PUT' }, true);
     },
 
     /**
@@ -760,6 +887,65 @@ export const notificationApi = {
      */
     async markAllAsRead(): Promise<void> {
         await request<void>('/notifications/read-all', { method: 'PUT' }, true);
+    },
+
+    /**
+     * Mark all notifications in a category as read
+     */
+    async markCategoryAsRead(category: string): Promise<void> {
+        await request<void>(`/notifications/category/${category}/read-all`, { method: 'PUT' }, true);
+    },
+
+    /**
+     * Toggle notification pinned status
+     */
+    async togglePinned(id: string): Promise<NotificationResponse> {
+        return request<NotificationResponse>(`/notifications/${id}/pin`, { method: 'PUT' }, true);
+    },
+
+    /**
+     * Archive a notification
+     */
+    async archiveNotification(id: string): Promise<NotificationResponse> {
+        return request<NotificationResponse>(`/notifications/${id}/archive`, { method: 'PUT' }, true);
+    },
+
+    /**
+     * Unarchive a notification
+     */
+    async unarchiveNotification(id: string): Promise<NotificationResponse> {
+        return request<NotificationResponse>(`/notifications/${id}/unarchive`, { method: 'PUT' }, true);
+    },
+
+    /**
+     * Archive all read notifications
+     */
+    async archiveAllRead(): Promise<void> {
+        await request<void>('/notifications/archive-read', { method: 'PUT' }, true);
+    },
+
+    /**
+     * Delete a notification
+     */
+    async deleteNotification(id: string): Promise<void> {
+        await request<void>(`/notifications/${id}`, { method: 'DELETE' }, true);
+    },
+
+    /**
+     * Get notification preferences
+     */
+    async getPreferences(): Promise<NotificationPreferencesResponse> {
+        return request<NotificationPreferencesResponse>('/notifications/preferences', { method: 'GET' }, true);
+    },
+
+    /**
+     * Update notification preferences
+     */
+    async updatePreferences(data: UpdatePreferencesRequest): Promise<NotificationPreferencesResponse> {
+        return request<NotificationPreferencesResponse>('/notifications/preferences', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        }, true);
     },
 };
 

@@ -1,16 +1,65 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Container } from '../components/layout/Container';
 import { ScreenHeader } from '../components/layout/ScreenHeader';
 import { Card } from '../components/ui/Card';
 import { Avatar } from '../components/ui/Avatar';
 import { Button } from '../components/ui/Button';
 import { useAuthStore } from '../store/authStore';
+import { useNotificationStore } from '../store/notificationStore';
 import { useRouter } from 'expo-router';
+
+// Settings menu item component
+function SettingsMenuItem({ 
+    icon, 
+    iconColor, 
+    iconBgColor, 
+    title, 
+    subtitle, 
+    badge, 
+    onPress 
+}: {
+    icon: string;
+    iconColor: string;
+    iconBgColor: string;
+    title: string;
+    subtitle?: string;
+    badge?: number;
+    onPress: () => void;
+}) {
+    return (
+        <TouchableOpacity 
+            onPress={onPress}
+            className="flex-row items-center py-3 border-b border-gray-100"
+            activeOpacity={0.7}
+        >
+            <View 
+                className="w-10 h-10 rounded-xl items-center justify-center mr-3"
+                style={{ backgroundColor: iconBgColor }}
+            >
+                <MaterialCommunityIcons name={icon as any} size={20} color={iconColor} />
+            </View>
+            <View className="flex-1">
+                <Text className="text-base font-medium text-gray-900">{title}</Text>
+                {subtitle && <Text className="text-sm text-gray-500">{subtitle}</Text>}
+            </View>
+            <View className="flex-row items-center">
+                {badge !== undefined && badge > 0 && (
+                    <View className="bg-red-500 rounded-full min-w-[20px] h-5 items-center justify-center px-1.5 mr-2">
+                        <Text className="text-xs font-bold text-white">{badge}</Text>
+                    </View>
+                )}
+                <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+            </View>
+        </TouchableOpacity>
+    );
+}
 
 export default function ProfileScreen() {
     const router = useRouter();
     const { user, logout } = useAuthStore();
+    const { unreadCount } = useNotificationStore();
 
     const handleLogout = async () => {
         await logout();
@@ -21,7 +70,7 @@ export default function ProfileScreen() {
 
     return (
         <Container>
-            <ScreenHeader title="Profile" showBack />
+            <ScreenHeader title="Profile" showBack showNotifications={false} />
 
             <ScrollView className="flex-1 p-4">
                 {/* User Info */}
@@ -46,6 +95,48 @@ export default function ProfileScreen() {
                             <Text className="font-semibold">{user.timezone}</Text>
                         </View>
                     </View>
+                </Card>
+
+                {/* Settings Section */}
+                <Card className="mb-4">
+                    <Text className="text-lg font-semibold mb-3">Settings</Text>
+                    
+                    <SettingsMenuItem
+                        icon="bell"
+                        iconColor="#3B82F6"
+                        iconBgColor="#DBEAFE"
+                        title="Notifications"
+                        subtitle="Manage alerts and preferences"
+                        badge={unreadCount}
+                        onPress={() => router.push('/notification-settings')}
+                    />
+                    
+                    <SettingsMenuItem
+                        icon="palette"
+                        iconColor="#8B5CF6"
+                        iconBgColor="#EDE9FE"
+                        title="Appearance"
+                        subtitle="Theme, colors, and display"
+                        onPress={() => router.push('/(tabs)/settings')}
+                    />
+                    
+                    <SettingsMenuItem
+                        icon="shield-check"
+                        iconColor="#10B981"
+                        iconBgColor="#D1FAE5"
+                        title="Privacy & Security"
+                        subtitle="Account protection settings"
+                        onPress={() => router.push('/(tabs)/settings')}
+                    />
+                    
+                    <SettingsMenuItem
+                        icon="help-circle"
+                        iconColor="#F59E0B"
+                        iconBgColor="#FEF3C7"
+                        title="Help & Support"
+                        subtitle="FAQs and contact us"
+                        onPress={() => router.push('/(tabs)/settings')}
+                    />
                 </Card>
 
                 {/* Stats */}

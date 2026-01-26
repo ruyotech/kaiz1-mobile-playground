@@ -4,6 +4,7 @@ import { View, Pressable, Text } from 'react-native';
 import { SplashScreen } from '../components/SplashScreen';
 import { useAppStore } from '../store/appStore';
 import { useAuthStore } from '../store/authStore';
+import { useNotificationStore } from '../store/notificationStore';
 
 export default function Index() {
     const router = useRouter();
@@ -11,6 +12,7 @@ export default function Index() {
     const [showDevReset, setShowDevReset] = useState(false);
     const { isOnboarded, reset: resetApp } = useAppStore();
     const { user, reset: resetAuth } = useAuthStore();
+    const { fetchNotifications, addDemoNotifications } = useNotificationStore();
 
     useEffect(() => {
         // Log current state for debugging
@@ -19,6 +21,14 @@ export default function Index() {
             hasUser: !!user,
             userName: user?.fullName 
         });
+        
+        // Initialize notifications when user is logged in
+        if (user) {
+            fetchNotifications().catch(() => {
+                // If API fails, add demo notifications for development
+                addDemoNotifications();
+            });
+        }
     }, [isOnboarded, user]);
 
     useEffect(() => {

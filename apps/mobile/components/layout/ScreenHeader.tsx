@@ -2,6 +2,7 @@ import { View, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { NotificationBell } from '../notifications';
 
 interface ScreenHeaderProps {
     title: string;
@@ -10,9 +11,18 @@ interface ScreenHeaderProps {
     rightAction?: React.ReactNode;
     useSafeArea?: boolean;
     children?: React.ReactNode;
+    showNotifications?: boolean;
 }
 
-export function ScreenHeader({ title, subtitle, showBack = false, rightAction, useSafeArea = true, children }: ScreenHeaderProps) {
+export function ScreenHeader({ 
+    title, 
+    subtitle, 
+    showBack = false, 
+    rightAction, 
+    useSafeArea = true, 
+    children,
+    showNotifications = true,
+}: ScreenHeaderProps) {
     const router = useRouter();
 
     const content = (
@@ -31,11 +41,18 @@ export function ScreenHeader({ title, subtitle, showBack = false, rightAction, u
                         )}
                     </View>
                 </View>
-                {rightAction && (
-                    <View className="ml-2">
-                        {rightAction}
-                    </View>
-                )}
+                <View className="flex-row items-center ml-2">
+                    {showNotifications && (
+                        <View className="mr-2">
+                            <NotificationBell size={22} variant="outlined" />
+                        </View>
+                    )}
+                    {rightAction && (
+                        <View>
+                            {rightAction}
+                        </View>
+                    )}
+                </View>
             </View>
             {children}
         </>
