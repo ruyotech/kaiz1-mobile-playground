@@ -7,6 +7,12 @@ spring:
     virtual:
       enabled: true
 
+  # File upload size limits
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
   # JPA Configuration
   jpa:
     open-in-view: false
