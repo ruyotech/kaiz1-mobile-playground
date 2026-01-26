@@ -42,28 +42,19 @@ export const MAX_INPUT_LENGTHS = {
 } as const;
 
 // Supported languages/locales
+// Currently only English and Turkish are fully translated
+// More languages can be added by creating locale files in i18n/locales/
 export const SUPPORTED_LANGUAGES = [
     { code: 'en-US' as const, name: 'English', nativeName: 'English', flag: '🇺🇸' },
-    { code: 'en-GB' as const, name: 'English (UK)', nativeName: 'English (UK)', flag: '🇬🇧' },
-    { code: 'es-ES' as const, name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
-    { code: 'es-MX' as const, name: 'Spanish (Mexico)', nativeName: 'Español (México)', flag: '🇲🇽' },
-    { code: 'fr-FR' as const, name: 'French', nativeName: 'Français', flag: '🇫🇷' },
-    { code: 'de-DE' as const, name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
-    { code: 'it-IT' as const, name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹' },
-    { code: 'pt-BR' as const, name: 'Portuguese (Brazil)', nativeName: 'Português (Brasil)', flag: '🇧🇷' },
-    { code: 'pt-PT' as const, name: 'Portuguese', nativeName: 'Português', flag: '🇵🇹' },
-    { code: 'ja-JP' as const, name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
-    { code: 'ko-KR' as const, name: 'Korean', nativeName: '한국어', flag: '🇰🇷' },
-    { code: 'zh-CN' as const, name: 'Chinese (Simplified)', nativeName: '简体中文', flag: '🇨🇳' },
-    { code: 'zh-TW' as const, name: 'Chinese (Traditional)', nativeName: '繁體中文', flag: '🇹🇼' },
-    { code: 'ar-SA' as const, name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦' },
-    { code: 'hi-IN' as const, name: 'Hindi', nativeName: 'हिन्दी', flag: '🇮🇳' },
-    { code: 'ru-RU' as const, name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
-    { code: 'nl-NL' as const, name: 'Dutch', nativeName: 'Nederlands', flag: '🇳🇱' },
-    { code: 'pl-PL' as const, name: 'Polish', nativeName: 'Polski', flag: '🇵🇱' },
     { code: 'tr-TR' as const, name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷' },
-    { code: 'sv-SE' as const, name: 'Swedish', nativeName: 'Svenska', flag: '🇸🇪' },
 ] as const;
 
-// Default locale
-export const DEFAULT_LOCALE = 'en-US' as const;
+// Placeholder for future language expansion
+// Uncomment and add translation files to enable:
+// { code: 'en-GB' as const, name: 'English (UK)', nativeName: 'English (UK)', flag: '🇬🇧' },
+// { code: 'es-ES' as const, name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
+// { code: 'fr-FR' as const, name: 'French', nativeName: 'Français', flag: '🇫🇷' },
+// { code: 'de-DE' as const, name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
+// { code: 'ar-SA' as const, name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦' },
+// { code: 'zh-CN' as const, name: 'Chinese (Simplified)', nativeName: '简体中文', flag: '🇨🇳' },
+// { code: 'ja-JP' as const, name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },

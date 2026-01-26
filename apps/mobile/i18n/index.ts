@@ -13,7 +13,7 @@
  * Adding new languages:
  * 1. Create a new JSON file in ./locales/[lang].json
  * 2. Import and add to translations object below
- * 3. Add to SUPPORTED_LANGUAGES in constants.ts if not already there
+ * 3. Add to SUPPORTED_LANGUAGES in constants.ts
  * 
  * @author Kaiz Team
  * @version 1.0.0
@@ -25,6 +25,9 @@ import * as Localization from 'expo-localization';
 // Import translation files
 import en from './locales/en.json';
 import tr from './locales/tr.json';
+
+// Export types
+export type { TranslationKeys, TranslationFunction } from './types';
 
 // Create i18n instance
 const i18n = new I18n({

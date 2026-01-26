@@ -2,27 +2,19 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Supported locales - only languages with full translations
 export type SupportedLocale = 
     | 'en-US' // English (United States)
-    | 'en-GB' // English (United Kingdom)
-    | 'es-ES' // Spanish (Spain)
-    | 'es-MX' // Spanish (Mexico)
-    | 'fr-FR' // French (France)
-    | 'de-DE' // German (Germany)
-    | 'it-IT' // Italian (Italy)
-    | 'pt-BR' // Portuguese (Brazil)
-    | 'pt-PT' // Portuguese (Portugal)
-    | 'ja-JP' // Japanese (Japan)
-    | 'ko-KR' // Korean (South Korea)
-    | 'zh-CN' // Chinese (Simplified, China)
-    | 'zh-TW' // Chinese (Traditional, Taiwan)
-    | 'ar-SA' // Arabic (Saudi Arabia)
-    | 'hi-IN' // Hindi (India)
-    | 'ru-RU' // Russian (Russia)
-    | 'nl-NL' // Dutch (Netherlands)
-    | 'pl-PL' // Polish (Poland)
-    | 'tr-TR' // Turkish (Turkey)
-    | 'sv-SE'; // Swedish (Sweden)
+    | 'tr-TR'; // Turkish (Turkey)
+
+// Note: More locales can be added once translations are complete:
+// | 'en-GB' // English (United Kingdom)
+// | 'es-ES' // Spanish (Spain)
+// | 'fr-FR' // French (France)
+// | 'de-DE' // German (Germany)
+// | 'ar-SA' // Arabic (Saudi Arabia)
+// | 'zh-CN' // Chinese (Simplified)
+// | 'ja-JP'; // Japanese
 
 export type WeekStartDay = 'sunday' | 'monday';
 export type ThemeMode = 'light' | 'dark' | 'auto';

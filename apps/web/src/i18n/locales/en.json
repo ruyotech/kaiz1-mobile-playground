@@ -1,0 +1,291 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "startFree": "Start Free",
+    "tryDemo": "Try Demo",
+    "viewAll": "View All",
+    "seeAll": "See All"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "community": "Community",
+    "blog": "Blog",
+    "login": "Sign In",
+    "register": "Start Free"
+  },
+  "hero": {
+    "badge": {
+      "encrypted": "256-bit Encrypted",
+      "achievingNow": "achieving goals now",
+      "gdprCompliant": "GDPR Compliant"
+    },
+    "title": {
+      "line1": "Run Your Life",
+      "line2": "Like a Product Team"
+    },
+    "subtitle": {
+      "should": "\"I should\"",
+      "shipped": "\"it shipped.\""
+    },
+    "description": "Weekly sprints. Story points. A community that ships life goals—not just software.",
+    "cta": {
+      "primary": "Start Free – No Credit Card",
+      "secondary": "See How It Works"
+    },
+    "features": {
+      "freeTrial": "14-day free trial",
+      "noCard": "No credit card needed",
+      "setupTime": "Setup in 2 minutes"
+    }
+  },
+  "liveActivity": {
+    "badge": "Live Community Activity",
+    "title": "Join {{count}} People Transforming Their Lives",
+    "subtitle": "Real people. Real progress. Real-time."
+  },
+  "stats": {
+    "tasksCompleted": "Tasks Completed Today",
+    "activeUsers": "Active Users",
+    "challengesJoined": "Challenges Joined",
+    "averageStreak": "Average Streak"
+  },
+  "features": {
+    "title": "Everything You Need to",
+    "titleHighlight": "Ship Your Life Goals",
+    "subtitle": "Built by productivity nerds who got tired of apps that treat life like a to-do list.",
+    "sprintPlanning": {
+      "title": "Sprint Planning",
+      "description": "Plan weekly sprints with story points. Know your capacity. Ship consistently."
+    },
+    "eisenhowerMatrix": {
+      "title": "Eisenhower Matrix",
+      "description": "Prioritize by urgency and importance. Focus on what actually moves the needle."
+    },
+    "lifeWheel": {
+      "title": "Life Wheel Balance",
+      "description": "Track health, career, relationships, and more. See your whole life at a glance."
+    },
+    "aiCoach": {
+      "title": "AI Scrum Master",
+      "description": "Get personalized insights, capacity warnings, and balance nudges from your AI coach."
+    },
+    "challenges": {
+      "title": "Community Challenges",
+      "description": "Join 30-day challenges. Compete on leaderboards. Win together."
+    },
+    "analytics": {
+      "title": "Velocity Analytics",
+      "description": "Track your productivity trends. See your improvement over time."
+    }
+  },
+  "lifeWheel": {
+    "title": "See Your Life",
+    "titleHighlight": "From Above",
+    "subtitle": "The Life Wheel shows you where you're thriving and where you're neglecting. Balance isn't a destination—it's data.",
+    "tryIt": "Try It Yourself",
+    "areas": {
+      "health": "Health & Fitness",
+      "career": "Career & Work",
+      "finance": "Finance & Wealth",
+      "relationships": "Relationships",
+      "personalGrowth": "Personal Growth",
+      "funRecreation": "Fun & Recreation",
+      "environment": "Environment",
+      "spirituality": "Spirituality"
+    }
+  },
+  "community": {
+    "title": "Community",
+    "showcase": {
+      "title": "Join a Community That",
+      "titleHighlight": "Actually Ships",
+      "subtitle": "No toxic hustle culture. Just people helping people build better lives."
+    },
+    "leaderboard": {
+      "title": "Weekly Leaderboard",
+      "viewFull": "View Full Leaderboard"
+    },
+    "successStories": {
+      "title": "Success Stories",
+      "readMore": "Read More Stories"
+    }
+  },
+  "cta": {
+    "title": "Ready to Ship",
+    "titleHighlight": "Your Best Life?",
+    "subtitle": "Join thousands of people who stopped planning and started shipping.",
+    "button": "Start Your Free Sprint",
+    "noCreditCard": "No credit card required • Cancel anytime"
+  },
+  "footer": {
+    "description": "Run your life like a product team. Weekly sprints, story points, and a community that celebrates your wins.",
+    "product": "Product",
+    "support": "Support",
+    "resources": "Resources",
+    "company": "Company",
+    "links": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "mobileApp": "Mobile App",
+      "community": "Community",
+      "faq": "FAQ",
+      "helpCenter": "Help Center",
+      "contactUs": "Contact Us",
+      "status": "Status",
+      "blog": "Blog",
+      "successStories": "Success Stories",
+      "challenges": "Challenges",
+      "apiDocs": "API Docs",
+      "about": "About",
+      "careers": "Careers",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    },
+    "copyright": "© {{year}} Kaiz LifeOS. All rights reserved.",
+    "madeWith": "Made with",
+    "byTeam": "by the Kaiz Team"
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Start free. Upgrade when you're ready.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "savePercent": "Save {{percent}}%",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "description": "Perfect for getting started",
+        "features": [
+          "Basic sprint planning",
+          "Up to 3 life wheel areas",
+          "Community access",
+          "Mobile app"
+        ],
+        "cta": "Get Started"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$9",
+        "period": "/month",
+        "description": "For serious goal achievers",
+        "features": [
+          "Unlimited sprints",
+          "All life wheel areas",
+          "AI Scrum Master",
+          "Advanced analytics",
+          "Priority support"
+        ],
+        "cta": "Start Free Trial",
+        "popular": "Most Popular"
+      },
+      "team": {
+        "name": "Team",
+        "price": "$29",
+        "period": "/month",
+        "description": "For accountability groups",
+        "features": [
+          "Everything in Pro",
+          "Up to 10 team members",
+          "Team challenges",
+          "Group analytics",
+          "Admin dashboard"
+        ],
+        "cta": "Contact Sales"
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about Kaiz LifeOS",
+    "questions": {
+      "whatIs": {
+        "question": "What is Kaiz LifeOS?",
+        "answer": "Kaiz LifeOS is a productivity platform that helps you manage your life using Agile methodology. Think of it as applying sprint planning, story points, and retrospectives to your personal goals."
+      },
+      "howDifferent": {
+        "question": "How is it different from other productivity apps?",
+        "answer": "Unlike simple to-do apps, Kaiz treats your life like a product. You plan weekly sprints, estimate effort with story points, track velocity, and continuously improve through retrospectives."
+      },
+      "freeFeatures": {
+        "question": "What's included in the free plan?",
+        "answer": "The free plan includes basic sprint planning, up to 3 life wheel areas, community access, and full mobile app functionality. It's enough to get started and see real results."
+      },
+      "cancelAnytime": {
+        "question": "Can I cancel anytime?",
+        "answer": "Yes! You can cancel your subscription at any time. No questions asked, no hidden fees. Your data remains accessible even after cancellation."
+      }
+    }
+  },
+  "about": {
+    "title": "About Kaiz LifeOS",
+    "subtitle": "We believe everyone deserves the tools to build their best life.",
+    "mission": {
+      "title": "Our Mission",
+      "description": "To help people treat their personal growth with the same rigor and care that successful companies use to build great products."
+    },
+    "values": {
+      "title": "Our Values",
+      "items": {
+        "shipping": {
+          "title": "Ship Over Perfect",
+          "description": "Done is better than perfect. We celebrate progress, not perfection."
+        },
+        "balance": {
+          "title": "Balance Over Hustle",
+          "description": "Sustainable growth beats burnout. We optimize for long-term wellbeing."
+        },
+        "community": {
+          "title": "Community Over Competition",
+          "description": "We rise by lifting others. Success is better when shared."
+        }
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to continue your journey",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign In",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create one"
+    },
+    "register": {
+      "title": "Start Your Journey",
+      "subtitle": "Create your account and start shipping life goals",
+      "fullName": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "agreeToTerms": "I agree to the Terms of Service and Privacy Policy",
+      "createAccount": "Create Account",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "unauthorized": "Please sign in to continue.",
+    "notFound": "Page not found."
+  }
+}

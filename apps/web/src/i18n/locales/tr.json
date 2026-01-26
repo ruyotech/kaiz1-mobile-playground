@@ -1,0 +1,291 @@
+{
+  "common": {
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "done": "Tamam",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "confirm": "Onayla",
+    "learnMore": "Daha Fazla Bilgi",
+    "getStarted": "Başla",
+    "signIn": "Giriş Yap",
+    "signUp": "Kayıt Ol",
+    "signOut": "Çıkış Yap",
+    "startFree": "Ücretsiz Başla",
+    "tryDemo": "Demo Dene",
+    "viewAll": "Tümünü Görüntüle",
+    "seeAll": "Tümünü Gör"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "about": "Hakkında",
+    "pricing": "Fiyatlandırma",
+    "faq": "SSS",
+    "community": "Topluluk",
+    "blog": "Blog",
+    "login": "Giriş Yap",
+    "register": "Ücretsiz Başla"
+  },
+  "hero": {
+    "badge": {
+      "encrypted": "256-bit Şifreli",
+      "achievingNow": "şu anda hedeflerine ulaşıyor",
+      "gdprCompliant": "GDPR Uyumlu"
+    },
+    "title": {
+      "line1": "Hayatını Yönet",
+      "line2": "Bir Ürün Takımı Gibi"
+    },
+    "subtitle": {
+      "should": "\"Yapmalıyım\"",
+      "shipped": "\"tamamlandı.\""
+    },
+    "description": "Haftalık sprintler. Story puanları. Sadece yazılım değil, yaşam hedeflerini de tamamlayan bir topluluk.",
+    "cta": {
+      "primary": "Ücretsiz Başla – Kredi Kartı Gerekmez",
+      "secondary": "Nasıl Çalıştığını Gör"
+    },
+    "features": {
+      "freeTrial": "14 günlük ücretsiz deneme",
+      "noCard": "Kredi kartı gerekmez",
+      "setupTime": "2 dakikada kurulum"
+    }
+  },
+  "liveActivity": {
+    "badge": "Canlı Topluluk Aktivitesi",
+    "title": "Hayatını Dönüştüren {{count}} Kişiye Katıl",
+    "subtitle": "Gerçek insanlar. Gerçek ilerleme. Gerçek zamanlı."
+  },
+  "stats": {
+    "tasksCompleted": "Bugün Tamamlanan Görevler",
+    "activeUsers": "Aktif Kullanıcılar",
+    "challengesJoined": "Katılınan Meydan Okumalar",
+    "averageStreak": "Ortalama Seri"
+  },
+  "features": {
+    "title": "Yaşam Hedeflerini",
+    "titleHighlight": "Tamamlamak İçin Gereken Her Şey",
+    "subtitle": "Hayatı bir yapılacaklar listesi gibi ele alan uygulamalardan bıkmış verimlilik meraklıları tarafından yapıldı.",
+    "sprintPlanning": {
+      "title": "Sprint Planlama",
+      "description": "Story puanlarıyla haftalık sprintler planla. Kapasiteni bil. Tutarlı şekilde tamamla."
+    },
+    "eisenhowerMatrix": {
+      "title": "Eisenhower Matrisi",
+      "description": "Aciliyet ve öneme göre önceliklendir. Gerçekten fark yaratan şeylere odaklan."
+    },
+    "lifeWheel": {
+      "title": "Yaşam Çarkı Dengesi",
+      "description": "Sağlık, kariyer, ilişkiler ve daha fazlasını takip et. Tüm hayatını bir bakışta gör."
+    },
+    "aiCoach": {
+      "title": "AI Scrum Master",
+      "description": "AI koçundan kişiselleştirilmiş içgörüler, kapasite uyarıları ve denge tavsiyeleri al."
+    },
+    "challenges": {
+      "title": "Topluluk Meydan Okumaları",
+      "description": "30 günlük meydan okumalara katıl. Liderlik tablolarında yarış. Birlikte kazan."
+    },
+    "analytics": {
+      "title": "Hız Analizi",
+      "description": "Verimlilik trendlerini takip et. Zaman içindeki gelişimini gör."
+    }
+  },
+  "lifeWheel": {
+    "title": "Hayatını",
+    "titleHighlight": "Yukarıdan Gör",
+    "subtitle": "Yaşam Çarkı sana nerede başarılı olduğunu ve neyi ihmal ettiğini gösterir. Denge bir hedef değil—veridir.",
+    "tryIt": "Kendin Dene",
+    "areas": {
+      "health": "Sağlık ve Fitness",
+      "career": "Kariyer ve İş",
+      "finance": "Finans ve Zenginlik",
+      "relationships": "İlişkiler",
+      "personalGrowth": "Kişisel Gelişim",
+      "funRecreation": "Eğlence ve Dinlenme",
+      "environment": "Çevre",
+      "spirituality": "Maneviyat"
+    }
+  },
+  "community": {
+    "title": "Topluluk",
+    "showcase": {
+      "title": "Gerçekten İş Bitiren",
+      "titleHighlight": "Bir Topluluğa Katıl",
+      "subtitle": "Toksik koşuşturma kültürü yok. Sadece birbirine daha iyi bir hayat kurmada yardım eden insanlar."
+    },
+    "leaderboard": {
+      "title": "Haftalık Liderlik Tablosu",
+      "viewFull": "Tam Tabloyu Görüntüle"
+    },
+    "successStories": {
+      "title": "Başarı Hikayeleri",
+      "readMore": "Daha Fazla Hikaye Oku"
+    }
+  },
+  "cta": {
+    "title": "En İyi Hayatını",
+    "titleHighlight": "Tamamlamaya Hazır mısın?",
+    "subtitle": "Planlamayı bırakıp tamamlamaya başlayan binlerce kişiye katıl.",
+    "button": "Ücretsiz Sprintine Başla",
+    "noCreditCard": "Kredi kartı gerekmez • İstediğin zaman iptal et"
+  },
+  "footer": {
+    "description": "Hayatını bir ürün takımı gibi yönet. Haftalık sprintler, story puanları ve başarılarını kutlayan bir topluluk.",
+    "product": "Ürün",
+    "support": "Destek",
+    "resources": "Kaynaklar",
+    "company": "Şirket",
+    "links": {
+      "features": "Özellikler",
+      "pricing": "Fiyatlandırma",
+      "mobileApp": "Mobil Uygulama",
+      "community": "Topluluk",
+      "faq": "SSS",
+      "helpCenter": "Yardım Merkezi",
+      "contactUs": "Bize Ulaşın",
+      "status": "Durum",
+      "blog": "Blog",
+      "successStories": "Başarı Hikayeleri",
+      "challenges": "Meydan Okumalar",
+      "apiDocs": "API Dokümantasyonu",
+      "about": "Hakkında",
+      "careers": "Kariyer",
+      "privacy": "Gizlilik",
+      "terms": "Şartlar"
+    },
+    "copyright": "© {{year}} Kaiz LifeOS. Tüm hakları saklıdır.",
+    "madeWith": "Sevgiyle yapıldı",
+    "byTeam": "Kaiz Ekibi tarafından"
+  },
+  "pricing": {
+    "title": "Basit, Şeffaf Fiyatlandırma",
+    "subtitle": "Ücretsiz başla. Hazır olduğunda yükselt.",
+    "monthly": "Aylık",
+    "annual": "Yıllık",
+    "savePercent": "%{{percent}} Tasarruf Et",
+    "plans": {
+      "free": {
+        "name": "Ücretsiz",
+        "price": "₺0",
+        "description": "Başlamak için mükemmel",
+        "features": [
+          "Temel sprint planlama",
+          "3 yaşam çarkı alanına kadar",
+          "Topluluk erişimi",
+          "Mobil uygulama"
+        ],
+        "cta": "Başla"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "₺249",
+        "period": "/ay",
+        "description": "Ciddi hedef başarıcılar için",
+        "features": [
+          "Sınırsız sprint",
+          "Tüm yaşam çarkı alanları",
+          "AI Scrum Master",
+          "Gelişmiş analitik",
+          "Öncelikli destek"
+        ],
+        "cta": "Ücretsiz Denemeyi Başlat",
+        "popular": "En Popüler"
+      },
+      "team": {
+        "name": "Takım",
+        "price": "₺799",
+        "period": "/ay",
+        "description": "Hesap verebilirlik grupları için",
+        "features": [
+          "Pro'daki her şey",
+          "10 takım üyesine kadar",
+          "Takım meydan okumaları",
+          "Grup analitikleri",
+          "Yönetici paneli"
+        ],
+        "cta": "Satışla İletişime Geç"
+      }
+    }
+  },
+  "faq": {
+    "title": "Sıkça Sorulan Sorular",
+    "subtitle": "Kaiz LifeOS hakkında bilmeniz gereken her şey",
+    "questions": {
+      "whatIs": {
+        "question": "Kaiz LifeOS nedir?",
+        "answer": "Kaiz LifeOS, Agile metodolojisini kullanarak hayatınızı yönetmenize yardımcı olan bir verimlilik platformudur. Bunu kişisel hedeflerinize sprint planlama, story puanları ve retrospektifler uygulamak olarak düşünün."
+      },
+      "howDifferent": {
+        "question": "Diğer verimlilik uygulamalarından farkı nedir?",
+        "answer": "Basit yapılacaklar uygulamalarından farklı olarak, Kaiz hayatınızı bir ürün gibi ele alır. Haftalık sprintler planlarsınız, story puanlarıyla çaba tahmin edersiniz, hızı takip edersiniz ve retrospektiflerle sürekli iyileştirirsiniz."
+      },
+      "freeFeatures": {
+        "question": "Ücretsiz plana neler dahil?",
+        "answer": "Ücretsiz plan temel sprint planlama, 3 yaşam çarkı alanına kadar, topluluk erişimi ve tam mobil uygulama işlevselliği içerir. Başlamak ve gerçek sonuçlar görmek için yeterli."
+      },
+      "cancelAnytime": {
+        "question": "İstediğim zaman iptal edebilir miyim?",
+        "answer": "Evet! Aboneliğinizi istediğiniz zaman iptal edebilirsiniz. Soru sorulmaz, gizli ücret yoktur. Verileriniz iptalden sonra bile erişilebilir kalır."
+      }
+    }
+  },
+  "about": {
+    "title": "Kaiz LifeOS Hakkında",
+    "subtitle": "Herkesin en iyi hayatını kurma araçlarını hak ettiğine inanıyoruz.",
+    "mission": {
+      "title": "Misyonumuz",
+      "description": "İnsanların kişisel gelişimlerini, başarılı şirketlerin harika ürünler yapmak için kullandığı aynı titizlik ve özenle ele almalarına yardımcı olmak."
+    },
+    "values": {
+      "title": "Değerlerimiz",
+      "items": {
+        "shipping": {
+          "title": "Mükemmelden Önce Tamamla",
+          "description": "Tamamlanmış, mükemmelden iyidir. Mükemmelliği değil, ilerlemeyi kutluyoruz."
+        },
+        "balance": {
+          "title": "Koşuşturmadan Önce Denge",
+          "description": "Sürdürülebilir büyüme tükenmişliği yener. Uzun vadeli iyilik için optimize ediyoruz."
+        },
+        "community": {
+          "title": "Rekabetten Önce Topluluk",
+          "description": "Başkalarını kaldırarak yükseliyoruz. Başarı paylaşıldığında daha güzel."
+        }
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Tekrar Hoş Geldin",
+      "subtitle": "Yolculuğuna devam etmek için giriş yap",
+      "email": "E-posta",
+      "password": "Şifre",
+      "forgotPassword": "Şifreni mi unuttun?",
+      "signIn": "Giriş Yap",
+      "noAccount": "Hesabın yok mu?",
+      "createAccount": "Bir tane oluştur"
+    },
+    "register": {
+      "title": "Yolculuğuna Başla",
+      "subtitle": "Hesabını oluştur ve yaşam hedeflerini tamamlamaya başla",
+      "fullName": "Ad Soyad",
+      "email": "E-posta",
+      "password": "Şifre",
+      "confirmPassword": "Şifreyi Onayla",
+      "agreeToTerms": "Kullanım Şartları ve Gizlilik Politikasını kabul ediyorum",
+      "createAccount": "Hesap Oluştur",
+      "alreadyHaveAccount": "Zaten hesabın var mı?",
+      "signIn": "Giriş yap"
+    }
+  },
+  "errors": {
+    "generic": "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.",
+    "network": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",
+    "unauthorized": "Devam etmek için lütfen giriş yapın.",
+    "notFound": "Sayfa bulunamadı."
+  }
+}

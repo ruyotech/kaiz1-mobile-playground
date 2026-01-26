@@ -11,7 +11,415 @@
     "confirm": "Onayla",
     "reset": "Sıfırla",
     "clear": "Temizle",
-    "close": "Kapat"
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "skip": "Atla",
+    "continue": "Devam",
+    "getStarted": "Başla",
+    "submit": "Gönder",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "sort": "Sırala",
+    "view": "Görüntüle",
+    "create": "Oluştur",
+    "update": "Güncelle",
+    "add": "Ekle",
+    "remove": "Kaldır",
+    "yes": "Evet",
+    "no": "Hayır",
+    "ok": "Tamam",
+    "retry": "Tekrar Dene",
+    "refresh": "Yenile",
+    "seeAll": "Tümünü Gör",
+    "viewAll": "Tümünü Görüntüle",
+    "learnMore": "Daha Fazla Bilgi",
+    "tryAgain": "Tekrar Dene",
+    "noResults": "Sonuç bulunamadı",
+    "emptyState": "Henüz bir şey yok",
+    "required": "Zorunlu",
+    "optional": "İsteğe Bağlı"
+  },
+  "auth": {
+    "login": {
+      "title": "Tekrar Hoş Geldin",
+      "subtitle": "Yolculuğuna devam etmek için giriş yap",
+      "email": "E-posta",
+      "emailPlaceholder": "E-posta adresinizi girin",
+      "password": "Şifre",
+      "passwordPlaceholder": "Şifrenizi girin",
+      "forgotPassword": "Şifremi Unuttum?",
+      "signIn": "Giriş Yap",
+      "signInWithGoogle": "Google ile Devam Et",
+      "signInWithApple": "Apple ile Devam Et",
+      "noAccount": "Hesabınız yok mu?",
+      "createAccount": "Hesap Oluştur",
+      "orContinueWith": "veya şununla devam et",
+      "loginFailed": "Giriş Başarısız",
+      "invalidCredentials": "Geçersiz e-posta veya şifre. Lütfen tekrar deneyin."
+    },
+    "register": {
+      "title": "Hesap Oluştur",
+      "subtitle": "Verimlilik yolculuğuna başla",
+      "fullName": "Ad Soyad",
+      "fullNamePlaceholder": "Adınızı ve soyadınızı girin",
+      "email": "E-posta",
+      "emailPlaceholder": "E-posta adresinizi girin",
+      "password": "Şifre",
+      "passwordPlaceholder": "Bir şifre oluşturun",
+      "confirmPassword": "Şifreyi Onayla",
+      "confirmPasswordPlaceholder": "Şifrenizi onaylayın",
+      "agreeToTerms": "Kullanım Şartları ve Gizlilik Politikasını kabul ediyorum",
+      "createAccount": "Hesap Oluştur",
+      "alreadyHaveAccount": "Zaten hesabınız var mı?",
+      "signIn": "Giriş Yap",
+      "termsRequired": "Şartlar Gerekli",
+      "termsRequiredMessage": "Lütfen Kullanım Şartları ve Gizlilik Politikasını kabul edin",
+      "registrationSuccess": "Başarılı!",
+      "registrationSuccessMessage": "Hesabınız oluşturuldu. Kaiz'e hoş geldiniz!",
+      "tryDemo": "Demo Modunu Dene",
+      "tryDemoSubtitle": "Kayıt olmadan tüm özellikleri keşfet"
+    },
+    "forgotPassword": {
+      "title": "Şifremi Unuttum",
+      "subtitle": "Şifrenizi sıfırlamak için e-posta adresinizi girin",
+      "email": "E-posta",
+      "emailPlaceholder": "E-posta adresinizi girin",
+      "sendResetLink": "Sıfırlama Bağlantısı Gönder",
+      "backToLogin": "Girişe Dön",
+      "emailSent": "E-posta Gönderildi",
+      "emailSentMessage": "Şifre sıfırlama talimatları için gelen kutunuzu kontrol edin"
+    },
+    "verifyEmail": {
+      "title": "E-postanızı Doğrulayın",
+      "subtitle": "E-posta adresinize bir doğrulama kodu gönderdik",
+      "enterCode": "Doğrulama kodunu girin",
+      "verify": "Doğrula",
+      "resendCode": "Kodu Tekrar Gönder",
+      "didntReceive": "Kodu almadınız mı?"
+    },
+    "validation": {
+      "emailRequired": "E-posta gerekli",
+      "emailInvalid": "Lütfen geçerli bir e-posta girin",
+      "passwordRequired": "Şifre gerekli",
+      "passwordMinLength": "Şifre en az 6 karakter olmalı",
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "fullNameRequired": "Ad soyad gerekli",
+      "fullNameMinLength": "İsim en az 2 karakter olmalı"
+    }
+  },
+  "onboarding": {
+    "welcome": {
+      "skip": "Atla",
+      "continue": "Devam",
+      "getStarted": "Başla",
+      "slides": {
+        "slide1": {
+          "title": "Kaiz LifeOS'a Hoş Geldin",
+          "subtitle": "Hayatın, Mühendisliğin",
+          "description": "Hayatını çevik bir sprint sistemine dönüştür. İş, sağlık, ilişkiler ve kişisel gelişimi tek bir yerde dengele."
+        },
+        "slide2": {
+          "title": "Sprint Bazlı Yaşam",
+          "subtitle": "Haftalık Sprintler, Günlük İlerleme",
+          "description": "Haftanı bir profesyonel gibi planla. Büyük hedefleri story point'lerle haftalık sprintlere böl, hızı takip et ve aşırı taahhütten kaçın."
+        },
+        "slide3": {
+          "title": "Eisenhower Matrisi",
+          "subtitle": "Önemli Olana Odaklan",
+          "description": "Görevleri aciliyet ve öneme göre düzenle. Q2 (Önemli, Acil Değil) işlerine odaklan—geleceğin burada inşa ediliyor."
+        },
+        "slide4": {
+          "title": "AI Scrum Master",
+          "subtitle": "Kişisel Koçun",
+          "description": "Akıllı içgörüler, kapasite uyarıları ve denge tavsiyeleri al. AI koçun tükenmişlik yaşamadan yolunda kalmana yardımcı olur."
+        },
+        "slide5": {
+          "title": "Yaşam Çarkı Dengesi",
+          "subtitle": "Tüm Boyutları Takip Et",
+          "description": "Sprint puanlarını sağlık, kariyer, ilişkiler ve daha fazlasında izle. Nerede başarılı olduğunu ve neyi ihmal ettiğini gör."
+        }
+      }
+    },
+    "setup": {
+      "title": "Deneyimini Kişiselleştir",
+      "subtitle": "Kaiz'i sana göre özelleştirelim",
+      "selectLifeAreas": "Odak alanlarını seç",
+      "selectLifeAreasSubtitle": "Takip etmek istediğin yaşam boyutlarını seç",
+      "setGoals": "Haftalık hedeflerini belirle",
+      "setGoalsSubtitle": "Haftada kaç story point taahhüt edebilirsin?",
+      "chooseTheme": "Temayı seç",
+      "finish": "Kurulumu Tamamla"
+    }
+  },
+  "navigation": {
+    "tabs": {
+      "home": "Ana Sayfa",
+      "sprint": "Sprint",
+      "calendar": "Takvim",
+      "challenges": "Meydan Okumalar",
+      "community": "Topluluk",
+      "commandCenter": "Komut",
+      "sensai": "SensAI",
+      "essentia": "Essentia",
+      "motivation": "Motivasyon",
+      "pomodoro": "Pomodoro",
+      "settings": "Ayarlar",
+      "notifications": "Bildirimler"
+    },
+    "sdlc": {
+      "calendar": "Takvim",
+      "backlog": "Birikim",
+      "epics": "Epikler",
+      "reports": "Raporlar",
+      "velocity": "Hız",
+      "retro": "Retrospektif",
+      "wiki": "Wiki"
+    }
+  },
+  "tasks": {
+    "title": "Görevler",
+    "createTask": "Görev Oluştur",
+    "editTask": "Görevi Düzenle",
+    "taskDetails": "Görev Detayları",
+    "status": {
+      "draft": "Taslak",
+      "todo": "Yapılacak",
+      "inProgress": "Devam Ediyor",
+      "done": "Tamamlandı"
+    },
+    "priority": {
+      "title": "Öncelik",
+      "urgent": "Acil",
+      "high": "Yüksek",
+      "medium": "Orta",
+      "low": "Düşük"
+    },
+    "fields": {
+      "title": "Başlık",
+      "titlePlaceholder": "Görev başlığını girin",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Bir açıklama ekleyin...",
+      "dueDate": "Bitiş Tarihi",
+      "storyPoints": "Story Puanları",
+      "epic": "Epik",
+      "selectEpic": "Epik Seç",
+      "lifeArea": "Yaşam Alanı",
+      "selectLifeArea": "Yaşam Alanı Seç",
+      "quadrant": "Kadran",
+      "selectQuadrant": "Kadran Seç"
+    },
+    "quadrants": {
+      "q1": "Q1: Acil ve Önemli",
+      "q2": "Q2: Önemli, Acil Değil",
+      "q3": "Q3: Acil, Önemli Değil",
+      "q4": "Q4: Acil Değil, Önemli Değil"
+    },
+    "actions": {
+      "markComplete": "Tamamlandı Olarak İşaretle",
+      "markIncomplete": "Tamamlanmadı Olarak İşaretle",
+      "moveToBacklog": "Birikime Taşı",
+      "addToSprint": "Sprinte Ekle",
+      "deleteTask": "Görevi Sil",
+      "archiveTask": "Görevi Arşivle"
+    },
+    "filters": {
+      "all": "Tümü",
+      "today": "Bugün",
+      "thisWeek": "Bu Hafta",
+      "overdue": "Gecikmiş",
+      "completed": "Tamamlanmış",
+      "byStatus": "Duruma Göre",
+      "byPriority": "Önceliğe Göre",
+      "byLifeArea": "Yaşam Alanına Göre"
+    },
+    "empty": {
+      "title": "Henüz görev yok",
+      "subtitle": "Başlamak için ilk görevini oluştur",
+      "action": "Görev Oluştur"
+    }
+  },
+  "sprints": {
+    "title": "Sprint",
+    "currentSprint": "Mevcut Sprint",
+    "createSprint": "Sprint Oluştur",
+    "sprintPlanning": "Sprint Planlama",
+    "sprintReview": "Sprint İnceleme",
+    "sprintRetro": "Sprint Retrospektifi",
+    "capacity": {
+      "title": "Kapasite",
+      "available": "Mevcut",
+      "committed": "Taahhüt Edilen",
+      "remaining": "Kalan",
+      "overcommitted": "Aşırı Taahhüt"
+    },
+    "velocity": {
+      "title": "Hız",
+      "average": "Ortalama Hız",
+      "current": "Mevcut Sprint",
+      "trend": "Trend"
+    },
+    "backlog": {
+      "title": "Birikim",
+      "productBacklog": "Ürün Birikimi",
+      "sprintBacklog": "Sprint Birikimi",
+      "grooming": "Birikim Bakımı",
+      "empty": "Birikim boş"
+    }
+  },
+  "epics": {
+    "title": "Epikler",
+    "createEpic": "Epik Oluştur",
+    "editEpic": "Epik Düzenle",
+    "epicDetails": "Epik Detayları",
+    "fields": {
+      "name": "Epik Adı",
+      "namePlaceholder": "Epik adını girin",
+      "description": "Açıklama",
+      "color": "Renk",
+      "icon": "İkon"
+    },
+    "progress": "İlerleme",
+    "tasksCompleted": "{{total}} görevden {{completed}} tanesi tamamlandı",
+    "empty": {
+      "title": "Henüz epik yok",
+      "subtitle": "İlgili görevleri organize etmek için epikler oluştur",
+      "action": "Epik Oluştur"
+    }
+  },
+  "calendar": {
+    "title": "Takvim",
+    "today": "Bugün",
+    "week": "Hafta",
+    "month": "Ay",
+    "agenda": "Ajanda",
+    "noEvents": "Bu gün için etkinlik yok",
+    "addEvent": "Etkinlik Ekle"
+  },
+  "challenges": {
+    "title": "Meydan Okumalar",
+    "active": "Aktif Meydan Okumalar",
+    "completed": "Tamamlanan",
+    "upcoming": "Yaklaşan",
+    "join": "Katıl",
+    "leave": "Ayrıl",
+    "progress": "İlerleme",
+    "participants": "Katılımcılar",
+    "daysLeft": "{{days}} gün kaldı",
+    "streak": "Mevcut Seri",
+    "empty": {
+      "title": "Aktif meydan okuma yok",
+      "subtitle": "Motivasyonunu artırmak için bir meydan okumaya katıl",
+      "action": "Meydan Okumalara Göz At"
+    }
+  },
+  "community": {
+    "title": "Topluluk",
+    "feed": "Akış",
+    "leaderboard": "Liderlik Tablosu",
+    "groups": "Gruplar",
+    "members": "Üyeler",
+    "posts": {
+      "create": "Gönderi Oluştur",
+      "like": "Beğen",
+      "comment": "Yorum Yap",
+      "share": "Paylaş"
+    },
+    "empty": {
+      "title": "Topluluğa hoş geldin",
+      "subtitle": "Verimlilik yolculuğundaki diğer kişilerle bağlantı kur"
+    }
+  },
+  "commandCenter": {
+    "title": "Komut Merkezi",
+    "subtitle": "AI Asistanın",
+    "placeholder": "Bana bir şey sor...",
+    "thinking": "Düşünüyorum...",
+    "suggestions": {
+      "title": "Öneriler",
+      "planMyDay": "Günümü planla",
+      "weeklyReview": "Haftalık inceleme",
+      "setGoals": "Hedef belirlememe yardım et",
+      "analyzeProgress": "İlerlememi analiz et"
+    }
+  },
+  "sensai": {
+    "title": "SensAI",
+    "subtitle": "AI Destekli İçgörüler",
+    "insights": "İçgörüler",
+    "recommendations": "Öneriler",
+    "analysis": "Analiz"
+  },
+  "essentia": {
+    "title": "Essentia",
+    "subtitle": "Temel Yaşam Takibi",
+    "health": "Sağlık",
+    "finance": "Finans",
+    "habits": "Alışkanlıklar"
+  },
+  "motivation": {
+    "title": "Motivasyon",
+    "quote": "Günün Sözü",
+    "achievements": "Başarılar",
+    "streaks": "Seriler",
+    "badges": "Rozetler"
+  },
+  "pomodoro": {
+    "title": "Pomodoro",
+    "work": "Odaklan",
+    "shortBreak": "Kısa Mola",
+    "longBreak": "Uzun Mola",
+    "start": "Başlat",
+    "pause": "Duraklat",
+    "resume": "Devam Et",
+    "reset": "Sıfırla",
+    "skip": "Atla",
+    "sessions": "Oturumlar",
+    "completed": "Tamamlandı",
+    "settings": {
+      "workDuration": "Çalışma Süresi",
+      "shortBreakDuration": "Kısa Mola",
+      "longBreakDuration": "Uzun Mola",
+      "sessionsBeforeLongBreak": "Uzun Mola Öncesi Oturum Sayısı"
+    }
+  },
+  "notifications": {
+    "title": "Bildirimler",
+    "markAllRead": "Tümünü Okundu İşaretle",
+    "empty": {
+      "title": "Bildirim yok",
+      "subtitle": "Her şey güncel!"
+    },
+    "settings": {
+      "title": "Bildirim Ayarları",
+      "push": "Anlık Bildirimler",
+      "email": "E-posta Bildirimleri",
+      "reminders": "Görev Hatırlatıcıları",
+      "achievements": "Başarı Uyarıları",
+      "community": "Topluluk Güncellemeleri"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "editProfile": "Profili Düzenle",
+    "stats": {
+      "tasksCompleted": "Tamamlanan Görevler",
+      "currentStreak": "Mevcut Seri",
+      "totalPoints": "Toplam Puan"
+    }
+  },
+  "lifeWheel": {
+    "title": "Yaşam Çarkı",
+    "areas": {
+      "health": "Sağlık ve Fitness",
+      "career": "Kariyer ve İş",
+      "finance": "Finans ve Zenginlik",
+      "relationships": "İlişkiler",
+      "personalGrowth": "Kişisel Gelişim",
+      "funRecreation": "Eğlence ve Dinlenme",
+      "environment": "Çevre",
+      "spirituality": "Maneviyat"
+    }
   },
   "settings": {
     "title": "Ayarlar",
@@ -147,5 +555,24 @@
       "aiModel": "AI Modeli",
       "weekStartsOn": "Hafta Başlangıcı"
     }
+  },
+  "errors": {
+    "generic": "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.",
+    "network": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",
+    "unauthorized": "Devam etmek için lütfen giriş yapın.",
+    "notFound": "İstenen öğe bulunamadı.",
+    "serverError": "Sunucu hatası. Lütfen daha sonra tekrar deneyin."
+  },
+  "time": {
+    "today": "Bugün",
+    "yesterday": "Dün",
+    "tomorrow": "Yarın",
+    "thisWeek": "Bu Hafta",
+    "nextWeek": "Gelecek Hafta",
+    "lastWeek": "Geçen Hafta",
+    "daysAgo": "{{count}} gün önce",
+    "hoursAgo": "{{count}} saat önce",
+    "minutesAgo": "{{count}} dakika önce",
+    "justNow": "Az önce"
   }
 }
