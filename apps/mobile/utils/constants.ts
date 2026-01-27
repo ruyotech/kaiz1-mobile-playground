@@ -42,11 +42,12 @@ export const MAX_INPUT_LENGTHS = {
 } as const;
 
 // Supported languages/locales
-// Currently only English and Turkish are fully translated
+// Currently English, Turkish, and Russian are fully translated
 // More languages can be added by creating locale files in i18n/locales/
 export const SUPPORTED_LANGUAGES = [
     { code: 'en-US' as const, name: 'English', nativeName: 'English', flag: '🇺🇸' },
     { code: 'tr-TR' as const, name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷' },
+    { code: 'ru-RU' as const, name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
 ] as const;
 
 // Placeholder for future language expansion

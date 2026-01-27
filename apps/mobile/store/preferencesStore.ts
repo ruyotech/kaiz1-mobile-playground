@@ -5,7 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Supported locales - only languages with full translations
 export type SupportedLocale = 
     | 'en-US' // English (United States)
-    | 'tr-TR'; // Turkish (Turkey)
+    | 'tr-TR' // Turkish (Turkey)
+    | 'ru-RU'; // Russian (Russia)
 
 // Note: More locales can be added once translations are complete:
 // | 'en-GB' // English (United Kingdom)

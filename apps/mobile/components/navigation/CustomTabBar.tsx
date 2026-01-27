@@ -13,6 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { Audio } from 'expo-av';
 import { aiApi, commandCenterApi } from '../../services/api';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const CREATE_OPTIONS = [
     { id: 'task', icon: 'checkbox-marked-circle-outline', label: 'Task', color: '#3B82F6', route: '/(tabs)/sdlc/create-task' },
@@ -42,6 +43,7 @@ export function CustomTabBar() {
     const router = useRouter();
     const pathname = usePathname();
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
     const [input, setInput] = useState('');
     const [showCreateMenu, setShowCreateMenu] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -866,7 +868,7 @@ export function CustomTabBar() {
                                     color="#F59E0B"
                                 />
                             </View>
-                            <Text className="text-[10px] font-medium mt-0.5" style={{ color: '#F59E0B' }}>Apps</Text>
+                            <Text className="text-[10px] font-medium mt-0.5" style={{ color: '#F59E0B' }}>{t('navigation.appSwitcher.title')}</Text>
                         </TouchableOpacity>
 
                         {/* 2. Main App Icon - Blue background */}
@@ -888,7 +890,7 @@ export function CustomTabBar() {
                                 className="text-[10px] font-semibold mt-0.5"
                                 style={{ color: isActive(mainIcon.route) ? '#2563EB' : '#3B82F6' }}
                             >
-                                {mainIcon.name}
+                                {t(mainIcon.nameKey)}
                             </Text>
                         </TouchableOpacity>
 
@@ -905,7 +907,7 @@ export function CustomTabBar() {
                                 />
                             </View>
                             <Text className="text-[10px] font-semibold mt-0.5" style={{ color: '#8B5CF6' }}>
-                                {moreIcon.name}
+                                {t(moreIcon.nameKey)}
                             </Text>
                         </TouchableOpacity>
 
@@ -928,7 +930,7 @@ export function CustomTabBar() {
                                 className="text-[10px] font-medium mt-0.5"
                                 style={{ color: isOnCommandCenter ? '#059669' : '#10B981' }}
                             >
-                                Create
+                                {t('common.create')}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -947,7 +949,7 @@ export function CustomTabBar() {
                     <Pressable>
                         <View className="bg-white rounded-t-3xl pt-4 pb-8 px-4">
                             <View className="flex-row justify-between items-center mb-4">
-                                <Text className="text-lg font-bold">What would you like to do?</Text>
+                                <Text className="text-lg font-bold">{t('navigation.createMenu.title')}</Text>
                                 <TouchableOpacity onPress={() => setShowCreateMenu(false)}>
                                     <MaterialCommunityIcons name="close" size={24} color="#000" />
                                 </TouchableOpacity>

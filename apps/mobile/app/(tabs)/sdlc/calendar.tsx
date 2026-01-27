@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { addDays, subDays, format } from 'date-fns';
 import { getSprintName, getWeekNumber, getWeekStartDate } from '../../../utils/dateHelpers';
-import { getMonthShort } from '../../../utils/localizedDate';
+import { getMonthShort, formatLocalized } from '../../../utils/localizedDate';
 import { WeekHeader } from '../../../components/calendar/WeekHeader';
 import { MonthSelector } from '../../../components/calendar/MonthSelector';
 import { ViewOptionsMenu } from '../../../components/calendar/ViewOptionsMenu';
@@ -39,9 +39,9 @@ export default function SprintCalendar() {
     const weekStart = getWeekStartDate(currentDate);
     const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
-    // Count days per month
+    // Count days per month using localized month name
     const monthCounts = weekDays.reduce((acc, day) => {
-        const monthKey = format(day, 'MMM-yyyy');
+        const monthKey = formatLocalized(day, 'MMM-yyyy');
         acc[monthKey] = (acc[monthKey] || 0) + 1;
         return acc;
     }, {} as Record<string, number>);
@@ -49,7 +49,7 @@ export default function SprintCalendar() {
     // Find month with most days
     const dominantMonth = Object.entries(monthCounts).reduce((max, [month, count]) =>
         count > max.count ? { month, count } : max,
-        { month: format(weekStart, 'MMM-yyyy'), count: 0 }
+        { month: formatLocalized(weekStart, 'MMM-yyyy'), count: 0 }
     );
 
     const [monthName, yearFromMonth] = dominantMonth.month.split('-');
@@ -480,7 +480,7 @@ export default function SprintCalendar() {
                                 className="bg-white/20 px-3 py-1 rounded border border-white/40"
                             >
                                 <Text className="text-white text-xs font-semibold">
-                                    {viewType === 'week' ? 'Weekly' : 'Daily'}
+                                    {viewType === 'week' ? t('calendar.weekly') : t('calendar.daily')}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -516,7 +516,7 @@ export default function SprintCalendar() {
                         <View className="items-center justify-center py-12">
                             <MaterialCommunityIcons name="calendar-blank" size={64} color="#ccc" />
                             <Text className="text-gray-500 mt-4">
-                                {viewType === 'day' ? 'No tasks for this day' : 'No tasks for this sprint'}
+                                {viewType === 'day' ? t('calendar.noTasksDay') : t('calendar.noTasksSprint')}
                             </Text>
                         </View>
                     )}

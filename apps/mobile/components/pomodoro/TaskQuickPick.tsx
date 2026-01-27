@@ -5,6 +5,7 @@ import { useTaskStore } from '@/store/taskStore';
 import { Task } from '@/types/models';
 import { getWeekNumber } from '@/utils/dateHelpers';
 import { sprintApi, taskApi } from '@/services/api';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface TaskQuickPickProps {
   onSelectTask: (taskId: string | null, taskTitle: string | null, taskDetails?: { description: string; storyPoints: number; quadrant: string }) => void;
@@ -12,6 +13,7 @@ interface TaskQuickPickProps {
 
 export default function TaskQuickPick({ onSelectTask }: TaskQuickPickProps) {
   const { tasks, fetchTasks } = useTaskStore();
+  const { t } = useTranslation();
   const [sprintTasks, setSprintTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentSprintName, setCurrentSprintName] = useState('');
@@ -100,7 +102,7 @@ export default function TaskQuickPick({ onSelectTask }: TaskQuickPickProps) {
   return (
     <View className="bg-gray-100 rounded-xl p-3">
       <View className="flex-row items-center justify-between mb-3">
-        <Text className="text-gray-700 font-semibold">Select Task</Text>
+        <Text className="text-gray-700 font-semibold">{t('pomodoro.selectTask')}</Text>
         {currentSprintName && (
           <Text className="text-blue-600 text-xs font-medium">{currentSprintName}</Text>
         )}
@@ -109,7 +111,7 @@ export default function TaskQuickPick({ onSelectTask }: TaskQuickPickProps) {
       {loading ? (
         <View className="py-8 items-center">
           <ActivityIndicator size="small" color="#3B82F6" />
-          <Text className="text-gray-500 text-sm mt-2">Loading tasks...</Text>
+          <Text className="text-gray-500 text-sm mt-2">{t('common.loading')}</Text>
         </View>
       ) : sprintTasks.length > 0 ? (
         <FlatList
@@ -121,9 +123,9 @@ export default function TaskQuickPick({ onSelectTask }: TaskQuickPickProps) {
       ) : (
         <View className="py-8 items-center">
           <MaterialCommunityIcons name="checkbox-marked-circle-outline" size={48} color="#D1D5DB" />
-          <Text className="text-gray-500 text-center mt-2">No tasks in current sprint</Text>
+          <Text className="text-gray-500 text-center mt-2">{t('pomodoro.noTasksInSprint')}</Text>
           <Text className="text-gray-400 text-xs text-center mt-1">
-            Add tasks to this week's sprint to focus on them
+            {t('pomodoro.addTasksToSprint')}
           </Text>
         </View>
       )}

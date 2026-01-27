@@ -1,161 +1,161 @@
 import { AppContext } from '../store/navigationStore';
 
 export interface NavIcon {
-    name: string;
+    nameKey: string;  // Translation key for the name
     icon: string;
     route: string;
 }
 
 export interface MoreMenuItem {
-    name: string;
+    nameKey: string;  // Translation key for the name
     icon: string;
     route: string;
 }
 
 export const NAV_CONFIGS: Record<AppContext, NavIcon[]> = {
     sdlc: [
-        { name: 'Sprint', icon: 'view-dashboard-outline', route: '/(tabs)/sdlc/calendar' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.sprint', icon: 'view-dashboard-outline', route: '/(tabs)/sdlc/calendar' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     sensai: [
-        { name: 'Coach', icon: 'robot', route: '/(tabs)/sensai' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.coach', icon: 'robot', route: '/(tabs)/sensai' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     mindset: [
-        { name: 'Mindset', icon: 'creation', route: '/(tabs)/motivation' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.mindset', icon: 'creation', route: '/(tabs)/motivation' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     essentia: [
-        { name: 'Today', icon: 'book-open-page-variant', route: '/(tabs)/essentia' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.today', icon: 'book-open-page-variant', route: '/(tabs)/essentia' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     challenges: [
-        { name: 'Active', icon: 'target', route: '/(tabs)/challenges' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.active', icon: 'target', route: '/(tabs)/challenges' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     pomodoro: [
-        { name: 'Focus', icon: 'circle-slice-8', route: '/(tabs)/pomodoro' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.focus', icon: 'circle-slice-8', route: '/(tabs)/pomodoro' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     bills: [
-        { name: 'Bills', icon: 'currency-usd', route: '/(tabs)/bills' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.bills', icon: 'currency-usd', route: '/(tabs)/bills' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     community: [
-        { name: 'Hub', icon: 'account-group', route: '/(tabs)/community' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.hub', icon: 'account-group', route: '/(tabs)/community' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     settings: [
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.settings', icon: 'cog', route: '/(tabs)/settings' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
     notifications: [
-        { name: 'Inbox', icon: 'bell', route: '/(tabs)/notifications' },
-        { name: 'More', icon: 'dots-horizontal', route: 'more' },
+        { nameKey: 'navigation.tabs.inbox', icon: 'bell', route: '/(tabs)/notifications' },
+        { nameKey: 'navigation.tabs.more', icon: 'dots-horizontal', route: 'more' },
     ],
 };
 
 export const MORE_MENUS: Record<AppContext, MoreMenuItem[]> = {
     sdlc: [
-        { name: 'Task Search', icon: 'magnify', route: '/(tabs)/sdlc/search-tasks' },
-        { name: 'Backlog', icon: 'inbox', route: '/(tabs)/sdlc/backlog' },
-        { name: 'Reports', icon: 'chart-line', route: '/(tabs)/sdlc/reports' },
-        { name: 'Velocity', icon: 'speedometer', route: '/(tabs)/sdlc/velocity' },
-        { name: 'Retrospective', icon: 'comment-multiple', route: '/(tabs)/sdlc/retro' },
-        { name: 'Epics', icon: 'bookmark-multiple', route: '/(tabs)/sdlc/epics' },
-        { name: 'Knowledge Hub', icon: 'school', route: '/(tabs)/sdlc/wiki' },
-        { name: 'Templates', icon: 'file-document-multiple', route: 'templates' },
+        { nameKey: 'navigation.sdlc.taskSearch', icon: 'magnify', route: '/(tabs)/sdlc/search-tasks' },
+        { nameKey: 'navigation.sdlc.backlog', icon: 'inbox', route: '/(tabs)/sdlc/backlog' },
+        { nameKey: 'navigation.sdlc.reports', icon: 'chart-line', route: '/(tabs)/sdlc/reports' },
+        { nameKey: 'navigation.sdlc.velocity', icon: 'speedometer', route: '/(tabs)/sdlc/velocity' },
+        { nameKey: 'navigation.sdlc.retro', icon: 'comment-multiple', route: '/(tabs)/sdlc/retro' },
+        { nameKey: 'navigation.sdlc.epics', icon: 'bookmark-multiple', route: '/(tabs)/sdlc/epics' },
+        { nameKey: 'navigation.sdlc.knowledgeHub', icon: 'school', route: '/(tabs)/sdlc/wiki' },
+        { nameKey: 'navigation.sdlc.templates', icon: 'file-document-multiple', route: 'templates' },
     ],
     sensai: [
-        { name: 'Daily Standup', icon: 'coffee', route: '/(tabs)/sensai/standup' },
-        { name: 'Sprint Planning', icon: 'calendar-plus', route: '/(tabs)/sensai/planning' },
-        { name: 'Sprint Review', icon: 'presentation', route: '/(tabs)/sensai/review' },
-        { name: 'Retrospective', icon: 'comment-multiple-outline', route: '/(tabs)/sensai/retrospective' },
-        { name: 'Interventions', icon: 'alert-decagram', route: '/(tabs)/sensai/interventions' },
-        { name: 'Life Wheel', icon: 'chart-donut', route: '/(tabs)/sensai/lifewheel' },
-        { name: 'Velocity', icon: 'speedometer', route: '/(tabs)/sensai/velocity' },
-        { name: 'Quick Intake', icon: 'plus-box', route: '/(tabs)/sensai/intake' },
-        { name: 'Analytics', icon: 'chart-box-outline', route: '/(tabs)/sensai/analytics' },
-        { name: 'Settings', icon: 'cog-outline', route: '/(tabs)/sensai/settings' },
+        { nameKey: 'navigation.moreMenu.dailyStandup', icon: 'coffee', route: '/(tabs)/sensai/standup' },
+        { nameKey: 'navigation.moreMenu.sprintPlanning', icon: 'calendar-plus', route: '/(tabs)/sensai/planning' },
+        { nameKey: 'navigation.moreMenu.sprintReview', icon: 'presentation', route: '/(tabs)/sensai/review' },
+        { nameKey: 'navigation.sdlc.retro', icon: 'comment-multiple-outline', route: '/(tabs)/sensai/retrospective' },
+        { nameKey: 'navigation.moreMenu.interventions', icon: 'alert-decagram', route: '/(tabs)/sensai/interventions' },
+        { nameKey: 'navigation.moreMenu.lifeWheel', icon: 'chart-donut', route: '/(tabs)/sensai/lifewheel' },
+        { nameKey: 'navigation.sdlc.velocity', icon: 'speedometer', route: '/(tabs)/sensai/velocity' },
+        { nameKey: 'navigation.moreMenu.quickIntake', icon: 'plus-box', route: '/(tabs)/sensai/intake' },
+        { nameKey: 'navigation.moreMenu.analytics', icon: 'chart-box-outline', route: '/(tabs)/sensai/analytics' },
+        { nameKey: 'settings.title', icon: 'cog-outline', route: '/(tabs)/sensai/settings' },
     ],
     mindset: [
-        { name: 'Favorites', icon: 'heart', route: '/(tabs)/motivation/favorites' },
-        { name: 'Themes', icon: 'palette', route: '/(tabs)/motivation/themes' },
-        { name: 'Analytics', icon: 'chart-box', route: '/(tabs)/motivation/analytics' },
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
+        { nameKey: 'navigation.moreMenu.favorites', icon: 'heart', route: '/(tabs)/motivation/favorites' },
+        { nameKey: 'navigation.moreMenu.themes', icon: 'palette', route: '/(tabs)/motivation/themes' },
+        { nameKey: 'navigation.moreMenu.analytics', icon: 'chart-box', route: '/(tabs)/motivation/analytics' },
+        { nameKey: 'settings.title', icon: 'cog', route: '/(tabs)/settings' },
     ],
     essentia: [
-        { name: 'Explore Books', icon: 'compass-outline', route: '/(tabs)/essentia/explore' },
-        { name: 'My Library', icon: 'bookshelf', route: '/(tabs)/essentia/library' },
-        { name: 'Growth Stats', icon: 'chart-line', route: '/(tabs)/essentia/growth' },
-        { name: 'Highlights', icon: 'marker', route: '/(tabs)/essentia/highlights' },
-        { name: 'Flashcards', icon: 'cards-outline', route: '/(tabs)/essentia/flashcards' },
-        { name: 'Reading Goals', icon: 'flag-checkered', route: '/(tabs)/essentia/goals' },
-        { name: 'Collections', icon: 'folder-multiple', route: '/(tabs)/essentia/collections' },
-        { name: 'Settings', icon: 'cog-outline', route: '/(tabs)/settings' },
+        { nameKey: 'navigation.moreMenu.exploreBooks', icon: 'compass-outline', route: '/(tabs)/essentia/explore' },
+        { nameKey: 'navigation.moreMenu.myLibrary', icon: 'bookshelf', route: '/(tabs)/essentia/library' },
+        { nameKey: 'navigation.moreMenu.growthStats', icon: 'chart-line', route: '/(tabs)/essentia/growth' },
+        { nameKey: 'navigation.moreMenu.highlights', icon: 'marker', route: '/(tabs)/essentia/highlights' },
+        { nameKey: 'navigation.moreMenu.flashcards', icon: 'cards-outline', route: '/(tabs)/essentia/flashcards' },
+        { nameKey: 'navigation.moreMenu.readingGoals', icon: 'flag-checkered', route: '/(tabs)/essentia/goals' },
+        { nameKey: 'navigation.moreMenu.collections', icon: 'folder-multiple', route: '/(tabs)/essentia/collections' },
+        { nameKey: 'settings.title', icon: 'cog-outline', route: '/(tabs)/settings' },
     ],
     challenges: [
-        { name: 'Create Challenge', icon: 'plus-circle', route: '/(tabs)/challenges/create' },
-        { name: 'Templates', icon: 'book-open-variant', route: '/(tabs)/challenges/templates' },
-        { name: 'Completed', icon: 'trophy', route: '/(tabs)/challenges/completed' },
-        { name: 'Community', icon: 'account-group', route: '/(tabs)/challenges/community' },
-        { name: 'Leaderboard', icon: 'podium', route: '/(tabs)/challenges/leaderboard' },
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
+        { nameKey: 'navigation.moreMenu.createChallenge', icon: 'plus-circle', route: '/(tabs)/challenges/create' },
+        { nameKey: 'navigation.sdlc.templates', icon: 'book-open-variant', route: '/(tabs)/challenges/templates' },
+        { nameKey: 'navigation.moreMenu.completed', icon: 'trophy', route: '/(tabs)/challenges/completed' },
+        { nameKey: 'navigation.tabs.community', icon: 'account-group', route: '/(tabs)/challenges/community' },
+        { nameKey: 'navigation.moreMenu.leaderboard', icon: 'podium', route: '/(tabs)/challenges/leaderboard' },
+        { nameKey: 'settings.title', icon: 'cog', route: '/(tabs)/settings' },
     ],
     pomodoro: [
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/pomodoro/settings' },
-        { name: 'History', icon: 'history', route: '/(tabs)/pomodoro/history' },
-        { name: 'Focus Analytics', icon: 'chart-line', route: '/(tabs)/reports?tab=focus' },
+        { nameKey: 'settings.title', icon: 'cog', route: '/(tabs)/pomodoro/settings' },
+        { nameKey: 'navigation.moreMenu.history', icon: 'history', route: '/(tabs)/pomodoro/history' },
+        { nameKey: 'navigation.moreMenu.focusAnalytics', icon: 'chart-line', route: '/(tabs)/reports?tab=focus' },
     ],
     bills: [
-        { name: 'Categories', icon: 'tag-multiple', route: '/(tabs)/bills/categories' },
-        { name: 'Recurring', icon: 'calendar-repeat', route: '/(tabs)/bills/recurring' },
-        { name: 'Reports', icon: 'chart-pie', route: '/(tabs)/bills/reports' },
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/settings' },
+        { nameKey: 'navigation.moreMenu.categories', icon: 'tag-multiple', route: '/(tabs)/bills/categories' },
+        { nameKey: 'navigation.moreMenu.recurring', icon: 'calendar-repeat', route: '/(tabs)/bills/recurring' },
+        { nameKey: 'navigation.sdlc.reports', icon: 'chart-pie', route: '/(tabs)/bills/reports' },
+        { nameKey: 'settings.title', icon: 'cog', route: '/(tabs)/settings' },
     ],
     community: [
-        { name: 'Knowledge Hub', icon: 'school', route: '/(tabs)/community/knowledge' },
-        { name: 'Q&A Forum', icon: 'help-circle', route: '/(tabs)/community/questions' },
-        { name: 'Success Stories', icon: 'party-popper', route: '/(tabs)/community/wins' },
-        { name: 'Templates', icon: 'file-document-multiple', route: '/(tabs)/community/templates' },
-        { name: 'Leaderboard', icon: 'podium-gold', route: '/(tabs)/community/leaderboard' },
-        { name: 'Support Circle', icon: 'account-heart', route: '/(tabs)/community/support' },
-        { name: 'My Profile', icon: 'account-circle', route: '/(tabs)/community/profile' },
+        { nameKey: 'navigation.sdlc.knowledgeHub', icon: 'school', route: '/(tabs)/community/knowledge' },
+        { nameKey: 'navigation.moreMenu.qaForum', icon: 'help-circle', route: '/(tabs)/community/questions' },
+        { nameKey: 'navigation.moreMenu.successStories', icon: 'party-popper', route: '/(tabs)/community/wins' },
+        { nameKey: 'navigation.sdlc.templates', icon: 'file-document-multiple', route: '/(tabs)/community/templates' },
+        { nameKey: 'navigation.moreMenu.leaderboard', icon: 'podium-gold', route: '/(tabs)/community/leaderboard' },
+        { nameKey: 'navigation.moreMenu.supportCircle', icon: 'account-heart', route: '/(tabs)/community/support' },
+        { nameKey: 'navigation.moreMenu.myProfile', icon: 'account-circle', route: '/(tabs)/community/profile' },
     ],
     settings: [
-        { name: 'Theme & Display', icon: 'palette', route: '/(tabs)/settings/appearance' },
-        { name: 'Language', icon: 'translate', route: '/(tabs)/settings/language' },
-        { name: 'Privacy', icon: 'shield-lock', route: '/(tabs)/settings/privacy' },
-        { name: 'Data & Storage', icon: 'database', route: '/(tabs)/settings/storage' },
-        { name: 'About', icon: 'information', route: '/(tabs)/settings/about' },
-        { name: 'Sign Out', icon: 'logout', route: 'logout' },
+        { nameKey: 'navigation.moreMenu.themeDisplay', icon: 'palette', route: '/(tabs)/settings/appearance' },
+        { nameKey: 'navigation.moreMenu.language', icon: 'translate', route: '/(tabs)/settings/language' },
+        { nameKey: 'navigation.moreMenu.privacy', icon: 'shield-lock', route: '/(tabs)/settings/privacy' },
+        { nameKey: 'navigation.moreMenu.dataStorage', icon: 'database', route: '/(tabs)/settings/storage' },
+        { nameKey: 'navigation.moreMenu.about', icon: 'information', route: '/(tabs)/settings/about' },
+        { nameKey: 'navigation.moreMenu.signOut', icon: 'logout', route: 'logout' },
     ],
     notifications: [
-        { name: 'Unread', icon: 'bell-badge', route: '/(tabs)/notifications/unread' },
-        { name: 'Mentions', icon: 'at', route: '/(tabs)/notifications/mentions' },
-        { name: 'Task Updates', icon: 'checkbox-marked', route: '/(tabs)/notifications/tasks' },
-        { name: 'Challenge Alerts', icon: 'trophy', route: '/(tabs)/notifications/challenges' },
-        { name: 'Settings', icon: 'cog', route: '/(tabs)/notifications/settings' },
-        { name: 'Clear All', icon: 'notification-clear-all', route: 'clear-notifications' },
+        { nameKey: 'navigation.moreMenu.unread', icon: 'bell-badge', route: '/(tabs)/notifications/unread' },
+        { nameKey: 'navigation.moreMenu.mentions', icon: 'at', route: '/(tabs)/notifications/mentions' },
+        { nameKey: 'navigation.moreMenu.taskUpdates', icon: 'checkbox-marked', route: '/(tabs)/notifications/tasks' },
+        { nameKey: 'navigation.moreMenu.challengeAlerts', icon: 'trophy', route: '/(tabs)/notifications/challenges' },
+        { nameKey: 'settings.title', icon: 'cog', route: '/(tabs)/notifications/settings' },
+        { nameKey: 'navigation.moreMenu.clearAll', icon: 'notification-clear-all', route: 'clear-notifications' },
     ],
 };
 
 export interface App {
     id: AppContext;
-    name: string;
+    nameKey: string;  // Translation key for the name
     icon: string;
     color: string;
     route: string;
 }
 
 export const APPS: App[] = [
-    { id: 'sdlc', name: 'Tasks', icon: 'view-dashboard-outline', color: '#3B82F6', route: '/(tabs)/sdlc' },
-    { id: 'sensai', name: 'SensAI', icon: 'robot', color: '#10B981', route: '/(tabs)/sensai' },
-    { id: 'challenges', name: 'Challenges', icon: 'target', color: '#F59E0B', route: '/(tabs)/challenges' },
-    { id: 'pomodoro', name: 'Focus', icon: 'circle-slice-8', color: '#EF4444', route: '/(tabs)/pomodoro' },
-    { id: 'essentia', name: 'Essentia', icon: 'brain', color: '#8B5CF6', route: '/(tabs)/essentia' },
-    { id: 'mindset', name: 'Mindset', icon: 'creation', color: '#EC4899', route: '/(tabs)/motivation' },
-    { id: 'community', name: 'Community', icon: 'account-group', color: '#06B6D4', route: '/(tabs)/community' },
-    { id: 'notifications', name: 'Notifications', icon: 'bell', color: '#F97316', route: '/(tabs)/notifications' },
-    { id: 'settings', name: 'Settings', icon: 'cog', color: '#6B7280', route: '/(tabs)/settings' },
+    { id: 'sdlc', nameKey: 'navigation.tabs.tasks', icon: 'view-dashboard-outline', color: '#3B82F6', route: '/(tabs)/sdlc' },
+    { id: 'sensai', nameKey: 'navigation.tabs.sensai', icon: 'robot', color: '#10B981', route: '/(tabs)/sensai' },
+    { id: 'challenges', nameKey: 'navigation.tabs.challenges', icon: 'target', color: '#F59E0B', route: '/(tabs)/challenges' },
+    { id: 'pomodoro', nameKey: 'navigation.tabs.focus', icon: 'circle-slice-8', color: '#EF4444', route: '/(tabs)/pomodoro' },
+    { id: 'essentia', nameKey: 'navigation.tabs.essentia', icon: 'brain', color: '#8B5CF6', route: '/(tabs)/essentia' },
+    { id: 'mindset', nameKey: 'navigation.tabs.mindset', icon: 'creation', color: '#EC4899', route: '/(tabs)/motivation' },
+    { id: 'community', nameKey: 'navigation.tabs.community', icon: 'account-group', color: '#06B6D4', route: '/(tabs)/community' },
+    { id: 'notifications', nameKey: 'navigation.tabs.notifications', icon: 'bell', color: '#F97316', route: '/(tabs)/notifications' },
+    { id: 'settings', nameKey: 'navigation.tabs.settings', icon: 'cog', color: '#6B7280', route: '/(tabs)/settings' },
 ];

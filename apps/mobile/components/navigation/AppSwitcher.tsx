@@ -3,10 +3,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigationStore } from '../../store/navigationStore';
 import { APPS } from '../../utils/navigationConfig';
 import { useRouter } from 'expo-router';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export function AppSwitcher() {
     const { isAppSwitcherOpen, toggleAppSwitcher, setCurrentApp } = useNavigationStore();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const handleAppSelect = (app: typeof APPS[0]) => {
         setCurrentApp(app.id);
@@ -27,7 +29,7 @@ export function AppSwitcher() {
             >
                 <Pressable className="bg-white rounded-t-3xl p-6">
                     <View className="flex-row justify-between items-center mb-4">
-                        <Text className="text-2xl font-bold">Apps</Text>
+                        <Text className="text-2xl font-bold">{t('navigation.appSwitcher.title')}</Text>
                         <TouchableOpacity onPress={toggleAppSwitcher}>
                             <MaterialCommunityIcons name="close" size={24} color="#9CA3AF" />
                         </TouchableOpacity>
@@ -50,7 +52,7 @@ export function AppSwitcher() {
                                         color={app.color}
                                     />
                                 </View>
-                                <Text className="text-sm text-center">{app.name}</Text>
+                                <Text className="text-sm text-center">{t(app.nameKey)}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>

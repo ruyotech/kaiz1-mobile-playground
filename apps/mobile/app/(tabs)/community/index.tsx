@@ -7,9 +7,11 @@ import { useCommunityStore } from '../../../store/communityStore';
 import { ActivityCard } from '../../../components/community/ActivityCard';
 import { StoryCard } from '../../../components/community/StoryCard';
 import { TemplateCard } from '../../../components/community/TemplateCard';
+import { useTranslation } from '../../../hooks/useTranslation';
 
 export default function CommunityHubScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const [refreshing, setRefreshing] = useState(false);
     
     const {
@@ -57,8 +59,8 @@ export default function CommunityHubScreen() {
                                 <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
                             </TouchableOpacity>
                             <View className="ml-3">
-                                <Text className="text-white text-xl font-bold">Community</Text>
-                                <Text className="text-purple-200 text-xs">Connect • Learn • Grow</Text>
+                                <Text className="text-white text-xl font-bold">{t('community.title')}</Text>
+                                <Text className="text-purple-200 text-xs">{t('community.subtitle')}</Text>
                             </View>
                         </View>
                         
@@ -70,7 +72,7 @@ export default function CommunityHubScreen() {
                             <Text className="text-2xl">{currentMember?.avatar}</Text>
                             <View className="ml-2">
                                 <Text className="text-white text-xs font-medium">
-                                    Lvl {currentMember?.level}
+                                    {t('community.level')} {currentMember?.level}
                                 </Text>
                                 <View className="flex-row items-center">
                                     <MaterialCommunityIcons name="star" size={10} color="#F59E0B" />
@@ -102,7 +104,7 @@ export default function CommunityHubScreen() {
                             <View className="flex-row items-center mb-2">
                                 <MaterialCommunityIcons name="trophy" size={20} color="#F59E0B" />
                                 <Text className="text-yellow-300 text-xs font-semibold ml-1 uppercase">
-                                    Weekly Challenge
+                                    {t('community.weeklyChallenge')}
                                 </Text>
                             </View>
                             <Text className="text-white text-lg font-bold mb-1">
@@ -115,7 +117,7 @@ export default function CommunityHubScreen() {
                                 <View className="flex-row items-center">
                                     <MaterialCommunityIcons name="account-group" size={16} color="#fff" />
                                     <Text className="text-white text-xs ml-1">
-                                        {weeklyChallenge.participantCount} joined
+                                        {weeklyChallenge.participantCount} {t('community.joined')}
                                     </Text>
                                     <Text className="text-purple-300 text-xs ml-3">
                                         +{weeklyChallenge.rewardXp} XP
@@ -131,7 +133,7 @@ export default function CommunityHubScreen() {
                                             weeklyChallenge.isJoined ? 'text-white' : 'text-purple-600'
                                         }`}
                                     >
-                                        {weeklyChallenge.isJoined ? '✓ Joined' : 'Join Now'}
+                                        {weeklyChallenge.isJoined ? '✓ ' + t('community.joined') : t('community.joinNow')}
                                     </Text>
                                 </View>
                             </View>
@@ -148,8 +150,8 @@ export default function CommunityHubScreen() {
                         <View className="w-10 h-10 bg-blue-100 rounded-xl items-center justify-center mb-2">
                             <MaterialCommunityIcons name="help-circle" size={24} color="#3B82F6" />
                         </View>
-                        <Text className="text-sm font-semibold text-gray-900">Ask Question</Text>
-                        <Text className="text-xs text-gray-500 mt-0.5">Get help from community</Text>
+                        <Text className="text-sm font-semibold text-gray-900">{t('community.askQuestion')}</Text>
+                        <Text className="text-xs text-gray-500 mt-0.5">{t('community.getHelpFromCommunity')}</Text>
                     </TouchableOpacity>
                     
                     <TouchableOpacity 
@@ -159,8 +161,8 @@ export default function CommunityHubScreen() {
                         <View className="w-10 h-10 bg-yellow-100 rounded-xl items-center justify-center mb-2">
                             <MaterialCommunityIcons name="trophy" size={24} color="#F59E0B" />
                         </View>
-                        <Text className="text-sm font-semibold text-gray-900">Share Win</Text>
-                        <Text className="text-xs text-gray-500 mt-0.5">Celebrate your success</Text>
+                        <Text className="text-sm font-semibold text-gray-900">{t('community.shareWin')}</Text>
+                        <Text className="text-xs text-gray-500 mt-0.5">{t('community.celebrateYourSuccess')}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -170,11 +172,11 @@ export default function CommunityHubScreen() {
                         <View className="flex-row items-center mb-3">
                             <MaterialCommunityIcons name="poll" size={20} color="#8B5CF6" />
                             <Text className="text-purple-600 text-xs font-semibold ml-1 uppercase">
-                                Weekly Poll
+                                {t('community.weeklyPoll')}
                             </Text>
                             <View className="flex-1" />
                             <Text className="text-xs text-gray-400">
-                                {activePoll.totalVotes} votes
+                                {activePoll.totalVotes} {t('community.votes')}
                             </Text>
                         </View>
                         
@@ -260,7 +262,7 @@ export default function CommunityHubScreen() {
                             <View className="flex-row items-center mb-2">
                                 <MaterialCommunityIcons name="newspaper" size={16} color="#10B981" />
                                 <Text className="text-green-600 text-xs font-semibold ml-1 uppercase">
-                                    Featured
+                                    {t('community.featured')}
                                 </Text>
                             </View>
                             <Text className="text-base font-bold text-gray-900 mb-1">
@@ -271,7 +273,7 @@ export default function CommunityHubScreen() {
                             </Text>
                             <View className="flex-row items-center mt-3">
                                 <Text className="text-xs text-gray-400">
-                                    {featuredArticle.readTimeMinutes} min read
+                                    {featuredArticle.readTimeMinutes} {t('community.minRead')}
                                 </Text>
                                 <View className="flex-1" />
                                 <View className="flex-row items-center">
@@ -288,9 +290,9 @@ export default function CommunityHubScreen() {
                 {/* Featured Templates */}
                 <View className="mt-6">
                     <View className="flex-row items-center justify-between px-4 mb-3">
-                        <Text className="text-lg font-bold text-gray-900">Popular Templates</Text>
+                        <Text className="text-lg font-bold text-gray-900">{t('community.popularTemplates')}</Text>
                         <TouchableOpacity onPress={() => router.push('/community/templates' as any)}>
-                            <Text className="text-sm text-purple-600 font-medium">See All</Text>
+                            <Text className="text-sm text-purple-600 font-medium">{t('community.seeAll')}</Text>
                         </TouchableOpacity>
                     </View>
                     <ScrollView 
@@ -315,9 +317,9 @@ export default function CommunityHubScreen() {
                 {/* Recent Wins */}
                 <View className="mt-6">
                     <View className="flex-row items-center justify-between px-4 mb-3">
-                        <Text className="text-lg font-bold text-gray-900">Recent Wins 🎉</Text>
+                        <Text className="text-lg font-bold text-gray-900">{t('community.recentWins')}</Text>
                         <TouchableOpacity onPress={() => router.push('/community/wins' as any)}>
-                            <Text className="text-sm text-purple-600 font-medium">See All</Text>
+                            <Text className="text-sm text-purple-600 font-medium">{t('community.seeAll')}</Text>
                         </TouchableOpacity>
                     </View>
                     <View className="px-4">
@@ -335,7 +337,7 @@ export default function CommunityHubScreen() {
                 {/* Activity Feed */}
                 <View className="mt-6">
                     <Text className="text-lg font-bold text-gray-900 px-4 mb-3">
-                        Activity Feed
+                        {t('community.activityFeed')}
                     </Text>
                     <View className="px-4">
                         {activityFeed.slice(0, 5).map((activity) => (
@@ -353,14 +355,14 @@ export default function CommunityHubScreen() {
                         <View className="flex-1">
                             <View className="flex-row items-center mb-2">
                                 <Text className="text-2xl mr-2">💝</Text>
-                                <Text className="text-amber-800 font-bold">Secret Compliment</Text>
+                                <Text className="text-amber-800 font-bold">{t('community.secretCompliment')}</Text>
                             </View>
                             <Text className="text-amber-700 text-sm">
-                                Send anonymous encouragement to brighten someone's day
+                                {t('community.secretComplimentDesc')}
                             </Text>
                         </View>
                         <TouchableOpacity className="bg-amber-500 px-4 py-2 rounded-full">
-                            <Text className="text-white text-sm font-semibold">Send</Text>
+                            <Text className="text-white text-sm font-semibold">{t('community.send')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

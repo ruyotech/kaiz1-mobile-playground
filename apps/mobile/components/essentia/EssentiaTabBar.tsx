@@ -3,12 +3,13 @@ import { useRouter, usePathname } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigationStore } from '../../store/navigationStore';
+import { useTranslation } from '../../hooks/useTranslation';
 
 // Essentia quick access tabs for internal navigation within the app
 const TABS = [
-    { id: 'today', label: 'Today', icon: 'book-open-page-variant', route: '/essentia' },
-    { id: 'explore', label: 'Explore', icon: 'compass-outline', route: '/essentia/explore' },
-    { id: 'library', label: 'Library', icon: 'bookshelf', route: '/essentia/library' },
+    { id: 'today', labelKey: 'common.today', icon: 'book-open-page-variant', route: '/essentia' },
+    { id: 'explore', labelKey: 'essentia.exploreTitle', icon: 'compass-outline', route: '/essentia/explore' },
+    { id: 'library', labelKey: 'essentia.libraryTitle', icon: 'bookshelf', route: '/essentia/library' },
 ];
 
 export function EssentiaTabBar() {
@@ -16,6 +17,7 @@ export function EssentiaTabBar() {
     const pathname = usePathname();
     const insets = useSafeAreaInsets();
     const { toggleMoreMenu } = useNavigationStore();
+    const { t } = useTranslation();
 
     const isActive = (route: string) => {
         if (route === '/essentia') {
@@ -52,7 +54,7 @@ export function EssentiaTabBar() {
                             isActive(tab.route) ? 'text-purple-600' : 'text-gray-500'
                         }`}
                     >
-                        {tab.label}
+                        {t(tab.labelKey)}
                     </Text>
                 </TouchableOpacity>
             ))}
@@ -71,7 +73,7 @@ export function EssentiaTabBar() {
                     />
                 </View>
                 <Text className="text-[10px] mt-1 font-semibold text-purple-600">
-                    More
+                    {t('navigation.more')}
                 </Text>
             </TouchableOpacity>
         </View>

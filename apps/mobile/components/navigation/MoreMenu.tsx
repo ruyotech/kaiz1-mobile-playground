@@ -6,12 +6,14 @@ import { useAuthStore } from '../../store/authStore';
 import { MORE_MENUS } from '../../utils/navigationConfig';
 import { useRouter } from 'expo-router';
 import { BlurView } from 'expo-blur';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export function MoreMenu() {
     const { isMoreMenuOpen, toggleMoreMenu, currentApp } = useNavigationStore();
     const { clearAllNotifications } = useNotificationStore();
     const { logout } = useAuthStore();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const menuItems = MORE_MENUS[currentApp];
 
@@ -19,12 +21,12 @@ export function MoreMenu() {
         // Handle special actions
         if (route === 'logout') {
             Alert.alert(
-                'Sign Out',
-                'Are you sure you want to sign out?',
+                t('navigation.moreMenu.signOut'),
+                t('navigation.moreMenu.signOutConfirm'),
                 [
-                    { text: 'Cancel', style: 'cancel' },
+                    { text: t('common.cancel'), style: 'cancel' },
                     { 
-                        text: 'Sign Out', 
+                        text: t('navigation.moreMenu.signOut'), 
                         style: 'destructive',
                         onPress: () => {
                             toggleMoreMenu();
@@ -39,12 +41,12 @@ export function MoreMenu() {
         
         if (route === 'clear-notifications') {
             Alert.alert(
-                'Clear All Notifications',
-                'Are you sure you want to clear all notifications?',
+                t('navigation.moreMenu.clearNotifications'),
+                t('navigation.moreMenu.clearNotificationsConfirm'),
                 [
-                    { text: 'Cancel', style: 'cancel' },
+                    { text: t('common.cancel'), style: 'cancel' },
                     { 
-                        text: 'Clear All', 
+                        text: t('navigation.moreMenu.clearAll'), 
                         style: 'destructive',
                         onPress: () => {
                             clearAllNotifications();
@@ -73,7 +75,7 @@ export function MoreMenu() {
             >
                 <Pressable className="bg-white rounded-t-3xl p-6">
                     <View className="flex-row justify-between items-center mb-4">
-                        <Text className="text-2xl font-bold">More Options</Text>
+                        <Text className="text-2xl font-bold">{t('navigation.moreMenu.title')}</Text>
                         <TouchableOpacity onPress={toggleMoreMenu}>
                             <MaterialCommunityIcons name="close" size={24} color="#9CA3AF" />
                         </TouchableOpacity>
@@ -102,7 +104,7 @@ export function MoreMenu() {
                                         className="text-base flex-1"
                                         style={{ color: isDestructive ? '#EF4444' : '#111827' }}
                                     >
-                                        {item.name}
+                                        {t(item.nameKey)}
                                     </Text>
                                     {!isDestructive && (
                                         <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />

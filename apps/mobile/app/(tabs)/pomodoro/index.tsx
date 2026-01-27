@@ -10,9 +10,11 @@ import { Card } from '../../../components/ui/Card';
 import Timer from '../../../components/pomodoro/Timer';
 import SessionControls from '../../../components/pomodoro/SessionControls';
 import TaskQuickPick from '../../../components/pomodoro/TaskQuickPick';
+import { useTranslation } from '../../../hooks/useTranslation';
 
 export default function PomodoroScreen() {
   const params = useLocalSearchParams();
+  const { t } = useTranslation();
   const {
     isActive,
     isPaused,
@@ -79,12 +81,12 @@ export default function PomodoroScreen() {
 
   const handleStopSession = () => {
     Alert.alert(
-      'Stop Session?',
-      'Are you sure you want to stop the current session? Progress will not be counted.',
+      t('pomodoro.stopSession'),
+      t('pomodoro.stopSessionMessage'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Stop',
+          text: t('pomodoro.stop'),
           style: 'destructive',
           onPress: () => stopSession(),
         },
@@ -95,13 +97,13 @@ export default function PomodoroScreen() {
   const getModeLabel = () => {
     switch (mode) {
       case 'focus':
-        return 'Focus Session';
+        return t('pomodoro.focusSession');
       case 'shortBreak':
-        return 'Short Break';
+        return t('pomodoro.shortBreak');
       case 'longBreak':
-        return 'Long Break';
+        return t('pomodoro.longBreak');
       default:
-        return 'Pomodoro Timer';
+        return t('pomodoro.pomodoroTimer');
     }
   };
 
@@ -120,9 +122,9 @@ export default function PomodoroScreen() {
 
   const getNextModeText = () => {
     if (mode === 'focus') {
-      return sessionsUntilLongBreak === 1 ? 'Long Break' : 'Short Break';
+      return sessionsUntilLongBreak === 1 ? t('pomodoro.longBreak') : t('pomodoro.shortBreak');
     }
-    return 'Focus Session';
+    return t('pomodoro.focusSession');
   };
 
   const getQuadrantColor = (quadrantId: string) => {
@@ -143,8 +145,8 @@ export default function PomodoroScreen() {
   return (
     <View className="flex-1 bg-gray-50">
       <ScreenHeader
-        title="Pomodoro"
-        subtitle="Focus with purpose"
+        title={t('pomodoro.title')}
+        subtitle={t('pomodoro.subtitle')}
       />
 
       <ScrollView 
@@ -194,7 +196,7 @@ export default function PomodoroScreen() {
                   onPress={() => router.push(`/(tabs)/sdlc/task/${returnToTask}` as any)}
                 >
                   <MaterialCommunityIcons name="arrow-left" size={18} color="#2563EB" />
-                  <Text className="text-blue-600 text-sm font-semibold ml-2">Back to Task</Text>
+                  <Text className="text-blue-600 text-sm font-semibold ml-2">{t('pomodoro.backToTask')}</Text>
                 </TouchableOpacity>
               )}
               
@@ -204,7 +206,7 @@ export default function PomodoroScreen() {
                 onPress={handleStopSession}
               >
                 <MaterialCommunityIcons name="stop-circle" size={18} color="#DC2626" />
-                <Text className="text-red-600 text-sm font-semibold ml-2">End Session</Text>
+                <Text className="text-red-600 text-sm font-semibold ml-2">{t('pomodoro.endSession')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -230,7 +232,7 @@ export default function PomodoroScreen() {
             <View className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 flex-row items-center">
               <MaterialCommunityIcons name="information" size={24} color="#3B82F6" />
               <Text className="text-blue-600 text-sm ml-3 flex-1">
-                Select a task from your current sprint to start focusing
+                {t('pomodoro.selectTaskInfo')}
               </Text>
             </View>
 
@@ -242,7 +244,7 @@ export default function PomodoroScreen() {
                 onPress={() => startSession(null, null, 'shortBreak')}
               >
                 <MaterialCommunityIcons name="coffee" size={20} color="#2563EB" />
-                <Text className="text-blue-600 text-sm font-medium mt-1">Short Break</Text>
+                <Text className="text-blue-600 text-sm font-medium mt-1">{t('pomodoro.shortBreak')}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -250,7 +252,7 @@ export default function PomodoroScreen() {
                 onPress={() => startSession(null, null, 'longBreak')}
               >
                 <MaterialCommunityIcons name="spa" size={20} color="#7C3AED" />
-                <Text className="text-purple-600 text-sm font-medium mt-1">Long Break</Text>
+                <Text className="text-purple-600 text-sm font-medium mt-1">{t('pomodoro.longBreak')}</Text>
               </TouchableOpacity>
             </View>
           </View>

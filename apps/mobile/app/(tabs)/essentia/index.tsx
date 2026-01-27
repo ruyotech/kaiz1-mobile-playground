@@ -8,11 +8,13 @@ import { useEssentiaStore } from '../../../store/essentiaStore';
 import { EssentiaBook } from '../../../types/models';
 import { essentiaApi } from '../../../services/api';
 import { toLocaleDateStringLocalized } from '../../../utils/localizedDate';
+import { useTranslation } from '../../../hooks/useTranslation';
 
 const { width } = Dimensions.get('window');
 
 export default function EssentiaTodayScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const {
         allBooks,
         setAllBooks,
@@ -103,16 +105,16 @@ export default function EssentiaTodayScreen() {
 
     const greetingTime = () => {
         const hour = new Date().getHours();
-        if (hour < 12) return 'Good morning';
-        if (hour < 18) return 'Good afternoon';
-        return 'Good evening';
+        if (hour < 12) return t('essentia.goodMorning');
+        if (hour < 18) return t('essentia.goodAfternoon');
+        return t('essentia.goodEvening');
     };
 
     if (loading) {
         return (
             <Container>
                 <View className="flex-1 items-center justify-center">
-                    <Text className="text-gray-500">Loading...</Text>
+                    <Text className="text-gray-500">{t('common.loading')}</Text>
                 </View>
             </Container>
         );
@@ -148,16 +150,16 @@ export default function EssentiaTodayScreen() {
                                                 {streak.currentStreak}
                                             </Text>
                                             <Text className="text-sm text-white/80">
-                                                day streak
+                                                {t('essentia.dayStreak')}
                                             </Text>
                                         </View>
                                     </View>
                                     <Text className="text-white/90 mt-2">
-                                        Keep it going! 🚀
+                                        {t('essentia.keepItGoing')}
                                     </Text>
                                 </View>
                                 <View className="items-end">
-                                    <Text className="text-xs text-white/70">Best</Text>
+                                    <Text className="text-xs text-white/70">{t('essentia.best')}</Text>
                                     <Text className="text-2xl font-bold text-white">
                                         {streak.longestStreak}
                                     </Text>
@@ -172,10 +174,10 @@ export default function EssentiaTodayScreen() {
                     <Card className="p-4">
                         <View className="flex-row items-center justify-between mb-3">
                             <Text className="text-lg font-semibold text-gray-900">
-                                Today's Goal
+                                {t('essentia.todaysGoal')}
                             </Text>
                             <Text className="text-sm text-gray-500">
-                                {todayMinutes}/{dailyGoalMinutes} min
+                                {todayMinutes}/{dailyGoalMinutes} {t('essentia.min')}
                             </Text>
                         </View>
                         
@@ -189,11 +191,11 @@ export default function EssentiaTodayScreen() {
                         
                         {goalProgress >= 100 ? (
                             <Text className="text-sm text-green-600 font-medium mt-2">
-                                🎉 Goal completed!
+                                {t('essentia.goalCompleted')}
                             </Text>
                         ) : (
                             <Text className="text-sm text-gray-600 mt-2">
-                                {dailyGoalMinutes - todayMinutes} minutes to go
+                                {t('essentia.minutesToGo', { minutes: dailyGoalMinutes - todayMinutes })}
                             </Text>
                         )}
                     </Card>
@@ -203,7 +205,7 @@ export default function EssentiaTodayScreen() {
                 {dailyPick && (
                     <View className="mx-4 mb-4">
                         <Text className="text-xl font-bold text-gray-900 mb-3">
-                            ✨ Today's Pick
+                            {t('essentia.todaysPick')}
                         </Text>
                         <TouchableOpacity
                             onPress={() => router.push(`/essentia/book-detail/${dailyPick.id}` as any)}
@@ -227,7 +229,7 @@ export default function EssentiaTodayScreen() {
                                         {dailyPick.title}
                                     </Text>
                                     <Text className="text-gray-600 mb-3">
-                                        by {dailyPick.author}
+                                        {t('essentia.by')} {dailyPick.author}
                                     </Text>
                                     
                                     <View className="flex-row items-center mb-3">
@@ -238,7 +240,7 @@ export default function EssentiaTodayScreen() {
                                                 color="#6B7280" 
                                             />
                                             <Text className="text-sm text-gray-600 ml-1">
-                                                {dailyPick.duration} min
+                                                {dailyPick.duration} {t('essentia.min')}
                                             </Text>
                                         </View>
                                         <View className="flex-row items-center">
@@ -248,7 +250,7 @@ export default function EssentiaTodayScreen() {
                                                 color="#6B7280" 
                                             />
                                             <Text className="text-sm text-gray-600 ml-1">
-                                                {dailyPick.cardCount} cards
+                                                {dailyPick.cardCount} {t('essentia.cards')}
                                             </Text>
                                         </View>
                                     </View>
@@ -262,7 +264,7 @@ export default function EssentiaTodayScreen() {
                                         onPress={() => router.push(`/essentia/reader/${dailyPick.id}` as any)}
                                     >
                                         <Text className="text-white font-semibold">
-                                            Start Reading
+                                            {t('essentia.startReading')}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -275,7 +277,7 @@ export default function EssentiaTodayScreen() {
                 {inProgressBooks.length > 0 && (
                     <View className="mx-4 mb-4">
                         <Text className="text-xl font-bold text-gray-900 mb-3">
-                            Continue Reading
+                            {t('essentia.continueReading')}
                         </Text>
                         {inProgressBooks.slice(0, 3).map((progress) => {
                             const book = allBooks.find(b => b.id === progress.bookId);
@@ -315,7 +317,7 @@ export default function EssentiaTodayScreen() {
                                                     />
                                                 </View>
                                                 <Text className="text-xs text-gray-500 mt-1">
-                                                    {progress.percentComplete}% complete
+                                                    {progress.percentComplete}% {t('essentia.complete')}
                                                 </Text>
                                             </View>
                                         </View>
@@ -329,7 +331,7 @@ export default function EssentiaTodayScreen() {
                 {/* Quick Actions */}
                 <View className="mx-4 mb-6">
                     <Text className="text-xl font-bold text-gray-900 mb-3">
-                        Quick Actions
+                        {t('essentia.quickActions')}
                     </Text>
                     <View className="flex-row flex-wrap gap-3">
                         <TouchableOpacity
@@ -343,7 +345,7 @@ export default function EssentiaTodayScreen() {
                                     color="#3B82F6" 
                                 />
                                 <Text className="text-sm font-medium text-gray-900 mt-2">
-                                    Explore
+                                    {t('essentia.exploreTitle')}
                                 </Text>
                             </Card>
                         </TouchableOpacity>
@@ -359,7 +361,7 @@ export default function EssentiaTodayScreen() {
                                     color="#8B5CF6" 
                                 />
                                 <Text className="text-sm font-medium text-gray-900 mt-2">
-                                    Library
+                                    {t('essentia.libraryTitle')}
                                 </Text>
                             </Card>
                         </TouchableOpacity>
@@ -375,7 +377,7 @@ export default function EssentiaTodayScreen() {
                                     color="#10B981" 
                                 />
                                 <Text className="text-sm font-medium text-gray-900 mt-2">
-                                    Growth
+                                    {t('essentia.growthTitle')}
                                 </Text>
                             </Card>
                         </TouchableOpacity>

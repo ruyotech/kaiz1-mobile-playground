@@ -15,10 +15,24 @@
  * - User can see their devices in account settings
  */
 
-import * as Device from 'expo-device';
-import * as Application from 'expo-application';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+
+// Lazy load expo-device and expo-application to handle cases where native modules aren't available
+let Device: typeof import('expo-device') | null = null;
+let Application: typeof import('expo-application') | null = null;
+
+try {
+    Device = require('expo-device');
+} catch (e) {
+    console.warn('expo-device not available, using fallback values');
+}
+
+try {
+    Application = require('expo-application');
+} catch (e) {
+    console.warn('expo-application not available, using fallback values');
+}
 
 // Client types for multi-platform support
 export type ClientType = 'mobile-ios' | 'mobile-android' | 'web' | 'desktop-windows' | 'desktop-mac' | 'desktop-linux' | 'unknown';
@@ -56,7 +70,8 @@ export interface DeviceInfo {
 /**
  * Converts DeviceType enum to readable string
  */
-function getDeviceTypeString(deviceType: Device.DeviceType | null): string {
+function getDeviceTypeString(deviceType: number | null): string {
+    if (!Device) return 'unknown';
     switch (deviceType) {
         case Device.DeviceType.PHONE:
             return 'phone';
@@ -95,36 +110,56 @@ function getClientType(): ClientType {
  * Works across mobile, web, and desktop platforms
  */
 export async function getDeviceInfo(): Promise<DeviceInfo> {
-    const deviceType = await Device.getDeviceTypeAsync();
+    let deviceType: number | null = null;
+    
+    if (Device) {
+        try {
+            deviceType = await Device.getDeviceTypeAsync();
+        } catch (e) {
+            console.warn('Could not get device type:', e);
+        }
+    }
+    
     const clientType = getClientType();
     
     // Get timezone and language
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
     const language = Platform.OS === 'web' 
         ? (typeof navigator !== 'undefined' ? navigator.language : 'en')
-        : (Device.osName === 'iOS' ? 'en' : 'en'); // expo-localization would be better here
+        : 'en'; // expo-localization would be better here
+    
+    // Fallback values when Device module is not available
+    const deviceName = Device?.deviceName || `${Platform.OS} Device`;
+    const brand = Device?.brand || null;
+    const modelName = Device?.modelName || null;
+    const osName = Device?.osName || Platform.OS;
+    const osVersion = Device?.osVersion || null;
+    const isDevice = Device?.isDevice ?? true;
+    
+    const appVersion = Application?.nativeApplicationVersion || Constants.expoConfig?.version || null;
+    const buildNumber = Application?.nativeBuildVersion || null;
     
     return {
         // Client info
         clientType,
-        clientVersion: Application.nativeApplicationVersion || Constants.expoConfig?.version || null,
+        clientVersion: appVersion,
         
         // Device details
-        deviceName: Device.deviceName || `${Device.brand || Platform.OS} Device`,
+        deviceName,
         deviceType: getDeviceTypeString(deviceType),
-        brand: Device.brand,
-        modelName: Device.modelName,
+        brand,
+        modelName,
         
         // OS details
-        osName: Device.osName || Platform.OS,
-        osVersion: Device.osVersion,
+        osName,
+        osVersion,
         
         // App details
-        appVersion: Application.nativeApplicationVersion,
-        buildNumber: Application.nativeBuildVersion,
+        appVersion,
+        buildNumber,
         
         // Runtime
-        isDevice: Device.isDevice,
+        isDevice,
         platform: Platform.OS,
         
         // Session metadata

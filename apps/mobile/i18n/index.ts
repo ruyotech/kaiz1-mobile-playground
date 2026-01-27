@@ -10,6 +10,7 @@
  * Currently supports:
  * - English (en-US, en-GB, en)
  * - Turkish (tr-TR, tr)
+ * - Russian (ru-RU, ru)
  * 
  * Adding new languages:
  * 1. Create a new JSON file in ./locales/[lang].json
@@ -26,6 +27,7 @@ import * as Localization from 'expo-localization';
 // Import translation files
 import en from './locales/en.json';
 import tr from './locales/tr.json';
+import ru from './locales/ru.json';
 
 // Export types
 export type { TranslationKeys, TranslationFunction } from './types';
@@ -60,6 +62,8 @@ const i18n = new I18n({
     'en-GB': en,
     tr,
     'tr-TR': tr,
+    ru,
+    'ru-RU': ru,
 });
 
 // Set default locale from device
