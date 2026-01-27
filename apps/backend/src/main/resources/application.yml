@@ -116,7 +116,7 @@ spring.ai:
     api-key: ${ANTHROPIC_API_KEY:your-api-key-here}
     chat:
       options:
-        model: claude-3-5-sonnet-20241022
+        model: claude-sonnet-4-20250514
         max-tokens: 4096
         temperature: 0.3
 

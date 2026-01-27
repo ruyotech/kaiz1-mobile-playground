@@ -7,11 +7,24 @@
 
 // ============================================================================
 // Draft Types - Matching backend sealed interface
+// Backend returns UPPERCASE, but draft.type is lowercase
 // ============================================================================
 
-export type DraftType = 'task' | 'epic' | 'challenge' | 'event' | 'bill' | 'note' | 'clarification_needed';
+export type DraftType = 
+    | 'task' | 'TASK' 
+    | 'epic' | 'EPIC' 
+    | 'challenge' | 'CHALLENGE' 
+    | 'event' | 'EVENT' 
+    | 'bill' | 'BILL' 
+    | 'note' | 'NOTE' 
+    | 'clarification_needed' | 'CLARIFICATION_NEEDED';
 
-export type DraftStatus = 'pending_approval' | 'approved' | 'rejected' | 'expired' | 'edited';
+export type DraftStatus = 
+    | 'pending_approval' | 'PENDING_APPROVAL' 
+    | 'approved' | 'APPROVED' 
+    | 'rejected' | 'REJECTED' 
+    | 'expired' | 'EXPIRED' 
+    | 'edited' | 'MODIFIED';
 
 /**
  * Recurrence pattern for recurring tasks
@@ -185,10 +198,18 @@ export interface ChatMessage {
 // ============================================================================
 
 /**
- * Get display name for draft type
+ * Normalize draft type to lowercase for consistent handling
+ */
+export function normalizeDraftType(type: DraftType): string {
+    return type.toLowerCase();
+}
+
+/**
+ * Get display name for draft type (handles both UPPER and lower case)
  */
 export function getDraftTypeDisplayName(type: DraftType): string {
-    const names: Record<DraftType, string> = {
+    const normalized = type.toLowerCase();
+    const names: Record<string, string> = {
         task: 'Task',
         epic: 'Epic',
         challenge: 'Challenge',
@@ -197,14 +218,15 @@ export function getDraftTypeDisplayName(type: DraftType): string {
         note: 'Note',
         clarification_needed: 'Needs Clarification',
     };
-    return names[type] || type;
+    return names[normalized] || type;
 }
 
 /**
  * Get draft type icon name (MaterialCommunityIcons)
  */
 export function getDraftTypeIcon(type: DraftType): string {
-    const icons: Record<DraftType, string> = {
+    const normalized = type.toLowerCase();
+    const icons: Record<string, string> = {
         task: 'checkbox-marked-circle-outline',
         epic: 'flag-variant-outline',
         challenge: 'trophy-outline',
@@ -213,14 +235,15 @@ export function getDraftTypeIcon(type: DraftType): string {
         note: 'note-text-outline',
         clarification_needed: 'help-circle-outline',
     };
-    return icons[type] || 'help-circle-outline';
+    return icons[normalized] || 'help-circle-outline';
 }
 
 /**
  * Get draft type color
  */
 export function getDraftTypeColor(type: DraftType): string {
-    const colors: Record<DraftType, string> = {
+    const normalized = type.toLowerCase();
+    const colors: Record<string, string> = {
         task: '#3B82F6',      // Blue
         epic: '#8B5CF6',      // Purple
         challenge: '#F59E0B', // Amber
@@ -229,7 +252,7 @@ export function getDraftTypeColor(type: DraftType): string {
         note: '#6B7280',      // Gray
         clarification_needed: '#EF4444', // Red
     };
-    return colors[type] || '#6B7280';
+    return colors[normalized] || '#6B7280';
 }
 
 /**
