@@ -1,5 +1,6 @@
 package app.kaiz.shared.exception;
 
+import app.kaiz.command_center.domain.AIProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,16 @@ public class GlobalExceptionHandler {
     ErrorResponse response =
         new ErrorResponse("ACCESS_DENIED", "Access denied", request.getRequestURI());
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+  }
+
+  @ExceptionHandler(AIProcessingException.class)
+  public ResponseEntity<ErrorResponse> handleAIProcessingException(
+      AIProcessingException ex, HttpServletRequest request) {
+    log.error("🤖 [AI] Processing error: {}", ex.getMessage(), ex);
+    ErrorResponse response =
+        new ErrorResponse(
+            "AI_PROCESSING_ERROR", ex.getMessage(), request.getRequestURI());
+    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
   }
 
   @ExceptionHandler(Exception.class)
