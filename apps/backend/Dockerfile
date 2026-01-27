@@ -43,9 +43,10 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8080/actuator/health/liveness || exit 1
 
-# Run the application with virtual threads enabled
+# Run the application with G1GC (compatible with Cloud Run)
 ENTRYPOINT ["java", \
-    "-XX:+UseZGC", \
-    "-XX:+ZGenerational", \
+    "-XX:+UseG1GC", \
+    "-XX:MaxGCPauseMillis=100", \
+    "-XX:+UseStringDeduplication", \
     "-Djava.security.egd=file:/dev/./urandom", \
     "-jar", "app.jar"]
