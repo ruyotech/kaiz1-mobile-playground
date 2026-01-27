@@ -16,6 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSensAIStore } from '../../../store/sensaiStore';
 import { useAuthStore } from '../../../store/authStore';
+import { useTranslation } from '../../../hooks';
 import {
     CoachMessage,
     InterventionCard,
@@ -28,6 +29,7 @@ import {
 
 export default function SensAIDashboard() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { user } = useAuthStore();
     const {
         isInitialized,
@@ -78,7 +80,7 @@ export default function SensAIDashboard() {
         return (
             <SafeAreaView className="flex-1 bg-gray-50 items-center justify-center">
                 <ActivityIndicator size="large" color="#3B82F6" />
-                <Text className="text-gray-500 mt-4">Initializing SensAI...</Text>
+                <Text className="text-gray-500 mt-4">{t('sensai.initializing')}</Text>
             </SafeAreaView>
         );
     }
@@ -96,8 +98,8 @@ export default function SensAIDashboard() {
                 <View className="px-4 pt-4 pb-2">
                     <View className="flex-row items-center justify-between">
                         <View>
-                            <Text className="text-2xl font-bold text-gray-900">SensAI</Text>
-                            <Text className="text-sm text-gray-500">Your AI Scrum Master</Text>
+                            <Text className="text-2xl font-bold text-gray-900">{t('sensai.title')}</Text>
+                            <Text className="text-sm text-gray-500">{t('sensai.subtitle')}</Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => router.push('/(tabs)/sensai/settings' as any)}
@@ -135,12 +137,12 @@ export default function SensAIDashboard() {
                 {urgentInterventions.length > 0 && (
                     <View className="px-4 mt-6">
                         <View className="flex-row items-center justify-between mb-3">
-                            <Text className="text-lg font-bold text-gray-900">Needs Attention</Text>
+                            <Text className="text-lg font-bold text-gray-900">{t('sensai.needsAttention')}</Text>
                             {activeInterventions.length > 2 && (
                                 <TouchableOpacity
                                     onPress={() => router.push('/(tabs)/sensai/interventions' as any)}
                                 >
-                                    <Text className="text-blue-600 text-sm font-medium">See All</Text>
+                                    <Text className="text-blue-600 text-sm font-medium">{t('common.seeAll')}</Text>
                                 </TouchableOpacity>
                             )}
                         </View>
@@ -162,7 +164,7 @@ export default function SensAIDashboard() {
                 {/* Sprint Health */}
                 {currentSprintHealth && (
                     <View className="px-4 mt-6">
-                        <Text className="text-lg font-bold text-gray-900 mb-3">Sprint Health</Text>
+                        <Text className="text-lg font-bold text-gray-900 mb-3">{t('sensai.sprintHealth.title')}</Text>
                         <SprintHealthCard health={currentSprintHealth} />
                     </View>
                 )}
@@ -171,11 +173,11 @@ export default function SensAIDashboard() {
                 {velocityMetrics && (
                     <View className="px-4 mt-6">
                         <View className="flex-row items-center justify-between mb-3">
-                            <Text className="text-lg font-bold text-gray-900">Your Velocity</Text>
+                            <Text className="text-lg font-bold text-gray-900">{t('sensai.yourVelocity')}</Text>
                             <TouchableOpacity
                                 onPress={() => router.push('/(tabs)/sensai/velocity' as any)}
                             >
-                                <Text className="text-blue-600 text-sm font-medium">Details</Text>
+                                <Text className="text-blue-600 text-sm font-medium">{t('sensai.details')}</Text>
                             </TouchableOpacity>
                         </View>
                         <VelocityCard metrics={velocityMetrics} showChart={false} />
@@ -185,11 +187,11 @@ export default function SensAIDashboard() {
                 {/* Ceremonies Section */}
                 <View className="px-4 mt-6 mb-8">
                     <View className="flex-row items-center justify-between mb-3">
-                        <Text className="text-lg font-bold text-gray-900">Ceremonies</Text>
+                        <Text className="text-lg font-bold text-gray-900">{t('sprints.sprintCeremonies')}</Text>
                         <TouchableOpacity
                             onPress={() => router.push('/(tabs)/sensai/ceremonies' as any)}
                         >
-                            <Text className="text-blue-600 text-sm font-medium">View All</Text>
+                            <Text className="text-blue-600 text-sm font-medium">{t('common.viewAll')}</Text>
                         </TouchableOpacity>
                     </View>
                     
@@ -199,8 +201,8 @@ export default function SensAIDashboard() {
                             className="flex-1 bg-blue-50 rounded-xl p-4 mr-2"
                         >
                             <MaterialCommunityIcons name="clipboard-list-outline" size={28} color="#3B82F6" />
-                            <Text className="text-sm font-semibold text-blue-900 mt-2">Sprint Planning</Text>
-                            <Text className="text-xs text-blue-600 mt-1">Plan your week</Text>
+                            <Text className="text-sm font-semibold text-blue-900 mt-2">{t('sensai.ceremonies.sprintPlanning')}</Text>
+                            <Text className="text-xs text-blue-600 mt-1">{t('sensai.planYourWeek')}</Text>
                         </TouchableOpacity>
                         
                         <TouchableOpacity
@@ -208,8 +210,8 @@ export default function SensAIDashboard() {
                             className="flex-1 bg-purple-50 rounded-xl p-4 ml-2"
                         >
                             <MaterialCommunityIcons name="trophy-outline" size={28} color="#8B5CF6" />
-                            <Text className="text-sm font-semibold text-purple-900 mt-2">Sprint Review</Text>
-                            <Text className="text-xs text-purple-600 mt-1">Celebrate wins</Text>
+                            <Text className="text-sm font-semibold text-purple-900 mt-2">{t('sensai.ceremonies.sprintReview')}</Text>
+                            <Text className="text-xs text-purple-600 mt-1">{t('sensai.celebrateWins')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

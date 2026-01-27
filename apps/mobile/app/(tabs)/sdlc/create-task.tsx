@@ -8,9 +8,11 @@ import { useTaskStore } from '../../../store/taskStore';
 import { useEpicStore } from '../../../store/epicStore';
 import { lifeWheelApi, epicApi } from '../../../services/api';
 import { STORY_POINTS } from '../../../utils/constants';
+import { useTranslation } from '../../../hooks';
 
 export default function CreateTaskScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { addTask } = useTaskStore();
     const { addTaskToEpic } = useEpicStore();
 
@@ -75,15 +77,15 @@ export default function CreateTaskScreen() {
 
     return (
         <Container>
-            <ScreenHeader title="Create Task" subtitle="Add a new task to your backlog" showBack />
+            <ScreenHeader title={t('tasks.createTask')} subtitle={t('tasks.addToBacklog')} showBack />
 
             <ScrollView className="flex-1 p-6">
                 {/* Title Input - Big and Bold */}
                 <View className="mb-8">
-                    <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Task Title</Text>
+                    <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">{t('tasks.taskTitle')}</Text>
                     <TextInput
                         className="text-2xl font-bold text-gray-900 border-b border-gray-200 pb-2"
-                        placeholder="e.g. Design login screen"
+                        placeholder={t('tasks.taskTitlePlaceholder')}
                         placeholderTextColor="#D1D5DB"
                         value={title}
                         onChangeText={setTitle}
@@ -92,11 +94,11 @@ export default function CreateTaskScreen() {
 
                 {/* Description Input */}
                 <View className="mb-8">
-                    <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Description</Text>
+                    <Text className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">{t('tasks.description')}</Text>
                     <View className="bg-gray-50 p-4 rounded-xl border border-gray-100 min-h-[100px]">
                         <TextInput
                             className="text-base text-gray-800 leading-relaxed"
-                            placeholder="Describe what needs to be done..."
+                            placeholder={t('tasks.descriptionPlaceholder')}
                             multiline
                             textAlignVertical="top"
                             value={description}
@@ -107,7 +109,7 @@ export default function CreateTaskScreen() {
 
                 {/* Story Points - Modern Cards */}
                 <View className="mb-8">
-                    <Text className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">Story Points</Text>
+                    <Text className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{t('tasks.storyPoints')}</Text>
                     <View className="flex-row flex-wrap gap-3">
                         {STORY_POINTS.map((points) => (
                             <TouchableOpacity
@@ -131,7 +133,7 @@ export default function CreateTaskScreen() {
 
                 {/* Life Wheel Area - Colorful Pills */}
                 <View className="mb-8">
-                    <Text className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">Life Area</Text>
+                    <Text className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{t('tasks.lifeArea')}</Text>
                     <View className="flex-row flex-wrap gap-2">
                         {lifeWheelAreas.map((area) => (
                             <TouchableOpacity
@@ -160,7 +162,7 @@ export default function CreateTaskScreen() {
 
                 {/* Eisenhower Priority - Cards with Labels */}
                 <View className="mb-8">
-                    <Text className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">Priority (Eisenhower Matrix)</Text>
+                    <Text className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{t('tasks.priorityEisenhower')}</Text>
                     <View className="gap-3">
                         {quadrants.map((quad) => (
                             <TouchableOpacity
@@ -195,7 +197,7 @@ export default function CreateTaskScreen() {
                 {/* Epic Selector - Optional with Epic Cards */}
                 <View className="mb-8">
                     <Text className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">
-                        Link to Epic (Optional)
+                        {t('tasks.linkToEpic')}
                     </Text>
                     
                     {/* No Epic Option */}
@@ -214,7 +216,7 @@ export default function CreateTaskScreen() {
                             <Text className={`ml-3 font-semibold ${
                                 !epicId ? 'text-gray-900' : 'text-gray-500'
                             }`}>
-                                No Epic - Standalone Task
+                                {t('tasks.noEpicStandalone')}
                             </Text>
                         </View>
                         {!epicId && (
@@ -269,7 +271,7 @@ export default function CreateTaskScreen() {
                         <View className="bg-gray-50 rounded-xl p-6 items-center border border-dashed border-gray-300">
                             <MaterialCommunityIcons name="rocket-launch-outline" size={40} color="#9CA3AF" />
                             <Text className="text-gray-500 text-sm mt-2 text-center">
-                                No epics yet. Create an epic to group related tasks.
+                                {t('tasks.noEpicsYet')}
                             </Text>
                         </View>
                     )}
@@ -290,7 +292,7 @@ export default function CreateTaskScreen() {
                         size={20} 
                         color="white" 
                     />
-                    <Text className="text-white font-bold text-lg ml-2">Create Task</Text>
+                    <Text className="text-white font-bold text-lg ml-2">{t('tasks.createTask')}</Text>
                 </TouchableOpacity>
             </ScrollView>
         </Container>

@@ -67,23 +67,33 @@
     "image": "Resim",
     "camera": "Kamera",
     "file": "Dosya",
-    "voice": "Ses"
+    "voice": "Ses",
+    "show": "Göster",
+    "hide": "Gizle",
+    "days": "gün",
+    "hours": "saat",
+    "minutes": "dakika",
+    "seconds": "saniye"
   },
   "auth": {
     "login": {
       "title": "Tekrar Hoş Geldin",
+      "welcomeBack": "Tekrar Hoş Geldin",
       "subtitle": "Yolculuğuna devam etmek için giriş yap",
       "email": "E-posta",
-      "emailPlaceholder": "E-posta adresinizi girin",
+      "emailPlaceholder": "ornek@email.com",
       "password": "Şifre",
       "passwordPlaceholder": "Şifrenizi girin",
       "forgotPassword": "Şifremi Unuttum?",
       "signIn": "Giriş Yap",
+      "signUp": "Kayıt Ol",
       "signInWithGoogle": "Google ile Devam Et",
       "signInWithApple": "Apple ile Devam Et",
       "noAccount": "Hesabınız yok mu?",
       "createAccount": "Hesap Oluştur",
       "orContinueWith": "veya şununla devam et",
+      "orSignInWithEmail": "veya e-posta ile giriş yap",
+      "loginWith": "ile Giriş Yap",
       "loginFailed": "Giriş Başarısız",
       "invalidCredentials": "Geçersiz e-posta veya şifre. Lütfen tekrar deneyin."
     },
@@ -105,19 +115,27 @@
       "termsRequired": "Şartlar Gerekli",
       "termsRequiredMessage": "Lütfen Kullanım Şartları ve Gizlilik Politikasını kabul edin",
       "registrationSuccess": "Başarılı!",
-      "registrationSuccessMessage": "Hesabınız oluşturuldu. Kaiz'e hoş geldiniz!",
-      "tryDemo": "Demo Modunu Dene",
-      "tryDemoSubtitle": "Kayıt olmadan tüm özellikleri keşfet"
+      "registrationSuccessMessage": "Hesabınız oluşturuldu. Kaiz'e hoş geldiniz!"
     },
     "forgotPassword": {
-      "title": "Şifremi Unuttum",
+      "title": "Şifre Sıfırla",
       "subtitle": "Şifrenizi sıfırlamak için e-posta adresinizi girin",
+      "description": "E-posta adresinizi girin, size şifre sıfırlama bağlantısı gönderelim.",
       "email": "E-posta",
       "emailPlaceholder": "E-posta adresinizi girin",
       "sendResetLink": "Sıfırlama Bağlantısı Gönder",
       "backToLogin": "Girişe Dön",
       "emailSent": "E-posta Gönderildi",
-      "emailSentMessage": "Şifre sıfırlama talimatları için gelen kutunuzu kontrol edin"
+      "emailSentMessage": "Şifre sıfırlama talimatları için gelen kutunuzu kontrol edin",
+      "checkEmail": "E-postanızı Kontrol Edin",
+      "sentTo": "Şifre sıfırlama bağlantısı gönderildi:",
+      "linkExpiry": "Bağlantı 1 saat içinde geçerliliğini yitirecek. Gelen kutunuzda göremezseniz spam klasörünü kontrol edin.",
+      "resendLink": "Bağlantıyı Tekrar Gönder",
+      "resendSuccess": "Sıfırlama bağlantısı e-postanıza tekrar gönderildi",
+      "resendError": "Tekrar gönderme başarısız. Lütfen tekrar deneyin.",
+      "sendError": "Sıfırlama bağlantısı gönderilemedi. Lütfen tekrar deneyin.",
+      "rememberPassword": "Şifrenizi hatırlıyor musunuz?",
+      "returnToLogin": "Girişe Dön"
     },
     "verifyEmail": {
       "title": "E-postanızı Doğrulayın",
@@ -194,7 +212,17 @@
       "motivation": "Motivasyon",
       "pomodoro": "Pomodoro",
       "settings": "Ayarlar",
-      "notifications": "Bildirimler"
+      "notifications": "Bildirimler",
+      "tasks": "Görevler",
+      "focus": "Odaklanma",
+      "mindset": "Zihniyet",
+      "coach": "Koç",
+      "today": "Bugün",
+      "active": "Aktif",
+      "bills": "Faturalar",
+      "hub": "Merkez",
+      "inbox": "Gelen Kutusu",
+      "more": "Daha Fazla"
     },
     "sdlc": {
       "calendar": "Takvim",
@@ -203,7 +231,10 @@
       "reports": "Raporlar",
       "velocity": "Hız",
       "retro": "Retrospektif",
-      "wiki": "Wiki"
+      "wiki": "Wiki",
+      "taskSearch": "Görev Ara",
+      "knowledgeHub": "Bilgi Merkezi",
+      "templates": "Şablonlar"
     },
     "moreMenu": {
       "title": "Daha Fazla Seçenek",
@@ -211,7 +242,43 @@
       "signOutConfirm": "Çıkış yapmak istediğinizden emin misiniz?",
       "clearNotifications": "Tüm Bildirimleri Temizle",
       "clearNotificationsConfirm": "Tüm bildirimler kaldırılsın mı?",
-      "clearAll": "Tümünü Temizle"
+      "clearAll": "Tümünü Temizle",
+      "themeDisplay": "Tema ve Görünüm",
+      "language": "Dil",
+      "privacy": "Gizlilik",
+      "dataStorage": "Veri ve Depolama",
+      "about": "Hakkında",
+      "dailyStandup": "Günlük Toplantı",
+      "sprintPlanning": "Sprint Planlama",
+      "sprintReview": "Sprint İnceleme",
+      "interventions": "Müdahaleler",
+      "lifeWheel": "Yaşam Çemberi",
+      "quickIntake": "Hızlı Girdi",
+      "analytics": "Analitik",
+      "favorites": "Favoriler",
+      "themes": "Temalar",
+      "exploreBooks": "Kitapları Keşfet",
+      "myLibrary": "Kütüphanem",
+      "growthStats": "Gelişim İstatistikleri",
+      "highlights": "Öne Çıkanlar",
+      "flashcards": "Bilgi Kartları",
+      "readingGoals": "Okuma Hedefleri",
+      "collections": "Koleksiyonlar",
+      "createChallenge": "Meydan Okuma Oluştur",
+      "completed": "Tamamlandı",
+      "leaderboard": "Liderlik Tablosu",
+      "history": "Geçmiş",
+      "focusAnalytics": "Odaklanma Analizi",
+      "categories": "Kategoriler",
+      "recurring": "Tekrarlayan",
+      "qaForum": "Soru-Cevap Forumu",
+      "successStories": "Başarı Hikayeleri",
+      "supportCircle": "Destek Çemberi",
+      "myProfile": "Profilim",
+      "unread": "Okunmamış",
+      "mentions": "Bahsedilmeler",
+      "taskUpdates": "Görev Güncellemeleri",
+      "challengeAlerts": "Meydan Okuma Uyarıları"
     },
     "appSwitcher": {
       "title": "Uygulamalar"
@@ -345,7 +412,17 @@
       "comments": "Yorumlar",
       "checklist": "Kontrol Listesi",
       "history": "Geçmiş"
-    }
+    },
+    "taskTitle": "Görev Başlığı",
+    "taskTitlePlaceholder": "örn. Giriş ekranını tasarla",
+    "description": "Açıklama",
+    "storyPoints": "Story Puanları",
+    "lifeArea": "Yaşam Alanı",
+    "priorityEisenhower": "Öncelik (Eisenhower Matrisi)",
+    "linkToEpic": "Epik'e Bağla (İsteğe Bağlı)",
+    "noEpicStandalone": "Epik Yok - Bağımsız Görev",
+    "noEpicsYet": "Henüz epik yok. İlgili görevleri gruplamak için bir epik oluşturun.",
+    "addToBacklog": "Backlog'a yeni bir görev ekle"
   },
   "sprints": {
     "title": "Sprint",
@@ -354,6 +431,7 @@
     "sprintPlanning": "Sprint Planlama",
     "sprintReview": "Sprint İnceleme",
     "sprintRetro": "Sprint Retrospektifi",
+    "sprintCeremonies": "Seremoniler",
     "capacity": {
       "title": "Kapasite",
       "available": "Mevcut",
@@ -406,11 +484,57 @@
     "urgentImportant": "Acil ve Önemli",
     "notUrgentImportant": "Acil Değil ama Önemli",
     "urgentNotImportant": "Acil ama Önemli Değil",
-    "notUrgentNotImportant": "Acil Değil ve Önemli Değil"
+    "notUrgentNotImportant": "Acil Değil ve Önemli Değil",
+    "weekly": "Haftalık",
+    "daily": "Günlük",
+    "dayNames": {
+      "sun": "Paz",
+      "mon": "Pzt",
+      "tue": "Sal",
+      "wed": "Çar",
+      "thu": "Per",
+      "fri": "Cum",
+      "sat": "Cmt",
+      "sunday": "Pazar",
+      "monday": "Pazartesi",
+      "tuesday": "Salı",
+      "wednesday": "Çarşamba",
+      "thursday": "Perşembe",
+      "friday": "Cuma",
+      "saturday": "Cumartesi"
+    },
+    "monthNames": {
+      "jan": "Oca",
+      "feb": "Şub",
+      "mar": "Mar",
+      "apr": "Nis",
+      "may": "May",
+      "jun": "Haz",
+      "jul": "Tem",
+      "aug": "Ağu",
+      "sep": "Eyl",
+      "oct": "Eki",
+      "nov": "Kas",
+      "dec": "Ara",
+      "january": "Ocak",
+      "february": "Şubat",
+      "march": "Mart",
+      "april": "Nisan",
+      "mayFull": "Mayıs",
+      "june": "Haziran",
+      "july": "Temmuz",
+      "august": "Ağustos",
+      "september": "Eylül",
+      "october": "Ekim",
+      "november": "Kasım",
+      "december": "Aralık"
+    }
   },
   "challenges": {
     "title": "Meydan Okumalar",
+    "subtitle": "Kalıcı alışkanlıklar oluştur",
     "active": "Aktif Meydan Okumalar",
+    "activeChallenges": "Aktif Meydan Okumalar",
     "completed": "Tamamlanan",
     "upcoming": "Yaklaşan",
     "join": "Katıl",
@@ -419,10 +543,27 @@
     "participants": "Katılımcılar",
     "daysLeft": "{{days}} gün kaldı",
     "streak": "Mevcut Seri",
+    "challenge": "meydan okuma",
+    "challengesPlural": "meydan okuma",
+    "searchPlaceholder": "Meydan okuma ara...",
     "empty": {
       "title": "Aktif meydan okuma yok",
-      "subtitle": "Motivasyonunu artırmak için bir meydan okumaya katıl",
+      "subtitle": "Kalıcı alışkanlıklar oluşturmak için bir meydan okuma başlat",
       "action": "Meydan Okumalara Göz At"
+    },
+    "leaderboard": {
+      "title": "Liderlik Tablosu",
+      "subtitle": "Yarış ve kazan",
+      "checkTitle": "Liderlik Tablosunu Kontrol Et",
+      "checkSubtitle": "En iyi performans gösterenler arasında nerede olduğunu gör",
+      "viewRankings": "Sıralamaları Gör"
+    },
+    "community": {
+      "title": "Topluluk",
+      "subtitle": "Birlikte meydan oku",
+      "joinTitle": "Topluluk Meydan Okumalarına Katıl",
+      "joinSubtitle": "Başkalarıyla bağlan ve birlikte motive kal",
+      "explore": "Topluluğu Keşfet"
     },
     "analytics": {
       "title": "Meydan Okuma Analitiği",
@@ -506,20 +647,73 @@
     "subtitle": "AI Asistanın",
     "placeholder": "Bana bir şey sor...",
     "thinking": "Düşünüyorum...",
+    "create": {
+      "title": "Oluştur",
+      "subtitle": "AI destekli hızlı girdi",
+      "aiAssistant": "AI Asistan",
+      "aiDescription": "Ne oluşturmak istediğinizi doğal dilde açıklayın",
+      "createWithNaturalLanguage": "Doğal dille oluştur",
+      "describePlaceholder": "Ne oluşturmak istediğinizi açıklayın...",
+      "quickCreate": "Hızlı Oluştur",
+      "task": "Görev",
+      "challenge": "Meydan Okuma",
+      "event": "Etkinlik",
+      "aiSuggestions": "AI Önerileri",
+      "smartParse": "Akıllı Ayrıştır",
+      "smartParseDescription": "Kamera, galeri, dosya veya ses girdisine erişmek için aşağıdaki + butonunu kullanın. AI ne oluşturduğunuzu otomatik olarak algılayacak.",
+      "recent": "Son",
+      "typeMessage": "Bir mesaj yazın...",
+      "addMessage": "Mesaj ekleyin...",
+      "voice": "Ses",
+      "image": "Resim",
+      "file": "Dosya"
+    },
+    "chat": {
+      "welcomeMessage": "Merhaba! Ben Kaiz AI. Bana ne oluşturmak istediğinizi söyleyin - bir görev, meydan okuma, etkinlik veya başka bir şey. Ayrıca resim, dosya veya sesli mesaj da paylaşabilirsiniz!",
+      "errorMessage": "Üzgünüm, bir şeyler yanlış gitti. Lütfen tekrar deneyin."
+    },
     "suggestions": {
       "title": "Öneriler",
       "planMyDay": "Günümü planla",
       "weeklyReview": "Haftalık inceleme",
       "setGoals": "Hedef belirlememe yardım et",
       "analyzeProgress": "İlerlememi analiz et"
+    },
+    "draft": {
+      "lifeArea": "Yaşam Alanı",
+      "quadrant": "Çeyrek",
+      "storyPoints": "Hikaye Puanları",
+      "dueDate": "Son Tarih",
+      "recurring": "Tekrarlayan",
+      "start": "Başlangıç",
+      "end": "Bitiş",
+      "duration": "Süre",
+      "frequency": "Sıklık",
+      "metric": "Metrik",
+      "target": "Hedef",
+      "date": "Tarih",
+      "time": "Zaman",
+      "allDay": "Tüm Gün",
+      "location": "Konum",
+      "attendees": "Katılımcılar",
+      "due": "Son",
+      "category": "Kategori",
+      "amount": "Miktar",
+      "account": "Hesap"
     }
   },
   "sensai": {
     "title": "SensAI",
-    "subtitle": "AI Destekli İçgörüler",
+    "subtitle": "AI Scrum Masterınız",
     "insights": "İçgörüler",
     "recommendations": "Öneriler",
     "analysis": "Analiz",
+    "initializing": "SensAI Başlatılıyor...",
+    "needsAttention": "Dikkat Gerektiriyor",
+    "yourVelocity": "Hızınız",
+    "details": "Detaylar",
+    "planYourWeek": "Haftanı planla",
+    "celebrateWins": "Kazanımları kutla",
     "velocity": {
       "title": "Hız",
       "sprintHistory": "Sprint Geçmişi",
@@ -643,17 +837,66 @@
   "notifications": {
     "title": "Bildirimler",
     "markAllRead": "Tümünü Okundu İşaretle",
+    "markAllReadShort": "Hepsini okundu yap",
+    "allCaughtUp": "Her şey güncel!",
+    "noNewNotifications": "Yeni bildirim yok",
+    "filterAll": "Tümü",
+    "filterToday": "Bugün",
+    "filterYesterday": "Dün",
+    "filterThisWeek": "Bu Hafta",
+    "filterEarlier": "Daha Önce",
     "empty": {
       "title": "Bildirim yok",
-      "subtitle": "Her şey güncel!"
+      "subtitle": "Her şey güncel!",
+      "noTaskUpdates": "Görev güncellemesi yok",
+      "noTaskUpdatesSubtitle": "Güncellemeleri görmek için görevleri tamamlayın",
+      "noChallengeUpdates": "Meydan okuma güncellemesi yok",
+      "noChallengeUpdatesSubtitle": "Motive olmak için bir meydan okuma başlatın!",
+      "noSocialUpdates": "Sosyal güncelleme yok",
+      "noSocialUpdatesSubtitle": "Aktiviteyi görmek için diğerleriyle bağlantı kurun",
+      "noLearningUpdates": "Öğrenme güncellemesi yok",
+      "noLearningUpdatesSubtitle": "İçgörüleri görmek için kitap ve makaleler okuyun",
+      "noEventReminders": "Etkinlik hatırlatıcısı yok",
+      "noEventRemindersSubtitle": "Bildirim almak için etkinlik ekleyin",
+      "noSystemUpdates": "Sistem güncellemesi yok",
+      "noSystemUpdatesSubtitle": "Uygulama sorunsuz çalışıyor",
+      "noAiInsights": "Henüz AI içgörüsü yok",
+      "noAiInsightsSubtitle": "Kişiselleştirilmiş ipuçları almak için uygulamayı kullanın"
     },
     "settings": {
       "title": "Bildirim Ayarları",
       "push": "Anlık Bildirimler",
+      "pushSubtitle": "Cihazınızda uyarılar alın",
       "email": "E-posta Bildirimleri",
       "reminders": "Görev Hatırlatıcıları",
       "achievements": "Başarı Uyarıları",
-      "community": "Topluluk Güncellemeleri"
+      "community": "Topluluk Güncellemeleri",
+      "sound": "Ses",
+      "soundSubtitle": "Bildirim sesleri çal",
+      "vibration": "Titreşim",
+      "vibrationSubtitle": "Uyarılar için dokunsal geri bildirim",
+      "sections": {
+        "push": "Anlık Bildirimler",
+        "pushDesc": "Nasıl uyarılacağınızı kontrol edin",
+        "quietHours": "Sessiz Saatler",
+        "quietHoursDesc": "Bu saatlerde bildirimleri duraklat",
+        "categories": "Kategoriler",
+        "categoriesDesc": "Hangi türleri alacağınızı seçin",
+        "smart": "Akıllı Özellikler",
+        "smartDesc": "AI destekli bildirim yönetimi"
+      },
+      "quietHours": {
+        "title": "Sessiz Saatler",
+        "notEnabled": "22:00 - 08:00"
+      },
+      "smart": {
+        "grouping": "Akıllı Gruplama",
+        "groupingSubtitle": "Benzer bildirimleri birlikte grupla",
+        "dailyDigest": "Günlük Özet",
+        "dailyDigestSubtitle": "Günde bir kez aktivite özeti",
+        "weeklyRecap": "Haftalık Özet",
+        "weeklyRecapSubtitle": "Haftalık ilerleme özeti"
+      }
     }
   },
   "profile": {
@@ -663,6 +906,16 @@
       "tasksCompleted": "Tamamlanan Görevler",
       "currentStreak": "Mevcut Seri",
       "totalPoints": "Toplam Puan"
+    },
+    "menu": {
+      "notifications": "Bildirimler",
+      "notificationsSubtitle": "Uyarıları ve tercihleri yönet",
+      "appearance": "Görünüm",
+      "appearanceSubtitle": "Tema, renkler ve görüntü",
+      "privacy": "Gizlilik ve Güvenlik",
+      "privacySubtitle": "Hesap koruma ayarları",
+      "help": "Yardım ve Destek",
+      "helpSubtitle": "SSS ve bize ulaşın"
     }
   },
   "lifeWheel": {
@@ -681,24 +934,6 @@
   "settings": {
     "title": "Ayarlar",
     "subtitle": "Deneyiminizi özelleştirin",
-    "demoMode": {
-      "title": "Demo Modu Aktif",
-      "subtitle": "Örnek veriler kullanılıyor • İstediğiniz zaman sıfırlayın",
-      "exitButton": "Demo Modundan Çık",
-      "tryTitle": "Demo Modunu Dene",
-      "trySubtitle": "Örnek verilerle keşfet",
-      "enterTitle": "Demo Moduna Gir",
-      "enterMessage": "Önceden doldurulmuş örnek verilerle tüm özellikleri keşfetmek için demo hesabına geçin.",
-      "enterButton": "Demo'ya Gir",
-      "alreadyActive": "Zaten Demo Modunda",
-      "alreadyActiveMessage": "Zaten bir demo hesabı kullanıyorsunuz.",
-      "activeAlert": "Demo Modu Aktif",
-      "activeAlertMessage": "Artık bir demo hesabı kullanıyorsunuz!"
-    },
-    "resetDemo": {
-      "title": "Demo'yu Sıfırla",
-      "message": "Bu işlem tüm uygulama verilerini temizleyecek ve karşılama ekranından yeniden başlatacak. Demo oturumunuz sona erecek."
-    },
     "sections": {
       "accountProfile": "Hesap ve Profil",
       "commandCenter": "Komut Merkezi",

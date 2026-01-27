@@ -6,9 +6,11 @@ import { Container } from '../../components/layout/Container';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from '../../hooks';
 
 export default function ForgotPasswordScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { resetPassword, error: authError } = useAuthStore();
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -18,11 +20,11 @@ export default function ForgotPasswordScreen() {
     const validateEmail = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
-            setEmailError('Email is required');
+            setEmailError(t('auth.validation.emailRequired'));
             return false;
         }
         if (!emailRegex.test(email)) {
-            setEmailError('Please enter a valid email');
+            setEmailError(t('auth.validation.emailInvalid'));
             return false;
         }
         setEmailError('');
@@ -40,8 +42,8 @@ export default function ForgotPasswordScreen() {
             await resetPassword(email);
             setEmailSent(true);
         } catch (error: any) {
-            const message = error?.message || authError || 'Failed to send reset link. Please try again.';
-            Alert.alert('Error', message);
+            const message = error?.message || authError || t('auth.forgotPassword.sendError');
+            Alert.alert(t('common.error'), message);
         } finally {
             setLoading(false);
         }
@@ -51,10 +53,10 @@ export default function ForgotPasswordScreen() {
         setLoading(true);
         try {
             await resetPassword(email);
-            Alert.alert('Success', 'Reset link has been resent to your email');
+            Alert.alert(t('common.success'), t('auth.forgotPassword.resendSuccess'));
         } catch (error: any) {
-            const message = error?.message || 'Failed to resend. Please try again.';
-            Alert.alert('Error', message);
+            const message = error?.message || t('auth.forgotPassword.resendError');
+            Alert.alert(t('common.error'), message);
         } finally {
             setLoading(false);
         }
@@ -74,11 +76,11 @@ export default function ForgotPasswordScreen() {
                         </View>
 
                         <Text className="text-3xl font-bold text-center mb-3">
-                            Check Your Email
+                            {t('auth.forgotPassword.checkEmail')}
                         </Text>
                         
                         <Text className="text-base text-gray-600 text-center mb-2 px-4">
-                            We've sent a password reset link to:
+                            {t('auth.forgotPassword.sentTo')}
                         </Text>
                         
                         <Text className="text-base font-semibold text-blue-600 mb-8">
@@ -87,13 +89,12 @@ export default function ForgotPasswordScreen() {
 
                         <View className="bg-blue-50 p-4 rounded-lg mb-6 w-full">
                             <Text className="text-sm text-blue-900 text-center">
-                                💡 The link will expire in 1 hour. Check your spam folder if you
-                                don't see it in your inbox.
+                                💡 {t('auth.forgotPassword.linkExpiry')}
                             </Text>
                         </View>
 
                         <Button onPress={handleResend} variant="outline" fullWidth loading={loading}>
-                            Resend Link
+                            {t('auth.forgotPassword.resendLink')}
                         </Button>
 
                         <Pressable
@@ -101,7 +102,7 @@ export default function ForgotPasswordScreen() {
                             className="mt-6"
                         >
                             <Text className="text-blue-600 font-semibold text-center">
-                                ← Back to Login
+                                ← {t('auth.forgotPassword.backToLogin')}
                             </Text>
                         </Pressable>
                     </Animated.View>
@@ -125,7 +126,7 @@ export default function ForgotPasswordScreen() {
                     >
                         <Pressable onPress={() => router.back()} className="mb-4">
                             <Text className="text-blue-600 font-semibold text-lg">
-                                ← Back
+                                ← {t('common.back')}
                             </Text>
                         </Pressable>
 
@@ -134,24 +135,23 @@ export default function ForgotPasswordScreen() {
                         </View>
 
                         <Text className="text-4xl font-bold text-gray-900 mb-3">
-                            Reset Password
+                            {t('auth.forgotPassword.title')}
                         </Text>
                         <Text className="text-base text-gray-600">
-                            Enter your email address and we'll send you a link to reset your
-                            password.
+                            {t('auth.forgotPassword.description')}
                         </Text>
                     </Animated.View>
 
                     {/* Form */}
                     <Animated.View entering={FadeInDown.delay(200).springify()}>
                         <Input
-                            label="Email"
+                            label={t('auth.login.email')}
                             value={email}
                             onChangeText={(text) => {
                                 setEmail(text);
                                 if (emailError) validateEmail(text);
                             }}
-                            placeholder="your@email.com"
+                            placeholder={t('auth.login.emailPlaceholder')}
                             keyboardType="email-address"
                             error={emailError}
                         />
@@ -162,7 +162,7 @@ export default function ForgotPasswordScreen() {
                             fullWidth
                             size="lg"
                         >
-                            Send Reset Link
+                            {t('auth.forgotPassword.sendResetLink')}
                         </Button>
                     </Animated.View>
 
@@ -173,11 +173,11 @@ export default function ForgotPasswordScreen() {
                     >
                         <View className="bg-gray-50 p-4 rounded-lg">
                             <Text className="text-sm text-gray-700 font-semibold mb-2">
-                                Remember your password?
+                                {t('auth.forgotPassword.rememberPassword')}
                             </Text>
                             <Pressable onPress={() => router.back()}>
                                 <Text className="text-blue-600 font-semibold">
-                                    Return to Login →
+                                    {t('auth.forgotPassword.returnToLogin')} →
                                 </Text>
                             </Pressable>
                         </View>

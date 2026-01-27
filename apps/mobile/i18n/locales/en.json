@@ -67,23 +67,33 @@
     "image": "Image",
     "camera": "Camera",
     "file": "File",
-    "voice": "Voice"
+    "voice": "Voice",
+    "show": "Show",
+    "hide": "Hide",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds"
   },
   "auth": {
     "login": {
       "title": "Welcome Back",
+      "welcomeBack": "Welcome Back",
       "subtitle": "Sign in to continue your journey",
       "email": "Email",
-      "emailPlaceholder": "Enter your email",
+      "emailPlaceholder": "your@email.com",
       "password": "Password",
       "passwordPlaceholder": "Enter your password",
       "forgotPassword": "Forgot Password?",
       "signIn": "Sign In",
+      "signUp": "Sign Up",
       "signInWithGoogle": "Continue with Google",
       "signInWithApple": "Continue with Apple",
       "noAccount": "Don't have an account?",
       "createAccount": "Create Account",
       "orContinueWith": "or continue with",
+      "orSignInWithEmail": "or sign in with email",
+      "loginWith": "Login with",
       "loginFailed": "Login Failed",
       "invalidCredentials": "Invalid email or password. Please try again."
     },
@@ -105,19 +115,27 @@
       "termsRequired": "Terms Required",
       "termsRequiredMessage": "Please agree to the Terms of Service and Privacy Policy",
       "registrationSuccess": "Success!",
-      "registrationSuccessMessage": "Your account has been created. Welcome to Kaiz!",
-      "tryDemo": "Try Demo Mode",
-      "tryDemoSubtitle": "Explore all features without signing up"
+      "registrationSuccessMessage": "Your account has been created. Welcome to Kaiz!"
     },
     "forgotPassword": {
-      "title": "Forgot Password",
+      "title": "Reset Password",
       "subtitle": "Enter your email to reset your password",
+      "description": "Enter your email address and we'll send you a link to reset your password.",
       "email": "Email",
       "emailPlaceholder": "Enter your email",
       "sendResetLink": "Send Reset Link",
       "backToLogin": "Back to Login",
       "emailSent": "Email Sent",
-      "emailSentMessage": "Check your inbox for password reset instructions"
+      "emailSentMessage": "Check your inbox for password reset instructions",
+      "checkEmail": "Check Your Email",
+      "sentTo": "We've sent a password reset link to:",
+      "linkExpiry": "The link will expire in 1 hour. Check your spam folder if you don't see it in your inbox.",
+      "resendLink": "Resend Link",
+      "resendSuccess": "Reset link has been resent to your email",
+      "resendError": "Failed to resend. Please try again.",
+      "sendError": "Failed to send reset link. Please try again.",
+      "rememberPassword": "Remember your password?",
+      "returnToLogin": "Return to Login"
     },
     "verifyEmail": {
       "title": "Verify Your Email",
@@ -194,7 +212,17 @@
       "motivation": "Motivation",
       "pomodoro": "Pomodoro",
       "settings": "Settings",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "tasks": "Tasks",
+      "focus": "Focus",
+      "mindset": "Mindset",
+      "coach": "Coach",
+      "today": "Today",
+      "active": "Active",
+      "bills": "Bills",
+      "hub": "Hub",
+      "inbox": "Inbox",
+      "more": "More"
     },
     "sdlc": {
       "calendar": "Calendar",
@@ -203,7 +231,10 @@
       "reports": "Reports",
       "velocity": "Velocity",
       "retro": "Retrospective",
-      "wiki": "Wiki"
+      "wiki": "Wiki",
+      "taskSearch": "Task Search",
+      "knowledgeHub": "Knowledge Hub",
+      "templates": "Templates"
     },
     "moreMenu": {
       "title": "More Options",
@@ -211,7 +242,43 @@
       "signOutConfirm": "Are you sure you want to sign out?",
       "clearNotifications": "Clear All Notifications",
       "clearNotificationsConfirm": "Remove all notifications?",
-      "clearAll": "Clear All"
+      "clearAll": "Clear All",
+      "themeDisplay": "Theme & Display",
+      "language": "Language",
+      "privacy": "Privacy",
+      "dataStorage": "Data & Storage",
+      "about": "About",
+      "dailyStandup": "Daily Standup",
+      "sprintPlanning": "Sprint Planning",
+      "sprintReview": "Sprint Review",
+      "interventions": "Interventions",
+      "lifeWheel": "Life Wheel",
+      "quickIntake": "Quick Intake",
+      "analytics": "Analytics",
+      "favorites": "Favorites",
+      "themes": "Themes",
+      "exploreBooks": "Explore Books",
+      "myLibrary": "My Library",
+      "growthStats": "Growth Stats",
+      "highlights": "Highlights",
+      "flashcards": "Flashcards",
+      "readingGoals": "Reading Goals",
+      "collections": "Collections",
+      "createChallenge": "Create Challenge",
+      "completed": "Completed",
+      "leaderboard": "Leaderboard",
+      "history": "History",
+      "focusAnalytics": "Focus Analytics",
+      "categories": "Categories",
+      "recurring": "Recurring",
+      "qaForum": "Q&A Forum",
+      "successStories": "Success Stories",
+      "supportCircle": "Support Circle",
+      "myProfile": "My Profile",
+      "unread": "Unread",
+      "mentions": "Mentions",
+      "taskUpdates": "Task Updates",
+      "challengeAlerts": "Challenge Alerts"
     },
     "appSwitcher": {
       "title": "Apps"
@@ -240,8 +307,12 @@
   "tasks": {
     "title": "Tasks",
     "createTask": "Create Task",
+    "createSubtitle": "Add a new task to your backlog",
     "editTask": "Edit Task",
     "taskDetails": "Task Details",
+    "descriptionPlaceholder": "Describe what needs to be done...",
+    "commentPlaceholder": "Add a comment about your progress...",
+    "checklistPlaceholder": "Enter checklist item...",
     "status": {
       "draft": "Draft",
       "todo": "To Do",
@@ -345,7 +416,17 @@
       "comments": "Comments",
       "checklist": "Checklist",
       "history": "History"
-    }
+    },
+    "taskTitle": "Task Title",
+    "taskTitlePlaceholder": "e.g. Design login screen",
+    "description": "Description",
+    "storyPoints": "Story Points",
+    "lifeArea": "Life Area",
+    "priorityEisenhower": "Priority (Eisenhower Matrix)",
+    "linkToEpic": "Link to Epic (Optional)",
+    "noEpicStandalone": "No Epic - Standalone Task",
+    "noEpicsYet": "No epics yet. Create an epic to group related tasks.",
+    "addToBacklog": "Add a new task to your backlog"
   },
   "sprints": {
     "title": "Sprint",
@@ -354,6 +435,7 @@
     "sprintPlanning": "Sprint Planning",
     "sprintReview": "Sprint Review",
     "sprintRetro": "Sprint Retrospective",
+    "sprintCeremonies": "Ceremonies",
     "capacity": {
       "title": "Capacity",
       "available": "Available",
@@ -369,17 +451,43 @@
     },
     "backlog": {
       "title": "Backlog",
+      "subtitle": "{{count}} unplanned items",
       "productBacklog": "Product Backlog",
       "sprintBacklog": "Sprint Backlog",
       "grooming": "Backlog Grooming",
-      "empty": "Backlog is empty"
+      "empty": "No backlog items",
+      "emptyMessage": "Your backlog is empty. Add tasks that you'll plan into future sprints.",
+      "searchPlaceholder": "Search backlog items...",
+      "addToSprint": "Add to Sprint",
+      "noMatches": "No matches",
+      "noMatchesMessage": "Try different filters to see your backlog items"
+    },
+    "reports": {
+      "title": "Reports & Analytics",
+      "subtitle": "Track your progress"
+    },
+    "retro": {
+      "title": "Sprint Retrospective",
+      "subtitle": "Chat with Kaizen Master",
+      "placeholder": "Type your thoughts...",
+      "welcomeMessage": "Hello! I'm Kaizen Master, your agile guide. Ready to look back at the sprint? Let's start with a quick check-in. How are you feeling about what we accomplished?",
+      "winsResponse": "That's great! Celebrating wins builds momentum. Now, in the spirit of continuous improvement, what didn't go as planned? Any blockers or frustrations?",
+      "actionResponse": "Excellent. I've noted that down as a key action item for the next Sprint. I've generated a summary report for you."
+    },
+    "search": {
+      "title": "Search Tasks",
+      "placeholder": "Search tasks..."
     }
   },
   "epics": {
     "title": "Epics",
+    "subtitle": "Strategic high-level goals",
     "createEpic": "Create Epic",
+    "createSubtitle": "Define a new strategic goal",
     "editEpic": "Edit Epic",
     "epicDetails": "Epic Details",
+    "epicNotFound": "Epic Not Found",
+    "descriptionPlaceholder": "Describe what this epic aims to achieve...",
     "fields": {
       "name": "Epic Name",
       "namePlaceholder": "Enter epic name",
@@ -406,7 +514,32 @@
     "urgentImportant": "Urgent & Important",
     "notUrgentImportant": "Not Urgent & Important",
     "urgentNotImportant": "Urgent & Not Important",
-    "notUrgentNotImportant": "Not Urgent & Not Important"
+    "notUrgentNotImportant": "Not Urgent & Not Important",
+    "weekly": "Weekly",
+    "daily": "Daily",
+    "dayNames": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "monthNames": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
   },
   "wiki": {
     "title": "Knowledge Hub",
@@ -442,7 +575,9 @@
   },
   "challenges": {
     "title": "Challenges",
+    "subtitle": "Build habits that compound",
     "active": "Active Challenges",
+    "activeChallenges": "Active Challenges",
     "completed": "Completed",
     "upcoming": "Upcoming",
     "join": "Join Challenge",
@@ -451,10 +586,48 @@
     "participants": "Participants",
     "daysLeft": "{{days}} days left",
     "streak": "Current Streak",
+    "challenge": "challenge",
+    "challengesPlural": "challenges",
     "empty": {
-      "title": "No active challenges",
-      "subtitle": "Join a challenge to boost your motivation",
+      "title": "No Active Challenges",
+      "subtitle": "Start a challenge to build lasting habits",
       "action": "Browse Challenges"
+    },
+    "noActiveChallenges": "No Active Challenges",
+    "startChallenge": "Start a challenge to build lasting habits",
+    "searchPlaceholder": "Search challenges...",
+    "templates": {
+      "title": "Challenge Templates",
+      "subtitle": "Start with proven challenges",
+      "noTemplates": "No Templates Found",
+      "noTemplatesMessage": "Try selecting a different category"
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "subtitle": "Compete and win",
+      "checkTitle": "Check Leaderboard",
+      "checkSubtitle": "See how you rank among top performers",
+      "viewRankings": "View Rankings"
+    },
+    "create": {
+      "title": "Create Challenge",
+      "descriptionPlaceholder": "What's this challenge about?",
+      "durationPlaceholder": "Custom duration",
+      "motivationPlaceholder": "Your motivation...",
+      "celebrationPlaceholder": "How will you celebrate?"
+    },
+    "community": {
+      "title": "Community",
+      "subtitle": "Challenge together",
+      "joinTitle": "Join Community Challenges",
+      "joinSubtitle": "Connect with others and stay motivated together",
+      "explore": "Explore Community"
+    },
+    "completedChallenges": {
+      "title": "Completed Challenges",
+      "subtitle": "Your success story",
+      "empty": "No Completed Challenges Yet",
+      "emptyMessage": "Complete your first challenge to see it here"
     },
     "analytics": {
       "title": "Performance Analytics",
@@ -478,7 +651,7 @@
       "goal": "(Goal: {{value}})",
       "enterPlaceholder": "Enter {{unit}}...",
       "noteLabel": "Note (optional)",
-      "notePlaceholder": "Add any notes...",
+      "notePlaceholder": "Add a note about today...",
       "submit": "Log Entry",
       "errors": {
         "invalidNumber": "Please enter a valid number",
@@ -508,20 +681,97 @@
     "subtitle": "Your AI Assistant",
     "placeholder": "Ask me anything...",
     "thinking": "Thinking...",
+    "create": {
+      "title": "Create",
+      "subtitle": "AI-powered quick input",
+      "aiAssistant": "AI Assistant",
+      "aiDescription": "Describe what you want to create in natural language",
+      "createWithNaturalLanguage": "Create with natural language",
+      "describePlaceholder": "Describe what you want to create...",
+      "quickCreate": "Quick Create",
+      "task": "Task",
+      "challenge": "Challenge",
+      "event": "Event",
+      "aiSuggestions": "AI Suggestions",
+      "smartParse": "Smart Parse",
+      "smartParseDescription": "Use the + button below to access camera, gallery, file, or voice input. AI will automatically detect what you're creating.",
+      "recent": "Recent",
+      "typeMessage": "Type a message...",
+      "addMessage": "Add a message...",
+      "voice": "Voice",
+      "image": "Image",
+      "file": "File"
+    },
+    "chat": {
+      "welcomeMessage": "Hi! I'm Kaiz AI. Tell me what you'd like to create - a task, challenge, event, or anything else. You can also share images, files, or voice messages!",
+      "errorMessage": "Sorry, something went wrong. Please try again."
+    },
     "suggestions": {
       "title": "Suggestions",
       "planMyDay": "Plan my day",
       "weeklyReview": "Weekly review",
       "setGoals": "Help me set goals",
       "analyzeProgress": "Analyze my progress"
+    },
+    "draft": {
+      "lifeArea": "Life Area",
+      "quadrant": "Quadrant",
+      "storyPoints": "Story Points",
+      "dueDate": "Due Date",
+      "recurring": "Recurring",
+      "start": "Start",
+      "end": "End",
+      "duration": "Duration",
+      "frequency": "Frequency",
+      "metric": "Metric",
+      "target": "Target",
+      "date": "Date",
+      "time": "Time",
+      "allDay": "All Day",
+      "location": "Location",
+      "attendees": "Attendees",
+      "due": "Due",
+      "category": "Category",
+      "amount": "Amount",
+      "account": "Account"
     }
   },
   "sensai": {
     "title": "SensAI",
-    "subtitle": "AI-Powered Insights",
+    "subtitle": "Your AI Scrum Master",
     "insights": "Insights",
     "recommendations": "Recommendations",
     "analysis": "Analysis",
+    "initializing": "Initializing SensAI...",
+    "needsAttention": "Needs Attention",
+    "yourVelocity": "Your Velocity",
+    "details": "Details",
+    "planYourWeek": "Plan your week",
+    "celebrateWins": "Celebrate wins",
+    "planning": {
+      "focusPlaceholder": "What's the main focus of this sprint?"
+    },
+    "standup": {
+      "dailyStandup": "Daily Standup",
+      "complete": "Standup Complete",
+      "skipped": "Standup Skipped",
+      "skippedMessage": "You can still start one if needed",
+      "readyMessage": "Ready when you are",
+      "startStandup": "Start Standup",
+      "skipToday": "Skip Today",
+      "sprintProgress": "Sprint Progress",
+      "dayOfSprint": "Day {{current}} of {{total}}",
+      "yesterday": "Yesterday",
+      "todayPlan": "Today",
+      "blockers": "Blockers",
+      "noBlockers": "No blockers",
+      "blockerPlaceholder": "Describe a blocker...",
+      "thoughtsPlaceholder": "Quick thoughts for the day..."
+    },
+    "retrospective": {
+      "thoughtPlaceholder": "Add your thought...",
+      "actionPlaceholder": "Add custom action..."
+    },
     "velocity": {
       "title": "Velocity",
       "sprintHistory": "Sprint History",
@@ -549,21 +799,6 @@
         "trackTitle": "Track consistently",
         "trackDesc": "Log progress daily for accurate data"
       }
-    },
-    "standup": {
-      "dailyStandup": "Daily Standup",
-      "complete": "Standup Complete",
-      "skipped": "Standup Skipped",
-      "skippedMessage": "You can still start one if needed",
-      "readyMessage": "Ready when you are",
-      "startStandup": "Start Standup",
-      "skipToday": "Skip Today",
-      "sprintProgress": "Sprint Progress",
-      "dayOfSprint": "Day {{current}} of {{total}}",
-      "yesterday": "Yesterday",
-      "todayPlan": "Today",
-      "blockers": "Blockers",
-      "noBlockers": "No blockers"
     },
     "sprintHealth": {
       "title": "Sprint Health",
@@ -614,17 +849,43 @@
     "subtitle": "Essential Life Tracking",
     "health": "Health",
     "finance": "Finance",
-    "habits": "Habits"
+    "habits": "Habits",
+    "explore": {
+      "searchPlaceholder": "Search books, authors, topics..."
+    },
+    "highlights": {
+      "searchPlaceholder": "Search highlights..."
+    },
+    "goals": {
+      "minutesPlaceholder": "Enter minutes"
+    },
+    "collections": {
+      "tip": "Create themed collections like \"Leadership Skills\" or \"Morning Reads\" to organize your learning journey."
+    }
   },
   "motivation": {
     "title": "Motivation",
     "quote": "Quote of the Day",
     "achievements": "Achievements",
     "streaks": "Streaks",
-    "badges": "Badges"
+    "badges": "Badges",
+    "themes": {
+      "title": "Themes",
+      "subtitle": "Customize your mindset experience"
+    },
+    "analytics": {
+      "title": "Analytics",
+      "subtitle": "Your mindset engagement"
+    },
+    "favorites": {
+      "title": "Favorites",
+      "empty": "No Favorites Yet",
+      "emptyMessage": "Long press any mindset card and add it to your collection"
+    }
   },
   "pomodoro": {
     "title": "Pomodoro",
+    "subtitle": "Focus with purpose",
     "work": "Focus",
     "shortBreak": "Short Break",
     "longBreak": "Long Break",
@@ -636,16 +897,29 @@
     "sessions": "Sessions",
     "completed": "Completed",
     "settings": {
+      "title": "Pomodoro Settings",
+      "subtitle": "Configure your timer",
       "workDuration": "Work Duration",
       "shortBreakDuration": "Short Break",
       "longBreakDuration": "Long Break",
       "sessionsBeforeLongBreak": "Sessions Before Long Break"
+    },
+    "history": {
+      "title": "Focus History",
+      "subtitle": "View your sessions"
     }
   },
   "notifications": {
     "title": "Notifications",
     "markAllRead": "Mark All as Read",
     "markAllReadShort": "Mark all read",
+    "allCaughtUp": "You're all caught up!",
+    "noNewNotifications": "No new notifications",
+    "filterAll": "All",
+    "filterToday": "Today",
+    "filterYesterday": "Yesterday",
+    "filterThisWeek": "This Week",
+    "filterEarlier": "Earlier",
     "empty": {
       "title": "No notifications",
       "subtitle": "You're all caught up!",
@@ -707,6 +981,16 @@
       "tasksCompleted": "Tasks Completed",
       "currentStreak": "Current Streak",
       "totalPoints": "Total Points"
+    },
+    "menu": {
+      "notifications": "Notifications",
+      "notificationsSubtitle": "Manage alerts and preferences",
+      "appearance": "Appearance",
+      "appearanceSubtitle": "Theme, colors, and display",
+      "privacy": "Privacy & Security",
+      "privacySubtitle": "Account protection settings",
+      "help": "Help & Support",
+      "helpSubtitle": "FAQs and contact us"
     }
   },
   "lifeWheel": {
@@ -725,24 +1009,6 @@
   "settings": {
     "title": "Settings",
     "subtitle": "Customize your experience",
-    "demoMode": {
-      "title": "Demo Mode Active",
-      "subtitle": "Using sample data • Reset anytime",
-      "exitButton": "Exit Demo Mode",
-      "tryTitle": "Try Demo Mode",
-      "trySubtitle": "Explore with sample data",
-      "enterTitle": "Enter Demo Mode",
-      "enterMessage": "Switch to a demo account to explore all features with pre-filled sample data.",
-      "enterButton": "Enter Demo",
-      "alreadyActive": "Already in Demo Mode",
-      "alreadyActiveMessage": "You are already using a demo account.",
-      "activeAlert": "Demo Mode Active",
-      "activeAlertMessage": "You are now using a demo account!"
-    },
-    "resetDemo": {
-      "title": "Reset Demo",
-      "message": "This will clear all app data and restart from the welcome screen. Your demo session will end."
-    },
     "sections": {
       "accountProfile": "Account & Profile",
       "commandCenter": "Command Center",

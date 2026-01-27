@@ -23,6 +23,7 @@ import {
     getCategoryConfig,
 } from '../../types/notification.types';
 import { useNotificationStore } from '../../store/notificationStore';
+import { useTranslation } from '../../hooks';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -351,6 +352,7 @@ interface NotificationCenterProps {
 
 export function NotificationCenter({ onClose, isModal = false }: NotificationCenterProps) {
     const router = useRouter();
+    const { t } = useTranslation();
     const { notifications, unreadCount, fetchNotifications, markAllAsRead, loading } = useNotificationStore();
     const [selectedCategory, setSelectedCategory] = useState<'all' | NotificationCategory>('all');
     const [refreshing, setRefreshing] = useState(false);
@@ -481,7 +483,7 @@ export function NotificationCenter({ onClose, isModal = false }: NotificationCen
                 >
                     <CategoryTab
                         category="all"
-                        label="All"
+                        label={t('notifications.filterAll')}
                         icon="bell-outline"
                         color="#6B7280"
                         isActive={selectedCategory === 'all'}
@@ -518,28 +520,28 @@ export function NotificationCenter({ onClose, isModal = false }: NotificationCen
                     <>
                         {groupedNotifications.pinned.length > 0 && (
                             <NotificationSection
-                                title="📌 Pinned"
+                                title={`📌 ${t('common.pinned')}`}
                                 notifications={groupedNotifications.pinned}
                                 onNotificationPress={handleNotificationPress}
                             />
                         )}
                         <NotificationSection
-                            title="Today"
+                            title={t('common.today')}
                             notifications={groupedNotifications.today}
                             onNotificationPress={handleNotificationPress}
                         />
                         <NotificationSection
-                            title="Yesterday"
+                            title={t('common.yesterday')}
                             notifications={groupedNotifications.yesterday}
                             onNotificationPress={handleNotificationPress}
                         />
                         <NotificationSection
-                            title="This Week"
+                            title={t('common.thisWeek')}
                             notifications={groupedNotifications.thisWeek}
                             onNotificationPress={handleNotificationPress}
                         />
                         <NotificationSection
-                            title="Earlier"
+                            title={t('common.earlier')}
                             notifications={groupedNotifications.older}
                             onNotificationPress={handleNotificationPress}
                         />

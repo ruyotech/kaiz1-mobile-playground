@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNotificationStore } from '../../store/notificationStore';
 import { NOTIFICATION_CATEGORIES, NotificationCategory } from '../../types/notification.types';
+import { useTranslation } from '../../hooks';
 
 interface SettingRowProps {
     icon: string;
@@ -59,6 +60,7 @@ function SectionHeader({ title, subtitle }: SectionHeaderProps) {
 
 export function NotificationSettings() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { preferences, updatePreferences, toggleCategoryNotifications } = useNotificationStore();
 
     return (
@@ -68,7 +70,7 @@ export function NotificationSettings() {
                 <TouchableOpacity onPress={() => router.back()} className="mr-3">
                     <MaterialCommunityIcons name="arrow-left" size={24} color="#374151" />
                 </TouchableOpacity>
-                <Text className="text-xl font-bold text-gray-900">Notification Settings</Text>
+                <Text className="text-xl font-bold text-gray-900">{t('notifications.settings.title')}</Text>
             </View>
 
             <ScrollView className="flex-1">
@@ -96,14 +98,14 @@ export function NotificationSettings() {
                 {preferences.enabled && (
                     <>
                         {/* Push Notification Settings */}
-                        <SectionHeader title="Push Notifications" subtitle="Control how you're alerted" />
+                        <SectionHeader title={t('notifications.settings.sections.push')} subtitle={t('notifications.settings.sections.pushDesc')} />
                         <View className="bg-white mx-4 rounded-2xl overflow-hidden">
                             <SettingRow
                                 icon="cellphone-message"
                                 iconColor="#3B82F6"
                                 iconBgColor="#DBEAFE"
-                                title="Push Notifications"
-                                subtitle="Receive alerts on your device"
+                                title={t('notifications.settings.push')}
+                                subtitle={t('notifications.settings.pushSubtitle')}
                                 value={preferences.pushEnabled}
                                 onValueChange={(value) => updatePreferences({ pushEnabled: value })}
                             />
@@ -113,8 +115,8 @@ export function NotificationSettings() {
                                         icon="volume-high"
                                         iconColor="#10B981"
                                         iconBgColor="#D1FAE5"
-                                        title="Sound"
-                                        subtitle="Play sound for notifications"
+                                        title={t('notifications.settings.sound')}
+                                        subtitle={t('notifications.settings.soundSubtitle')}
                                         value={preferences.pushSound}
                                         onValueChange={(value) => updatePreferences({ pushSound: value })}
                                     />
@@ -122,8 +124,8 @@ export function NotificationSettings() {
                                         icon="vibrate"
                                         iconColor="#F59E0B"
                                         iconBgColor="#FEF3C7"
-                                        title="Vibration"
-                                        subtitle="Vibrate for notifications"
+                                        title={t('notifications.settings.vibration')}
+                                        subtitle={t('notifications.settings.vibrationSubtitle')}
                                         value={preferences.pushVibrate}
                                         onValueChange={(value) => updatePreferences({ pushVibrate: value })}
                                     />
@@ -132,23 +134,23 @@ export function NotificationSettings() {
                         </View>
 
                         {/* Quiet Hours */}
-                        <SectionHeader title="Quiet Hours" subtitle="Pause notifications during these hours" />
+                        <SectionHeader title={t('notifications.settings.sections.quietHours')} subtitle={t('notifications.settings.sections.quietHoursDesc')} />
                         <View className="bg-white mx-4 rounded-2xl overflow-hidden">
                             <SettingRow
                                 icon="moon-waning-crescent"
                                 iconColor="#6366F1"
                                 iconBgColor="#EDE9FE"
-                                title="Quiet Hours"
+                                title={t('notifications.settings.quietHours.title')}
                                 subtitle={preferences.quietHoursEnabled 
                                     ? `${preferences.quietHoursStart} - ${preferences.quietHoursEnd}` 
-                                    : 'Not enabled'}
+                                    : t('notifications.settings.quietHours.notEnabled')}
                                 value={preferences.quietHoursEnabled}
                                 onValueChange={(value) => updatePreferences({ quietHoursEnabled: value })}
                             />
                         </View>
 
                         {/* Category Settings */}
-                        <SectionHeader title="Categories" subtitle="Choose which types to receive" />
+                        <SectionHeader title={t('notifications.settings.sections.categories')} subtitle={t('notifications.settings.sections.categoriesDesc')} />
                         <View className="bg-white mx-4 rounded-2xl overflow-hidden">
                             {NOTIFICATION_CATEGORIES.map((category, index) => (
                                 <SettingRow
@@ -164,14 +166,14 @@ export function NotificationSettings() {
                         </View>
 
                         {/* Smart Features */}
-                        <SectionHeader title="Smart Features" subtitle="AI-powered notification management" />
+                        <SectionHeader title={t('notifications.settings.sections.smart')} subtitle={t('notifications.settings.sections.smartDesc')} />
                         <View className="bg-white mx-4 rounded-2xl overflow-hidden mb-8">
                             <SettingRow
                                 icon="layers-triple"
                                 iconColor="#06B6D4"
                                 iconBgColor="#CFFAFE"
-                                title="Smart Grouping"
-                                subtitle="Group similar notifications together"
+                                title={t('notifications.settings.smart.grouping')}
+                                subtitle={t('notifications.settings.smart.groupingSubtitle')}
                                 value={preferences.smartGrouping}
                                 onValueChange={(value) => updatePreferences({ smartGrouping: value })}
                             />
@@ -179,8 +181,8 @@ export function NotificationSettings() {
                                 icon="email-newsletter"
                                 iconColor="#EC4899"
                                 iconBgColor="#FCE7F3"
-                                title="Daily Digest"
-                                subtitle="Get a summary of notifications each day"
+                                title={t('notifications.settings.smart.dailyDigest')}
+                                subtitle={t('notifications.settings.smart.dailyDigestSubtitle')}
                                 value={preferences.dailyDigest}
                                 onValueChange={(value) => updatePreferences({ dailyDigest: value })}
                             />
@@ -188,8 +190,8 @@ export function NotificationSettings() {
                                 icon="calendar-week"
                                 iconColor="#8B5CF6"
                                 iconBgColor="#EDE9FE"
-                                title="Weekly Recap"
-                                subtitle="Weekly summary of your progress"
+                                title={t('notifications.settings.smart.weeklyRecap')}
+                                subtitle={t('notifications.settings.smart.weeklyRecapSubtitle')}
                                 value={preferences.weeklyRecap}
                                 onValueChange={(value) => updatePreferences({ weeklyRecap: value })}
                             />

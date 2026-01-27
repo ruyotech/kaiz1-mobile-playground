@@ -5,7 +5,6 @@
  * - Modern inset grouped card layout (iOS-style)
  * - Real data bindings from Zustand stores
  * - Tri-state theme mode (Light/Dark/System)
- * - Demo mode toggle with prominent indicator
  * - Command Center, Sprints & App System settings
  * - Dynamic app version from expo-constants
  * - Full i18n localization support

@@ -23,6 +23,7 @@ import {
     getDraftTitle,
     getConfidenceLevel,
 } from '../../types/commandCenter.types';
+import { useTranslation } from '../../hooks';
 
 // ============================================================================
 // Props

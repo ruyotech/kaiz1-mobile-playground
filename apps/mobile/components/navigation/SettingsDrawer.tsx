@@ -36,6 +36,9 @@ import { useAuthStore } from '../../store/authStore';
 import { usePreferencesStore, type ThemeMode, type SupportedLocale } from '../../store/preferencesStore';
 import { useSettingsStore, type SprintViewMode, type AIModel } from '../../store/settingsStore';
 
+// Hooks
+import { useTranslation } from '../../hooks';
+
 // Constants
 import { SUPPORTED_LANGUAGES } from '../../utils/constants';
 
@@ -307,9 +310,12 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
     const backdropAnim = useRef(new Animated.Value(0)).current;
     const router = useRouter();
     
+    // Translations
+    const { t } = useTranslation();
+    
     // Stores
     const { reset: resetApp } = useAppStore();
-    const { reset: resetAuth, logout, user, isDemoUser, loginDemo } = useAuthStore();
+    const { reset: resetAuth, logout, user } = useAuthStore();
     const {
         locale,
         setLocale,
@@ -384,29 +390,6 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
     }, [visible]);
     
     // Handlers
-    const handleResetDemo = useCallback(() => {
-        Alert.alert(
-            '🔄 Reset Demo',
-            'This will clear all app data and restart from the welcome screen. Your demo session will end.',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                {
-                    text: 'Reset',
-                    style: 'destructive',
-                    onPress: async () => {
-                        onClose();
-                        resetApp();
-                        resetAuth();
-                        resetPreferences();
-                        resetSettings();
-                        await new Promise(r => setTimeout(r, 100));
-                        router.replace('/');
-                    },
-                },
-            ]
-        );
-    }, [onClose, resetApp, resetAuth, resetPreferences, resetSettings, router]);
-    
     const handleLogout = useCallback(() => {
         Alert.alert(
             '👋 Logout',
@@ -564,42 +547,23 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                     >
                         
                         {/* ============================================ */}
-                        {/* DEMO MODE INDICATOR */}
-                        {/* ============================================ */}
-                        {isDemoUser && (
-                            <View className="mb-5 bg-purple-50 border-2 border-purple-200 rounded-2xl p-3">
-                                <View className="flex-row items-center">
-                                    <View className="w-10 h-10 bg-purple-500 rounded-xl items-center justify-center mr-3">
-                                        <Text className="text-lg">🎭</Text>
-                                    </View>
-                                    <View className="flex-1">
-                                        <Text className="text-base font-bold text-purple-900">Demo Mode</Text>
-                                        <Text className="text-xs text-purple-700">
-                                            Using sample data
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                        )}
-                        
-                        {/* ============================================ */}
                         {/* ACCOUNT & PROFILE */}
                         {/* ============================================ */}
-                        <SettingSection title="Account & Profile" titleIcon="👤">
+                        <SettingSection title={t('settings.sections.accountProfile')} titleIcon="👤">
                             <SettingItem
                                 icon="account-edit-outline"
                                 iconColor="#3B82F6"
                                 iconBgColor="#DBEAFE"
-                                label="Edit Profile"
-                                sublabel={user?.fullName || 'Update your details'}
+                                label={t('settings.account.editProfile')}
+                                sublabel={user?.fullName || t('settings.account.editProfileSubtitle')}
                                 onPress={() => {}}
                             />
                             <SettingItem
                                 icon="image-edit-outline"
                                 iconColor="#8B5CF6"
                                 iconBgColor="#EDE9FE"
-                                label="Avatar"
-                                sublabel="Change profile picture"
+                                label={t('settings.account.avatar')}
+                                sublabel={t('settings.account.avatarSubtitle')}
                                 onPress={() => {}}
                                 isLast
                             />
@@ -608,13 +572,13 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                         {/* ============================================ */}
                         {/* COMMAND CENTER (AI) */}
                         {/* ============================================ */}
-                        <SettingSection title="Command Center" titleIcon="🤖">
+                        <SettingSection title={t('settings.sections.commandCenter')} titleIcon="🤖">
                             <ToggleSetting
                                 icon="volume-high"
                                 iconColor="#10B981"
                                 iconBgColor="#D1FAE5"
-                                label="Auto-play Voice Notes"
-                                sublabel="Play audio messages automatically"
+                                label={t('settings.commandCenter.autoPlayVoice')}
+                                sublabel={t('settings.commandCenter.autoPlayVoiceSubtitle')}
                                 value={commandCenter.autoPlayVoiceNotes}
                                 onValueChange={setAutoPlayVoiceNotes}
                             />
@@ -622,8 +586,8 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="vibrate"
                                 iconColor="#F59E0B"
                                 iconBgColor="#FEF3C7"
-                                label="Haptic Feedback"
-                                sublabel="Vibration on interactions"
+                                label={t('settings.commandCenter.hapticFeedback')}
+                                sublabel={t('settings.commandCenter.hapticFeedbackSubtitle')}
                                 value={commandCenter.hapticFeedback}
                                 onValueChange={setHapticFeedback}
                             />
@@ -631,8 +595,8 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="robot-outline"
                                 iconColor="#6366F1"
                                 iconBgColor="#E0E7FF"
-                                label="AI Model"
-                                sublabel="Choose your AI assistant"
+                                label={t('settings.commandCenter.aiModel')}
+                                sublabel={t('settings.commandCenter.aiModelSubtitle')}
                                 value={aiModelOptions.find(o => o.value === commandCenter.aiModel)?.label || 'Auto'}
                                 onPress={() => setShowAIModelModal(true)}
                                 isLast
@@ -642,13 +606,13 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                         {/* ============================================ */}
                         {/* SPRINTS & WORKFLOW */}
                         {/* ============================================ */}
-                        <SettingSection title="Sprints & Workflow" titleIcon="🏃">
+                        <SettingSection title={t('settings.sections.sprintsWorkflow')} titleIcon="🏃">
                             <SettingItem
                                 icon="view-dashboard-outline"
                                 iconColor="#0EA5E9"
                                 iconBgColor="#E0F2FE"
-                                label="Default View"
-                                sublabel="How tasks are displayed"
+                                label={t('settings.sprints.defaultView')}
+                                sublabel={t('settings.sprints.defaultViewSubtitle')}
                                 value={sprintViewOptions.find(o => o.value === sprints.defaultView)?.label || 'Calendar'}
                                 onPress={() => setShowSprintViewModal(true)}
                             />
@@ -656,8 +620,8 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="checkbox-marked-circle-outline"
                                 iconColor="#22C55E"
                                 iconBgColor="#DCFCE7"
-                                label="Show Completed Tasks"
-                                sublabel="Display finished items"
+                                label={t('settings.sprints.showCompleted')}
+                                sublabel={t('settings.sprints.showCompletedSubtitle')}
                                 value={sprints.showCompletedTasks}
                                 onValueChange={setShowCompletedTasks}
                             />
@@ -665,8 +629,8 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="bell-ring-outline"
                                 iconColor="#EF4444"
                                 iconBgColor="#FEE2E2"
-                                label="Task Notifications"
-                                sublabel="Reminders for deadlines"
+                                label={t('settings.sprints.taskNotifications')}
+                                sublabel={t('settings.sprints.taskNotificationsSubtitle')}
                                 value={sprints.enableTaskNotifications}
                                 onValueChange={setEnableTaskNotifications}
                             />
@@ -674,8 +638,8 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="timer-outline"
                                 iconColor="#F97316"
                                 iconBgColor="#FFEDD5"
-                                label="Auto-start Pomodoro"
-                                sublabel="Begin timer when task starts"
+                                label={t('settings.sprints.autoStartPomodoro')}
+                                sublabel={t('settings.sprints.autoStartPomodoroSubtitle')}
                                 value={sprints.autoStartPomodoro}
                                 onValueChange={setAutoStartPomodoro}
                                 isLast
@@ -685,13 +649,13 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                         {/* ============================================ */}
                         {/* APPEARANCE */}
                         {/* ============================================ */}
-                        <SettingSection title="Appearance" titleIcon="🎨">
+                        <SettingSection title={t('settings.sections.appearance')} titleIcon="🎨">
                             <SettingItem
                                 icon="theme-light-dark"
                                 iconColor="#8B5CF6"
                                 iconBgColor="#EDE9FE"
-                                label="Theme"
-                                sublabel="App color scheme"
+                                label={t('settings.appearance.theme')}
+                                sublabel={t('settings.appearance.themeSubtitle')}
                                 value={getThemeModeLabel(preferencesTheme)}
                                 onPress={() => setShowThemeModal(true)}
                             />
@@ -699,7 +663,7 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="translate"
                                 iconColor="#0891B2"
                                 iconBgColor="#CFFAFE"
-                                label="Language"
+                                label={t('settings.appearance.language')}
                                 sublabel={currentLanguage.name}
                                 value={currentLanguage.flag}
                                 onPress={() => setShowLanguageModal(true)}
@@ -710,13 +674,13 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                         {/* ============================================ */}
                         {/* STORAGE & DATA */}
                         {/* ============================================ */}
-                        <SettingSection title="Storage & Data" titleIcon="💾">
+                        <SettingSection title={t('settings.sections.storageData')} titleIcon="💾">
                             <SettingItem
                                 icon="broom"
                                 iconColor="#F59E0B"
                                 iconBgColor="#FEF3C7"
-                                label="Clear Cache"
-                                sublabel="Free up storage space"
+                                label={t('settings.storage.clearCache')}
+                                sublabel={t('settings.storage.clearCacheSubtitle')}
                                 onPress={handleClearCache}
                                 isLast
                             />
@@ -725,12 +689,12 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                         {/* ============================================ */}
                         {/* ABOUT */}
                         {/* ============================================ */}
-                        <SettingSection title="About" titleIcon="ℹ️">
+                        <SettingSection title={t('settings.sections.about')} titleIcon="ℹ️">
                             <SettingItem
                                 icon="information-outline"
                                 iconColor="#6B7280"
                                 iconBgColor="#F3F4F6"
-                                label="App Version"
+                                label={t('settings.about.appVersion')}
                                 value={`${appVersion} (${buildNumber})`}
                                 showChevron={false}
                             />
@@ -738,7 +702,7 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="web"
                                 iconColor="#3B82F6"
                                 iconBgColor="#DBEAFE"
-                                label="Website"
+                                label={t('settings.about.website')}
                                 sublabel="kaizlifeos.com"
                                 onPress={() => Linking.openURL('https://kaizlifeos.com')}
                             />
@@ -746,14 +710,14 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                                 icon="file-document-outline"
                                 iconColor="#6B7280"
                                 iconBgColor="#F3F4F6"
-                                label="Privacy Policy"
+                                label={t('settings.about.privacyPolicy')}
                                 onPress={() => Linking.openURL('https://kaizlifeos.com/privacy')}
                             />
                             <SettingItem
                                 icon="text-box-outline"
                                 iconColor="#6B7280"
                                 iconBgColor="#F3F4F6"
-                                label="Terms of Service"
+                                label={t('settings.about.termsOfService')}
                                 onPress={() => Linking.openURL('https://kaizlifeos.com/terms')}
                                 isLast
                             />
@@ -769,7 +733,7 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                             <View className="flex-row items-center justify-center py-4">
                                 <MaterialCommunityIcons name="logout" size={20} color="#EF4444" />
                                 <Text className="text-[15px] font-semibold text-red-500 ml-2">
-                                    Sign Out
+                                    {t('settings.signOut.button')}
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -777,10 +741,10 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
                         {/* Footer */}
                         <View className="items-center pt-2 pb-4">
                             <Text className="text-xs text-gray-400">
-                                Made with ❤️ by Kaiz Team
+                                {t('settings.footer.madeWith')}
                             </Text>
                             <Text className="text-[10px] text-gray-300 mt-1">
-                                © 2026 Kaiz LifeOS
+                                {t('settings.footer.copyright')}
                             </Text>
                         </View>
                     </ScrollView>
@@ -795,7 +759,7 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
             <SelectionModal<ThemeMode>
                 visible={showThemeModal}
                 onClose={() => setShowThemeModal(false)}
-                title="Choose Theme"
+                title={t('settings.modals.chooseTheme')}
                 options={themeOptions}
                 selectedValue={preferencesTheme}
                 onSelect={handleThemeSelect}
@@ -805,7 +769,7 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
             <SelectionModal<SupportedLocale>
                 visible={showLanguageModal}
                 onClose={() => setShowLanguageModal(false)}
-                title="Choose Language"
+                title={t('settings.modals.chooseLanguage')}
                 options={languageOptions}
                 selectedValue={locale}
                 onSelect={setLocale}
@@ -815,7 +779,7 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
             <SelectionModal<SprintViewMode>
                 visible={showSprintViewModal}
                 onClose={() => setShowSprintViewModal(false)}
-                title="Default Sprint View"
+                title={t('settings.modals.defaultSprintView')}
                 options={sprintViewOptions}
                 selectedValue={sprints.defaultView}
                 onSelect={setDefaultSprintView}
@@ -825,7 +789,7 @@ export function SettingsDrawer({ visible, onClose }: SettingsDrawerProps) {
             <SelectionModal<AIModel>
                 visible={showAIModelModal}
                 onClose={() => setShowAIModelModal(false)}
-                title="AI Model"
+                title={t('settings.modals.aiModel')}
                 options={aiModelOptions}
                 selectedValue={commandCenter.aiModel}
                 onSelect={setAIModel}

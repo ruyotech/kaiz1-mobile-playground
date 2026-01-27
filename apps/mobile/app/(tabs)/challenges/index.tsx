@@ -10,6 +10,7 @@ import { useChallengeStore } from '../../../store/challengeStore';
 import { Challenge, LifeWheelArea } from '../../../types/models';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { lifeWheelApi } from '../../../services/api';
+import { useTranslation } from '../../../hooks';
 
 // Map challenge Life Wheel IDs to actual Life Wheel area IDs
 const LIFE_WHEEL_ID_MAP: Record<string, string> = {
@@ -26,6 +27,7 @@ const LIFE_WHEEL_ID_MAP: Record<string, string> = {
 
 export default function ChallengesScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { challenges, loading, fetchChallenges, logEntry } = useChallengeStore();
     const [refreshing, setRefreshing] = useState(false);
     const [logModalVisible, setLogModalVisible] = useState(false);
@@ -122,8 +124,8 @@ export default function ChallengesScreen() {
     return (
         <Container safeArea={false}>
             <ScreenHeader
-                title="Challenges"
-                subtitle="Build habits that compound"
+                title={t('challenges.title')}
+                subtitle={t('challenges.subtitle')}
                 useSafeArea={false}
             >
                 {/* Search Input */}
@@ -133,7 +135,7 @@ export default function ChallengesScreen() {
                         <TextInput
                             value={searchQuery}
                             onChangeText={setSearchQuery}
-                            placeholder="Search challenges..."
+                            placeholder={t('challenges.searchPlaceholder')}
                             className="flex-1 ml-2 text-base"
                             placeholderTextColor="#9CA3AF"
                         />
@@ -157,7 +159,7 @@ export default function ChallengesScreen() {
                             className={`px-3 py-1.5 rounded-full ${!selectedLifeWheel ? 'bg-blue-600' : 'bg-gray-100 border border-gray-300'}`}
                         >
                             <Text className={`font-medium text-sm ${!selectedLifeWheel ? 'text-white' : 'text-gray-700'}`}>
-                                All ({challenges.length})
+                                {t('common.all')} ({challenges.length})
                             </Text>
                         </Pressable>
                         
@@ -194,7 +196,7 @@ export default function ChallengesScreen() {
                         className="flex-row justify-between items-center mb-4"
                     >
                         <Text className="text-xl font-bold">
-                            Active Challenges ({activeChallenges.length})
+                            {t('challenges.activeChallenges')} ({activeChallenges.length})
                         </Text>
                         <MaterialCommunityIcons 
                             name={activeExpanded ? 'chevron-up' : 'chevron-down'} 
@@ -207,8 +209,8 @@ export default function ChallengesScreen() {
                         activeChallenges.length === 0 ? (
                             <EmptyState
                                 icon="🎯"
-                                title="No Active Challenges"
-                                message="Start a challenge to build lasting habits"
+                                title={t('challenges.empty.title')}
+                                message={t('challenges.empty.subtitle')}
                             />
                         ) : (
                             <>
@@ -232,7 +234,7 @@ export default function ChallengesScreen() {
                                                         {area.name}
                                                     </Text>
                                                     <Text className="text-sm text-gray-600">
-                                                        {areaChallenges.length} {areaChallenges.length === 1 ? 'challenge' : 'challenges'}
+                                                        {areaChallenges.length} {areaChallenges.length === 1 ? t('challenges.challenge') : t('challenges.challengesPlural')}
                                                     </Text>
                                                 </View>
                                             </View>
@@ -271,7 +273,7 @@ export default function ChallengesScreen() {
                                 className="flex-row items-center flex-1"
                             >
                                 <Text className="text-xl font-bold mr-2">
-                                    Completed ({completedChallenges.length})
+                                    {t('common.completed')} ({completedChallenges.length})
                                 </Text>
                                 <MaterialCommunityIcons 
                                     name={completedExpanded ? 'chevron-up' : 'chevron-down'} 
@@ -280,7 +282,7 @@ export default function ChallengesScreen() {
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => router.push('/(tabs)/challenges/completed' as any)}>
-                                <Text className="text-blue-600 font-semibold">View All →</Text>
+                                <Text className="text-blue-600 font-semibold">{t('common.viewAll')} →</Text>
                             </TouchableOpacity>
                         </View>
                         
@@ -298,30 +300,30 @@ export default function ChallengesScreen() {
                 {/* Community Challenges Teaser */}
                 <View className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl p-6 items-center mb-6">
                     <Text className="text-3xl mb-2">👥</Text>
-                    <Text className="text-lg font-bold mb-2">Join Community Challenges</Text>
+                    <Text className="text-lg font-bold mb-2">{t('challenges.community.joinTitle')}</Text>
                     <Text className="text-center text-gray-600 mb-4">
-                        Connect with others and stay motivated together
+                        {t('challenges.community.joinSubtitle')}
                     </Text>
                     <TouchableOpacity 
                         onPress={() => router.push('/(tabs)/challenges/community' as any)}
                         className="bg-purple-600 rounded-lg py-2 px-6"
                     >
-                        <Text className="text-white font-semibold">Explore Community</Text>
+                        <Text className="text-white font-semibold">{t('challenges.community.explore')}</Text>
                     </TouchableOpacity>
                 </View>
                 
                 {/* Leaderboard Teaser */}
                 <View className="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-6 items-center mb-6">
                     <Text className="text-3xl mb-2">🏆</Text>
-                    <Text className="text-lg font-bold mb-2">Check Leaderboard</Text>
+                    <Text className="text-lg font-bold mb-2">{t('challenges.leaderboard.checkTitle')}</Text>
                     <Text className="text-center text-gray-600 mb-4">
-                        See how you rank among top performers
+                        {t('challenges.leaderboard.checkSubtitle')}
                     </Text>
                     <TouchableOpacity 
                         onPress={() => router.push('/(tabs)/challenges/leaderboard' as any)}
                         className="bg-orange-600 rounded-lg py-2 px-6"
                     >
-                        <Text className="text-white font-semibold">View Rankings</Text>
+                        <Text className="text-white font-semibold">{t('challenges.leaderboard.viewRankings')}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

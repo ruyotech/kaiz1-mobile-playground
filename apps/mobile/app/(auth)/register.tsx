@@ -15,9 +15,11 @@ import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { useAuthStore } from '../../store/authStore';
 import { usePreferencesStore } from '../../store/preferencesStore';
+import { useTranslation } from '../../hooks';
 
 export default function RegisterScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { register, error: authError } = useAuthStore();
     const { timezone } = usePreferencesStore();
     const [loading, setLoading] = useState(false);
@@ -36,11 +38,11 @@ export default function RegisterScreen() {
 
     const validateFullName = (name: string): boolean => {
         if (!name.trim()) {
-            setFullNameError('Full name is required');
+            setFullNameError(t('auth.validation.fullNameRequired'));
             return false;
         }
         if (name.trim().length < 2) {
-            setFullNameError('Name must be at least 2 characters');
+            setFullNameError(t('auth.validation.fullNameMinLength'));
             return false;
         }
         setFullNameError('');
@@ -50,11 +52,11 @@ export default function RegisterScreen() {
     const validateEmail = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
-            setEmailError('Email is required');
+            setEmailError(t('auth.validation.emailRequired'));
             return false;
         }
         if (!emailRegex.test(email)) {
-            setEmailError('Please enter a valid email');
+            setEmailError(t('auth.validation.emailInvalid'));
             return false;
         }
         setEmailError('');
@@ -63,11 +65,11 @@ export default function RegisterScreen() {
 
     const validatePassword = (password: string): boolean => {
         if (!password) {
-            setPasswordError('Password is required');
+            setPasswordError(t('auth.validation.passwordRequired'));
             return false;
         }
         if (password.length < 6) {
-            setPasswordError('Password must be at least 6 characters');
+            setPasswordError(t('auth.validation.passwordMinLength'));
             return false;
         }
         setPasswordError('');
@@ -84,7 +86,7 @@ export default function RegisterScreen() {
         }
 
         if (!agreeToTerms) {
-            Alert.alert('Terms Required', 'Please agree to the Terms of Service and Privacy Policy');
+            Alert.alert(t('auth.register.termsRequired'), t('auth.register.termsRequiredMessage'));
             return;
         }
 
@@ -131,38 +133,38 @@ export default function RegisterScreen() {
                         >
                             <Pressable onPress={() => router.back()} className="mb-4">
                                 <Text className="text-blue-600 font-semibold text-lg">
-                                    ← Back
+                                    ← {t('common.back')}
                                 </Text>
                             </Pressable>
                             <Text className="text-4xl font-bold text-gray-900">
-                                Create Account
+                                {t('auth.register.title')}
                             </Text>
                             <Text className="text-base text-gray-600 mt-2">
-                                Start your journey to better life management
+                                {t('auth.register.subtitle')}
                             </Text>
                         </Animated.View>
 
                         {/* Registration Form */}
                         <Animated.View entering={FadeInDown.delay(150).springify()}>
                             <Input
-                                label="Full Name"
+                                label={t('auth.register.fullName')}
                                 value={fullName}
                                 onChangeText={(text) => {
                                     setFullName(text);
                                     if (fullNameError) validateFullName(text);
                                 }}
-                                placeholder="John Doe"
+                                placeholder={t('auth.register.fullNamePlaceholder')}
                                 error={fullNameError}
                             />
 
                             <Input
-                                label="Email"
+                                label={t('auth.register.email')}
                                 value={email}
                                 onChangeText={(text) => {
                                     setEmail(text);
                                     if (emailError) validateEmail(text);
                                 }}
-                                placeholder="your@email.com"
+                                placeholder={t('auth.register.emailPlaceholder')}
                                 keyboardType="email-address"
                                 autoCapitalize="none"
                                 error={emailError}
@@ -170,13 +172,13 @@ export default function RegisterScreen() {
 
                             <View className="relative mb-4">
                                 <Input
-                                    label="Password"
+                                    label={t('auth.register.password')}
                                     value={password}
                                     onChangeText={(text) => {
                                         setPassword(text);
                                         if (passwordError) validatePassword(text);
                                     }}
-                                    placeholder="At least 6 characters"
+                                    placeholder={t('auth.register.passwordPlaceholder')}
                                     secureTextEntry={!showPassword}
                                     error={passwordError}
                                 />
@@ -185,7 +187,7 @@ export default function RegisterScreen() {
                                     className="absolute right-4 top-11"
                                 >
                                     <Text className="text-blue-600 font-semibold">
-                                        {showPassword ? 'Hide' : 'Show'}
+                                        {showPassword ? t('common.hide') : t('common.show')}
                                     </Text>
                                 </Pressable>
                             </View>
@@ -207,14 +209,7 @@ export default function RegisterScreen() {
                                     )}
                                 </View>
                                 <Text className="flex-1 text-sm text-gray-600 leading-6">
-                                    I agree to the{' '}
-                                    <Text className="text-blue-600 font-semibold">
-                                        Terms of Service
-                                    </Text>{' '}
-                                    and{' '}
-                                    <Text className="text-blue-600 font-semibold">
-                                        Privacy Policy
-                                    </Text>
+                                    {t('auth.register.agreeToTerms')}
                                 </Text>
                             </Pressable>
 

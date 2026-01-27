@@ -9,6 +9,7 @@ import { Button } from '../components/ui/Button';
 import { useAuthStore } from '../store/authStore';
 import { useNotificationStore } from '../store/notificationStore';
 import { useRouter } from 'expo-router';
+import { useTranslation } from '../hooks';
 
 // Settings menu item component
 function SettingsMenuItem({ 
@@ -58,6 +59,7 @@ function SettingsMenuItem({
 
 export default function ProfileScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { user, logout } = useAuthStore();
     const { unreadCount } = useNotificationStore();
 
@@ -70,7 +72,7 @@ export default function ProfileScreen() {
 
     return (
         <Container>
-            <ScreenHeader title="Profile" showBack showNotifications={false} />
+            <ScreenHeader title={t('profile.title')} showBack showNotifications={false} />
 
             <ScrollView className="flex-1 p-4">
                 {/* User Info */}
@@ -99,14 +101,14 @@ export default function ProfileScreen() {
 
                 {/* Settings Section */}
                 <Card className="mb-4">
-                    <Text className="text-lg font-semibold mb-3">Settings</Text>
+                    <Text className="text-lg font-semibold mb-3">{t('settings.title')}</Text>
                     
                     <SettingsMenuItem
                         icon="bell"
                         iconColor="#3B82F6"
                         iconBgColor="#DBEAFE"
-                        title="Notifications"
-                        subtitle="Manage alerts and preferences"
+                        title={t('profile.menu.notifications')}
+                        subtitle={t('profile.menu.notificationsSubtitle')}
                         badge={unreadCount}
                         onPress={() => router.push('/notification-settings')}
                     />
@@ -115,8 +117,8 @@ export default function ProfileScreen() {
                         icon="palette"
                         iconColor="#8B5CF6"
                         iconBgColor="#EDE9FE"
-                        title="Appearance"
-                        subtitle="Theme, colors, and display"
+                        title={t('profile.menu.appearance')}
+                        subtitle={t('profile.menu.appearanceSubtitle')}
                         onPress={() => router.push('/(tabs)/settings')}
                     />
                     
@@ -124,8 +126,8 @@ export default function ProfileScreen() {
                         icon="shield-check"
                         iconColor="#10B981"
                         iconBgColor="#D1FAE5"
-                        title="Privacy & Security"
-                        subtitle="Account protection settings"
+                        title={t('profile.menu.privacy')}
+                        subtitle={t('profile.menu.privacySubtitle')}
                         onPress={() => router.push('/(tabs)/settings')}
                     />
                     
@@ -133,8 +135,8 @@ export default function ProfileScreen() {
                         icon="help-circle"
                         iconColor="#F59E0B"
                         iconBgColor="#FEF3C7"
-                        title="Help & Support"
-                        subtitle="FAQs and contact us"
+                        title={t('profile.menu.help')}
+                        subtitle={t('profile.menu.helpSubtitle')}
                         onPress={() => router.push('/(tabs)/settings')}
                     />
                 </Card>

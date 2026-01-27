@@ -37,9 +37,11 @@ import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { useAuthStore } from '../../store/authStore';
 import { useBiometricStore } from '../../store/biometricStore';
+import { useTranslation } from '../../hooks';
 
 export default function LoginScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { login, loading, error: authError } = useAuthStore();
     const {
         isBiometricEnabled,
@@ -202,10 +204,10 @@ export default function LoginScreen() {
                                 <Text className="text-5xl">🚀</Text>
                             </View>
                             <Text className="text-4xl font-bold text-gray-900">
-                                Welcome Back
+                                {t('auth.login.welcomeBack')}
                             </Text>
                             <Text className="text-base text-gray-600 mt-2">
-                                Sign in to continue your journey
+                                {t('auth.login.subtitle')}
                             </Text>
                         </Animated.View>
 
@@ -232,7 +234,7 @@ export default function LoginScreen() {
                                     )}
                                     <View className="ml-3">
                                         <Text className="text-blue-600 font-semibold text-base">
-                                            Login with {biometricCapability?.displayName || 'Face ID'}
+                                            {t('auth.login.loginWith')} {biometricCapability?.displayName || 'Face ID'}
                                         </Text>
                                         <Text className="text-blue-400 text-xs mt-0.5">
                                             {enrolledEmail}
@@ -243,7 +245,7 @@ export default function LoginScreen() {
                                 {/* Divider */}
                                 <View className="flex-row items-center my-6">
                                     <View className="flex-1 h-px bg-gray-200" />
-                                    <Text className="text-gray-400 text-sm mx-4">or sign in with email</Text>
+                                    <Text className="text-gray-400 text-sm mx-4">{t('auth.login.orSignInWithEmail')}</Text>
                                     <View className="flex-1 h-px bg-gray-200" />
                                 </View>
                             </Animated.View>
@@ -252,26 +254,26 @@ export default function LoginScreen() {
                         {/* Login Form */}
                         <Animated.View entering={FadeInDown.delay(200).springify()}>
                             <Input
-                                label="Email"
+                                label={t('auth.login.email')}
                                 value={email}
                                 onChangeText={(text) => {
                                     setEmail(text);
                                     if (emailError) validateEmail(text);
                                 }}
-                                placeholder="your@email.com"
+                                placeholder={t('auth.login.emailPlaceholder')}
                                 keyboardType="email-address"
                                 error={emailError}
                             />
 
                             <View className="relative">
                                 <Input
-                                    label="Password"
+                                    label={t('auth.login.password')}
                                     value={password}
                                     onChangeText={(text) => {
                                         setPassword(text);
                                         if (passwordError) validatePassword(text);
                                     }}
-                                    placeholder="Enter your password"
+                                    placeholder={t('auth.login.passwordPlaceholder')}
                                     secureTextEntry={!showPassword}
                                     error={passwordError}
                                 />
@@ -280,7 +282,7 @@ export default function LoginScreen() {
                                     className="absolute right-4 top-11"
                                 >
                                     <Text className="text-blue-600 font-semibold">
-                                        {showPassword ? 'Hide' : 'Show'}
+                                        {showPassword ? t('common.hide') : t('common.show')}
                                     </Text>
                                 </Pressable>
                             </View>
@@ -290,7 +292,7 @@ export default function LoginScreen() {
                                 className="mb-6"
                             >
                                 <Text className="text-blue-600 font-semibold text-right">
-                                    Forgot Password?
+                                    {t('auth.login.forgotPassword')}
                                 </Text>
                             </Pressable>
 
@@ -300,7 +302,7 @@ export default function LoginScreen() {
                                 fullWidth
                                 size="lg"
                             >
-                                Sign In
+                                {t('auth.login.signIn')}
                             </Button>
                         </Animated.View>
 
@@ -309,9 +311,9 @@ export default function LoginScreen() {
                             entering={FadeInUp.delay(300).springify()}
                             className="flex-row justify-center mt-8"
                         >
-                            <Text className="text-gray-600">Don't have an account? </Text>
+                            <Text className="text-gray-600">{t('auth.login.noAccount')} </Text>
                             <Pressable onPress={() => router.push('/(auth)/register')}>
-                                <Text className="text-blue-600 font-semibold">Sign Up</Text>
+                                <Text className="text-blue-600 font-semibold">{t('auth.login.signUp')}</Text>
                             </Pressable>
                         </Animated.View>
                     </View>
