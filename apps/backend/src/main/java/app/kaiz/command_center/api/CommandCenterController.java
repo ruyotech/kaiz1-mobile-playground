@@ -256,25 +256,6 @@ public class CommandCenterController {
     }
 
     // =========================================================================
-    // Legacy endpoint - now redirects to AI processing
-    // =========================================================================
-
-    @PostMapping(value = "/input", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(
-            summary = "Process smart input (redirects to AI)",
-            description = "Legacy endpoint - now forwards to AI processing")
-    public ResponseEntity<ApiResponse<CommandCenterAIResponse>> processInputLegacy(
-            @CurrentUser UUID userId,
-            @RequestPart(value = "text", required = false) String text,
-            @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments) {
-
-        log.info("📥 [Command Center] Input from user: {} - forwarding to AI processing", userId);
-
-        // Forward to AI processing
-        return processInput(userId, text, attachments);
-    }
-
-    // =========================================================================
     // Helper methods
     // =========================================================================
 

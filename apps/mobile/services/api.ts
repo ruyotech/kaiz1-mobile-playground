@@ -1201,20 +1201,6 @@ export interface CommandInputAttachment {
     mimeType?: string;
 }
 
-export interface CommandInputResponse {
-    id: string;
-    message: string;
-    details: string;
-    receivedText: string | null;
-    receivedAttachments: Array<{
-        name: string;
-        mimeType: string;
-        size: number;
-        type: string;
-    }>;
-    timestamp: string;
-}
-
 // Import command center types
 import type {
     CommandCenterAIResponse,
@@ -1225,77 +1211,8 @@ import type {
 
 export const commandCenterApi = {
     /**
-     * Send input (text and/or attachments) to Command Center backend
-     * The backend will process and return confirmation of what was received
-     */
-    async sendInput(
-        text: string | null,
-        attachments: CommandInputAttachment[]
-    ): Promise<ApiResponse<CommandInputResponse>> {
-        console.log('🚀 [Command Center API] Sending input to backend...');
-        console.log('🚀 [Command Center API] Text:', text);
-        console.log('🚀 [Command Center API] Attachments:', attachments.length);
-
-        // Build FormData for multipart request
-        const formData = new FormData();
-
-        if (text && text.trim()) {
-            formData.append('text', text.trim());
-        }
-
-        // Add attachments
-        for (const attachment of attachments) {
-            const filename = attachment.name || getFilenameFromUri(attachment.uri);
-            const mimeType = attachment.mimeType || getMimeTypeFromFilename(filename);
-
-            console.log('🚀 [Command Center API] Adding attachment:', {
-                uri: attachment.uri,
-                name: filename,
-                type: mimeType,
-            });
-
-            formData.append('attachments', {
-                uri: attachment.uri,
-                name: filename,
-                type: mimeType,
-            } as any);
-        }
-
-        try {
-            const token = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-            
-            const response = await fetch(`${API_V1}/command-center/input`, {
-                method: 'POST',
-                headers: {
-                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                    // Don't set Content-Type for FormData - let fetch set it with boundary
-                },
-                body: formData,
-            });
-
-            console.log('🚀 [Command Center API] Response status:', response.status);
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('🚀 [Command Center API] Error response:', errorText);
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
-            }
-
-            const data = await response.json();
-            console.log('🚀 [Command Center API] Success:', data);
-            return data;
-        } catch (error: any) {
-            console.error('🚀 [Command Center API] Error:', error);
-            return {
-                success: false,
-                error: error.message || 'Failed to send input to Command Center',
-            };
-        }
-    },
-
-    /**
      * Process input with AI to generate a draft
-     * Uses the /api/v1/command-center/ai/process endpoint
+     * Uses the /api/v1/command-center/process endpoint
      */
     async processWithAI(
         text: string | null,
