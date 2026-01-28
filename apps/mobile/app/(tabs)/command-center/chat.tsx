@@ -14,9 +14,7 @@ import {
     KeyboardAvoidingView,
     Platform,
     ActivityIndicator,
-    Alert,
 } from 'react-native';
-import { useRouter } from 'expo-router';
 import { Container } from '../../../components/layout/Container';
 import { ScreenHeader } from '../../../components/layout/ScreenHeader';
 import { ChatInput, Attachment } from '../../../components/chat/ChatInput';
@@ -131,7 +129,6 @@ function SystemMessage({ message }: { message: ChatMessage }) {
 // ============================================================================
 
 export default function CommandCenterChatScreen() {
-    const router = useRouter();
     const scrollViewRef = useRef<ScrollView>(null);
     
     // Messages state
@@ -250,11 +247,11 @@ export default function CommandCenterChatScreen() {
     // Handle draft approval
     const handleApprove = useCallback(async () => {
         if (!currentDraftId) return;
-        
+
         setIsProcessing(true);
         try {
             const response = await commandCenterApi.approveDraft(currentDraftId);
-            
+
             if (response.success) {
                 // Find the draft to get its type for the success message
                 const draftMessage = messages.find(m => m.draft?.id === currentDraftId);
@@ -262,7 +259,7 @@ export default function CommandCenterChatScreen() {
                 const draftTitle = draftMessage?.draft ? getDraftTitle(draftMessage.draft.draft) : 'Item';
                 const displayType = draftType ? getDraftTypeDisplayName(draftType) : 'Item';
 
-                // Add success message
+                // Add success system message
                 const successMessage: ChatMessage = {
                     id: Date.now().toString(),
                     type: 'system',
@@ -270,40 +267,57 @@ export default function CommandCenterChatScreen() {
                     timestamp: new Date(),
                 };
 
-                setMessages(prev => [...prev, successMessage]);
-                setCurrentDraftId(null);
+                // Add follow-up AI message (no popup)
+                const followUpMessage: ChatMessage = {
+                    id: (Date.now() + 1).toString(),
+                    type: 'ai',
+                    content: `Great! Your ${displayType.toLowerCase()} has been created and saved. Would you like to create something else?`,
+                    timestamp: new Date(),
+                };
 
-                // Show success alert
-                Alert.alert(
-                    'Success!',
-                    `Your ${displayType.toLowerCase()} has been created.`,
-                    [
-                        { text: 'Create Another', style: 'cancel' },
-                        { text: 'View', onPress: () => router.back() },
-                    ]
-                );
+                setMessages(prev => [...prev, successMessage, followUpMessage]);
+                setCurrentDraftId(null);
             } else {
-                const errorMsg = typeof response.error === 'string' 
-                    ? response.error 
+                const errorMsg = typeof response.error === 'string'
+                    ? response.error
                     : response.error?.message || 'Failed to create. Please try again.';
-                Alert.alert('Error', errorMsg);
+
+                // Add error message inline
+                const errorMessage: ChatMessage = {
+                    id: Date.now().toString(),
+                    type: 'system',
+                    content: `⚠️ ${errorMsg}`,
+                    timestamp: new Date(),
+                };
+                setMessages(prev => [...prev, errorMessage]);
             }
         } catch (error) {
             console.error('Error approving draft:', error);
-            Alert.alert('Error', 'Something went wrong. Please try again.');
+
+            // Add error message inline
+            const errorMessage: ChatMessage = {
+                id: Date.now().toString(),
+                type: 'system',
+                content: '⚠️ Something went wrong. Please try again.',
+                timestamp: new Date(),
+            };
+            setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsProcessing(false);
         }
-    }, [currentDraftId, messages, router]);
+    }, [currentDraftId, messages]);
 
     // Handle draft edit
     const handleEdit = useCallback(() => {
         // TODO: Navigate to edit screen with draft data
-        Alert.alert(
-            'Edit Draft',
-            'This will open the edit form with pre-filled data from the AI draft.',
-            [{ text: 'OK' }]
-        );
+        // For now, show inline message that edit is not yet implemented
+        const editMessage: ChatMessage = {
+            id: Date.now().toString(),
+            type: 'ai',
+            content: "Edit functionality is coming soon! For now, you can reject this draft and describe what you'd like to change, and I'll create a new one.",
+            timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, editMessage]);
     }, []);
 
     // Handle draft rejection
@@ -313,27 +327,51 @@ export default function CommandCenterChatScreen() {
         setIsProcessing(true);
         try {
             const response = await commandCenterApi.rejectDraft(currentDraftId);
-            
+
             if (response.success) {
-                // Add rejection message
+                // Add rejection system message
                 const rejectMessage: ChatMessage = {
                     id: Date.now().toString(),
                     type: 'system',
-                    content: 'Draft discarded. Feel free to try again with different wording.',
+                    content: 'Draft discarded.',
                     timestamp: new Date(),
                 };
 
-                setMessages(prev => [...prev, rejectMessage]);
+                // Add follow-up AI message
+                const followUpMessage: ChatMessage = {
+                    id: (Date.now() + 1).toString(),
+                    type: 'ai',
+                    content: "No problem! I've discarded that draft. Would you like to try again with different wording, or create something else?",
+                    timestamp: new Date(),
+                };
+
+                setMessages(prev => [...prev, rejectMessage, followUpMessage]);
                 setCurrentDraftId(null);
             } else {
-                const errorMsg = typeof response.error === 'string' 
-                    ? response.error 
+                const errorMsg = typeof response.error === 'string'
+                    ? response.error
                     : response.error?.message || 'Failed to reject draft.';
-                Alert.alert('Error', errorMsg);
+
+                // Add error message inline
+                const errorMessage: ChatMessage = {
+                    id: Date.now().toString(),
+                    type: 'system',
+                    content: `⚠️ ${errorMsg}`,
+                    timestamp: new Date(),
+                };
+                setMessages(prev => [...prev, errorMessage]);
             }
         } catch (error) {
             console.error('Error rejecting draft:', error);
-            Alert.alert('Error', 'Something went wrong. Please try again.');
+
+            // Add error message inline
+            const errorMessage: ChatMessage = {
+                id: Date.now().toString(),
+                type: 'system',
+                content: '⚠️ Something went wrong. Please try again.',
+                timestamp: new Date(),
+            };
+            setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsProcessing(false);
         }

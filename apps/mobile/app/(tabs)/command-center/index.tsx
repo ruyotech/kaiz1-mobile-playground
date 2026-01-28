@@ -1,8 +1,12 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, RefreshControl, Alert, ActivityIndicator } from 'react-native';
 import { Container } from '../../../components/layout/Container';
 import { ScreenHeader } from '../../../components/layout/ScreenHeader';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { commandCenterApi } from '../../../services/api';
+import { CommandCenterAIResponse } from '../../../types/commandCenter.types';
+import { PendingDraftCard } from '../../../components/command-center';
 
 const CREATE_OPTIONS = [
     { id: 'task', icon: 'checkbox-marked-circle-outline', label: 'Task', color: '#3B82F6', route: '/(tabs)/sdlc/create-task' },
@@ -12,6 +16,83 @@ const CREATE_OPTIONS = [
 
 export default function CommandCenterScreen() {
     const router = useRouter();
+
+    // Pending drafts state
+    const [pendingDrafts, setPendingDrafts] = useState<CommandCenterAIResponse[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const [processingDraftId, setProcessingDraftId] = useState<string | null>(null);
+
+    // Fetch pending drafts
+    const fetchPendingDrafts = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            const response = await commandCenterApi.getPendingDrafts();
+            if (response.success && response.data) {
+                setPendingDrafts(response.data);
+            }
+        } catch (error) {
+            console.error('Failed to fetch pending drafts:', error);
+        } finally {
+            setIsLoading(false);
+            setRefreshing(false);
+        }
+    }, []);
+
+    // Fetch on mount and when screen is focused
+    useEffect(() => {
+        fetchPendingDrafts();
+    }, [fetchPendingDrafts]);
+
+    // Handle pull-to-refresh
+    const handleRefresh = useCallback(() => {
+        setRefreshing(true);
+        fetchPendingDrafts();
+    }, [fetchPendingDrafts]);
+
+    // Handle approve draft
+    const handleApprove = useCallback(async (draftId: string) => {
+        setProcessingDraftId(draftId);
+        try {
+            const response = await commandCenterApi.approveDraft(draftId);
+            if (response.success) {
+                // Remove from list
+                setPendingDrafts(prev => prev.filter(d => d.id !== draftId));
+            } else {
+                const errorMsg = typeof response.error === 'string'
+                    ? response.error
+                    : response.error?.message || 'Failed to approve draft';
+                Alert.alert('Error', errorMsg);
+            }
+        } catch (error) {
+            console.error('Error approving draft:', error);
+            Alert.alert('Error', 'Failed to approve draft. Please try again.');
+        } finally {
+            setProcessingDraftId(null);
+        }
+    }, []);
+
+    // Handle reject draft
+    const handleReject = useCallback(async (draftId: string) => {
+        setProcessingDraftId(draftId);
+        try {
+            const response = await commandCenterApi.rejectDraft(draftId);
+            if (response.success) {
+                // Remove from list
+                setPendingDrafts(prev => prev.filter(d => d.id !== draftId));
+            } else {
+                const errorMsg = typeof response.error === 'string'
+                    ? response.error
+                    : response.error?.message || 'Failed to reject draft';
+                Alert.alert('Error', errorMsg);
+            }
+        } catch (error) {
+            console.error('Error rejecting draft:', error);
+            Alert.alert('Error', 'Failed to reject draft. Please try again.');
+        } finally {
+            setProcessingDraftId(null);
+        }
+    }, []);
 
     return (
         <Container safeArea={false}>
@@ -23,12 +104,21 @@ export default function CommandCenterScreen() {
             />
 
             {/* Quick Create Cards */}
-            <ScrollView className="flex-1 px-4 pt-4">
+            <ScrollView
+                className="flex-1 px-4 pt-4"
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                        tintColor="#8B5CF6"
+                    />
+                }
+            >
                 {/* AI Chat - Primary CTA */}
                 <TouchableOpacity
                     onPress={() => router.push('/(tabs)/command-center/chat' as any)}
                     className="bg-gradient-to-r bg-purple-600 rounded-2xl p-5 mb-6 shadow-lg"
-                    style={{ 
+                    style={{
                         shadowColor: '#8B5CF6',
                         shadowOffset: { width: 0, height: 4 },
                         shadowOpacity: 0.3,
@@ -100,6 +190,34 @@ export default function CommandCenterScreen() {
                         Use the + button below to access camera, gallery, file, or voice input. AI will automatically detect what you're creating.
                     </Text>
                 </View>
+
+                {/* Pending Approval Section */}
+                {isLoading && pendingDrafts.length === 0 ? (
+                    <View className="py-4 items-center">
+                        <ActivityIndicator size="small" color="#8B5CF6" />
+                        <Text className="text-sm text-gray-500 mt-2">Loading pending items...</Text>
+                    </View>
+                ) : pendingDrafts.length > 0 ? (
+                    <>
+                        <View className="flex-row items-center justify-between mb-3">
+                            <Text className="text-sm font-semibold text-gray-700">
+                                Pending Approval ({pendingDrafts.length})
+                            </Text>
+                            <TouchableOpacity onPress={handleRefresh}>
+                                <MaterialCommunityIcons name="refresh" size={18} color="#8B5CF6" />
+                            </TouchableOpacity>
+                        </View>
+                        {pendingDrafts.map((draft) => (
+                            <PendingDraftCard
+                                key={draft.id}
+                                draft={draft}
+                                onApprove={handleApprove}
+                                onReject={handleReject}
+                                isLoading={processingDraftId === draft.id}
+                            />
+                        ))}
+                    </>
+                ) : null}
 
                 {/* Recent Activity */}
                 <Text className="text-sm font-semibold text-gray-700 mb-3">Recent</Text>
