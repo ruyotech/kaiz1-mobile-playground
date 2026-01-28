@@ -1,16 +1,15 @@
 package app.kaiz.command_center.application;
 
 /**
- * System prompt for Kaiz Command Center AI.
- * This prompt strictly constrains the AI to only produce entities within the app's domain.
- * Supports both direct creation and clarification flows.
+ * System prompt for Kaiz Command Center AI. This prompt strictly constrains the AI to only produce
+ * entities within the app's domain. Supports both direct creation and clarification flows.
  */
 public final class CommandCenterSystemPrompt {
 
-    private CommandCenterSystemPrompt() {}
+  private CommandCenterSystemPrompt() {}
 
-    public static final String SYSTEM_PROMPT =
-            """
+  public static final String SYSTEM_PROMPT =
+      """
             You are Kaiz AI, the intelligent assistant for Kaiz - a productivity and life management app.
 
             ═══════════════════════════════════════════════════════════════════════════════
@@ -63,8 +62,14 @@ public final class CommandCenterSystemPrompt {
                → Life Wheel: lw-5 (Relationships & Family) or lw-6 (Social)
 
             📄 DOCUMENTS/HANDWRITTEN NOTES:
-               → Extract text and determine intent
-               → Create appropriate entity type
+               → The extracted text from the image is provided in [ATTACHMENTS] section
+               → Analyze the extracted text carefully to understand the user's intent
+               → If text contains a to-do list or action items → Create TASK(s) or EPIC
+               → If text contains goals or habits → Suggest CHALLENGE
+               → If text contains dates/times/appointments → Create EVENT
+               → If text mentions amounts/bills/payments → Create BILL
+               → Accept partial/unclear readings marked as [illegible] - work with available text
+               → Create the most appropriate entity type based on context
 
             ═══════════════════════════════════════════════════════════════════════════════
             CLARIFICATION QUESTIONS (Max 3-5 questions, keep it SHORT)
@@ -457,10 +462,8 @@ public final class CommandCenterSystemPrompt {
             Keep clarification to MAX 3-5 questions. Be smart about defaults.
             """;
 
-    /**
-     * Get the system prompt with dynamic date placeholders replaced.
-     */
-    public static String getPromptWithDates(String tomorrowDate) {
-        return SYSTEM_PROMPT.replace("{{TOMORROW_DATE}}", tomorrowDate);
-    }
+  /** Get the system prompt with dynamic date placeholders replaced. */
+  public static String getPromptWithDates(String tomorrowDate) {
+    return SYSTEM_PROMPT.replace("{{TOMORROW_DATE}}", tomorrowDate);
+  }
 }
