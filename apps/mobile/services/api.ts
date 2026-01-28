@@ -296,8 +296,14 @@ async function requestRaw<T>(
             throw new ApiError(errorMsg, response.status);
         }
 
-        console.log('🌐 API Response (raw): Success');
-        
+        console.log('🌐 API Response (raw): Success, data:', JSON.stringify(data).substring(0, 500));
+
+        // Check if data is wrapped in a response object and unwrap it
+        if (data && typeof data === 'object' && 'data' in data && Array.isArray((data as any).data)) {
+            console.log('🌐 Unwrapping data from response wrapper');
+            return (data as any).data as T;
+        }
+
         // Return raw data directly (not wrapped)
         return data as T;
     } catch (error) {

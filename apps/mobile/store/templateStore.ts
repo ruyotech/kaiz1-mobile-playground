@@ -76,18 +76,27 @@ export const useTemplateStore = create<TemplateState>()(
             fetchAllTemplates: async () => {
                 set({ loading: true, error: null });
                 try {
+                    console.log('📋 fetchAllTemplates: Starting...');
                     const [global, user, favorites] = await Promise.all([
                         taskTemplateApi.getGlobalTemplates(),
                         taskTemplateApi.getUserTemplates(),
                         taskTemplateApi.getFavoriteTemplates(),
                     ]);
+                    console.log('📋 fetchAllTemplates: Results:');
+                    console.log('📋 - Global:', Array.isArray(global) ? global.length : 'not array', typeof global);
+                    console.log('📋 - User:', Array.isArray(user) ? user.length : 'not array', typeof user);
+                    console.log('📋 - Favorites:', Array.isArray(favorites) ? favorites.length : 'not array', typeof favorites);
+                    if (global && !Array.isArray(global)) {
+                        console.log('📋 - Global raw:', JSON.stringify(global).substring(0, 300));
+                    }
                     set({
-                        globalTemplates: global,
-                        userTemplates: user,
-                        favoriteTemplates: favorites,
+                        globalTemplates: global || [],
+                        userTemplates: user || [],
+                        favoriteTemplates: favorites || [],
                         loading: false,
                     });
                 } catch (error) {
+                    console.error('📋 fetchAllTemplates: Error:', error);
                     set({ error: 'Failed to fetch templates', loading: false });
                 }
             },
@@ -97,7 +106,12 @@ export const useTemplateStore = create<TemplateState>()(
                 try {
                     console.log('📋 Fetching global templates...');
                     const templates = await taskTemplateApi.getGlobalTemplates();
-                    console.log('📋 Global templates received:', templates?.length, templates);
+                    console.log('📋 Global templates received:');
+                    console.log('📋 - Type:', typeof templates);
+                    console.log('📋 - Is Array:', Array.isArray(templates));
+                    console.log('📋 - Length:', templates?.length);
+                    console.log('📋 - First item:', templates?.[0] ? JSON.stringify(templates[0]).substring(0, 200) : 'none');
+                    console.log('📋 - Raw data:', JSON.stringify(templates).substring(0, 500));
                     set({ globalTemplates: templates || [], loading: false });
                 } catch (error) {
                     console.error('📋 Failed to fetch global templates:', error);
